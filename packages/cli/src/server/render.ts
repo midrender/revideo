@@ -4,8 +4,20 @@ import type {Request, Response} from 'express';
 import path from 'path';
 import {v4 as uuidv4} from 'uuid';
 import {scheduleCleanup} from '../utils';
+import {validateRenderRequest} from './validation';
 
 export async function render(req: Request, res: Response) {
+  // Validate request body
+  const validation = validateRenderRequest(req);
+  if (!validation.valid) {
+    res.status(400).json({
+      status: 'error',
+      message: 'Invalid request body',
+      errors: validation.errors,
+    });
+    return;
+  }
+
   const {callbackUrl} = req.body;
   if (callbackUrl) {
     await renderWithCallback(req, res);
@@ -15,7 +27,6 @@ export async function render(req: Request, res: Response) {
 }
 
 async function renderWithCallback(req: Request, res: Response) {
-  // TODO: validate request body
   const {variables, callbackUrl, settings} = req.body;
   const tempProjectName = uuidv4();
   const outputFileName = `${tempProjectName}.mp4`;
@@ -75,7 +86,6 @@ async function renderWithCallback(req: Request, res: Response) {
 }
 
 async function renderWithoutCallback(req: Request, res: Response) {
-  // TODO: validate request body
   const {variables, streamProgress, settings} = req.body;
   const tempProjectName: `${string}.mp4` = `${uuidv4()}.mp4`;
   const resultFilePath = path.join(process.cwd(), `output/${tempProjectName}`);

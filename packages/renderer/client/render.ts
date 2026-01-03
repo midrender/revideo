@@ -69,6 +69,10 @@ export const render = async (
         renderer.frameToTime(firstWorkerFrame),
         renderer.frameToTime(lastWorkerFrame),
       ] as [number, number],
+      // Ensure motion blur is passed through (user settings take precedence)
+      motionBlur:
+        overwriteRenderSettings.motionBlur ??
+        renderSettingsFromProject.motionBlur,
     };
 
     await renderer.render(combinedSettings);

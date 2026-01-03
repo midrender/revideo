@@ -1,7 +1,7 @@
 import type {FfmpegExporterOptions, ImageExporterOptions} from '../exporter';
 import type {Plugin} from '../plugin';
 import type {SceneDescription} from '../scenes';
-import type {CanvasColorSpace, Color, Vector2} from '../types';
+import type {CanvasColorSpace, Color, MotionBlurConfig, Vector2} from '../types';
 import type {Logger} from './Logger';
 
 // TODO(refactor): check if we can get rid of this
@@ -47,6 +47,7 @@ export interface ProjectSettings {
     fps: number;
     resolutionScale: number;
     colorSpace: CanvasColorSpace;
+    motionBlur?: Partial<MotionBlurConfig>;
   };
   preview: {
     fps: number;
@@ -66,6 +67,7 @@ export interface UserProjectSettings {
     fps: number;
     resolutionScale: number;
     colorSpace: CanvasColorSpace;
+    motionBlur?: Partial<MotionBlurConfig>;
   };
   preview: {
     fps: number;
@@ -83,6 +85,7 @@ export type RenderVideoUserProjectSettings = {
   size?: UserProjectSettings['shared']['size'];
 
   exporter?: UserProjectSettings['rendering']['exporter'];
+  motionBlur?: UserProjectSettings['rendering']['motionBlur'];
 };
 
 /**

@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build --base /examples/"
+    "build": "tsc && vite build --base /examples/",
+    "render": "tsc -p tsconfig.render.json && node dist/render-motion-blur.js"
   },
   "dependencies": {
     "@revideo/2d": "*",
     "@revideo/core": "*",
-    "@revideo/ffmpeg": "*"
+    "@revideo/ffmpeg": "*",
+    "@revideo/renderer": "*"
   },
   "devDependencies": {
     "@revideo/ui": "*",

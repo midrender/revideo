@@ -15,3 +15,4 @@ export * from './Spacing';
 export * from './Type';
 export * from './Vector';
 export * from './vector-transformations';
+export * from './MotionBlur';

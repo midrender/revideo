@@ -4,7 +4,35 @@ import type {PlaybackManager, PlaybackState} from './PlaybackManager';
  * A read-only representation of the playback.
  */
 export class PlaybackStatus {
+  /**
+   * Temporary time offset for motion blur subframe rendering.
+   * This is added to the current time when rendering subframes.
+   */
+  private subframeOffsetValue = 0;
+
   public constructor(private readonly playback: PlaybackManager) {}
+
+  /**
+   * Set the subframe time offset for motion blur rendering.
+   * @param offset - Time offset in seconds
+   */
+  public setSubframeOffset(offset: number): void {
+    this.subframeOffsetValue = offset;
+  }
+
+  /**
+   * Reset the subframe offset to 0.
+   */
+  public resetSubframeOffset(): void {
+    this.subframeOffsetValue = 0;
+  }
+
+  /**
+   * Get the current subframe offset.
+   */
+  public get subframeOffset(): number {
+    return this.subframeOffsetValue;
+  }
 
   /**
    * Convert seconds to frames using the current framerate.
@@ -24,8 +52,11 @@ export class PlaybackStatus {
     return frames / this.playback.fps;
   }
 
+  /**
+   * Get the current time in seconds, including any subframe offset.
+   */
   public get time(): number {
-    return this.framesToSeconds(this.playback.frame);
+    return this.framesToSeconds(this.playback.frame) + this.subframeOffsetValue;
   }
 
   public get frame(): number {
