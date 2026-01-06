@@ -1,18 +1,18 @@
 import {Color, makeProject, Vector2} from '@revideo/core';
 
 import example from './example';
+import cameraExample from './camera-example';
 
 import './global.css';
 
 export const project = makeProject({
   name: 'project',
-  scenes: [example],
+  scenes: [cameraExample],
   variables: {
     fill: 'green',
   },
   settings: {
     shared: {
-      background: new Color('#FFFFFF'),
       range: [0, Infinity],
       size: new Vector2(1920, 1080),
     },

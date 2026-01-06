@@ -3,6 +3,7 @@ import {CompoundSignalContext} from '../signals';
 import type {InterpolationFunction} from '../tweening';
 import {arcLerp, clamp, map} from '../tweening';
 import {DEG2RAD, RAD2DEG} from '../utils';
+import {Matrix2D, PossibleMatrix2D} from './Matrix2D';
 import {Direction, Origin} from './alignment-enums';
 import type {Type, WebGLConvertible} from './Type';
 import {EPSILON} from './Type';
@@ -386,6 +387,25 @@ export class Vector2 implements Type, WebGLConvertible {
   public scale(value: number) {
     return new Vector2(this.x * value, this.y * value);
   }
+
+    public transformAsPoint(matrix: PossibleMatrix2D) {
+    const m = new Matrix2D(matrix);
+
+    return new Vector2(
+      this.x * m.scaleX + this.y * m.skewY + m.translateX,
+      this.x * m.skewX + this.y * m.scaleY + m.translateY,
+    );
+  }
+
+  public transform(matrix: PossibleMatrix2D) {
+    const m = new Matrix2D(matrix);
+
+    return new Vector2(
+      this.x * m.scaleX + this.y * m.skewY,
+      this.x * m.skewX + this.y * m.scaleY,
+    );
+  }
+
 
   public mul(possibleVector: PossibleVector2) {
     const vector = new Vector2(possibleVector);

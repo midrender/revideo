@@ -606,6 +606,18 @@ export class Node implements Promisable<Node> {
   }
 
   /**
+   * Get the parent-to-world matrix for this node.
+   *
+   * @remarks
+   * This matrix transforms vectors from local space of this node's parent to
+   * world space.
+   */
+  @computed()
+  public parentToWorld(): DOMMatrix {
+    return this.parent()?.localToWorld() ?? new DOMMatrix();
+  }
+
+  /**
    * Get the local-to-parent matrix for this node.
    *
    * @remarks
