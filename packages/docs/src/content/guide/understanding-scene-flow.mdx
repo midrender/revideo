@@ -1,0 +1,157 @@
+# Scene Flow
+
+Revideo lets you define your scene through a generator function. This section
+will go into more detail about how this works and walk through a few examples to
+provide a better understanding for developers. It is also **highly recommended**
+to read through the [Motion Canvas guide](/category/motion-canvas-guide) for
+better understanding.
+
+## Scenes are defined sequentially
+
+Generator functions are defined as a sequence of `yield`s. When you first call a
+generator function, the first yielded value gets returned. When you call it
+again, the second yielded value gets returned:
+
+```ts
+function* example() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+const generator = example();
+
+console.log(generator.next().value); // 1;
+console.log(generator.next().value); // 2;
+console.log(generator.next().value); // 3;
+```
+
+The fact that Revideo uses generator functions lets you define your videos in an
+intuitive imperative manner - When thinking about what your video should look
+like, you'll probably think of it as a sequence of concrete steps:
+
+- At first, a red circle should appear in the center of my video
+- The circle should move to the right by 200 pixels within two seconds
+- Then, the circle disappears from the video
+- Afterwards, nothing happens for one second
+
+In Revideo, your code can be translated in a relatively straightforward way -
+you can read your scene code from top to bottom to understand what is happening:
+
+```tsx
+import {Circle, makeScene2D} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const circleRef = createRef<Circle>();
+
+  // At first, a red circle should appear in the center of my video
+  yield view.add(<Circle fill={'red'} size={100} ref={circleRef} />);
+
+  // The circle should move to the right by 200 pixels within two seconds
+  yield* circleRef().position.x(200, 2);
+
+  // Then, the circle disappears from the video
+  circleRef().remove();
+
+  // Afterwards, nothing happens for one second
+  yield* waitFor(1);
+});
+```
+
+In many cases, you might want to do animate multiple things in parallel. For
+this, you can use flow generators like [`all`](/flow#all).
+
+## `yield` vs `yield*` vs no yield
+
+Something that confuses many people getting started with Revideo is the
+difference between `yield*` and `yield`, as well as the difference between
+`yield view.add` and calling `view.add` without yielding.
+
+### `yield view.add` vs `view.add`
+
+When looking at code examples of Revideo, you might notice that they sometimes
+contain `yield view.add` and sometimes only `view.add`- this is not limited to
+`view`, but also to many other operations or adding to nodes other than `View2D`
+nodes.
+
+Adding a `yield` in front of an operation ensures that Revideo awaits any
+promises associated with that operation, such as network requests or awaiting
+fonts to load. As an example, here is code that has a yield in front of it as it
+creates a promise:
+
+```tsx
+yield view.add(
+  <Img
+    src={
+      'https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png'
+    }
+  />,
+);
+```
+
+In the code above, we initialize an `Img` node which loads an image from the
+internet. This creates a promise - adding a `yield` in front of `view.add`
+ensures that the code will continue executing only once the promise is resolved
+(the image is loaded).
+
+Promises are not just caused by obvious network requests such as the one above.
+They might also be created if you add a text node, as Revideo will have to wait
+for the `document.fonts.ready` event to fire. If you want to be safe, you can
+simply `yield` every `add` call - this is a good catch-all and won't cause
+problems. If you don't have a `yield` in front of an operation that creates a
+promise, Revideo will also throw a warning that says
+`Tried to access an asynchronous property before the node was ready`.
+
+### Will calling `yield` add an extra frame to my video?
+
+We often explain Revideo by saying that every `yield` corresponds to a frame in
+your video. This is good for a rough understanding, but not 100% correct. A
+`yield` will only correspond to a frame when the yielded value is falsy. When
+stepping through your generator function to render a video, this is how Revideo
+decides if it should draw a frame or not (pseudocode):
+
+```ts
+let result = scene.next();
+
+// we don't draw a frame while the yield is not empty
+while (result.value) {
+  // promises get awaited
+  if (isPromise(result.value)) {
+    result = await result.value;
+
+    // the yielded value should be a promise; you shouldn't do something like `yield 5;` inside your scene
+  } else {
+    console.warn('Invalid value yielded by the scene.');
+  }
+
+  result = scene.next();
+}
+
+// when the result is empty (while loop passed), we render a frame
+drawFrame();
+```
+
+Looking at some scene code, this is what would happen:
+
+```tsx
+yield view.add(); // yielded promise, we await it and dont render a frame.
+
+// we yield 30 empty values, corresponding to 30 frames (or 1 second of video in case of 30fps). This is the same as calling yield* waitFor(1);
+for (let i = 0; i < 30; i++) {
+  yield;
+}
+```
+
+### `yield` vs `yield*`
+
+`yield` is used to pause the execution of a generator and return a single value,
+whereas `yield*` delegates to another generator function. Roughly speaking, you
+should `yield` everything that's just a single operation, while you `yield*`
+generators that produce multiple frames:
+
+```tsx
+yield view.add(<Img src={'img.png'} />); // doesn't produce a frame
+
+yield * waitFor(1); // takes time, produces multiple frames
+```

@@ -1,0 +1,207 @@
+# Animation flow
+
+_Note: These docs were adopted from the original
+[Motion Canvas](https://motioncanvas.io/docs/) docs_
+
+Motion Canvas uses generator functions to describe animations.
+
+A generator function is a function that can return multiple values:
+
+```ts
+function* example() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+const generator = example();
+
+console.log(generator.next().value); // 1;
+console.log(generator.next().value); // 2;
+console.log(generator.next().value); // 3;
+```
+
+When the `yield` keyword is encountered, the execution of the function pauses,
+and resumes only when the caller requests another value. This is particularly
+useful when declaring animations - usually we want to change the things on the
+screen in incremental steps to create an illusion of movement. We also want to
+wait a constant amount of time between these updates so that our eyes can
+register what's happening. With generators, we can update things in-between the
+`yield` keywords, and then wait for a bit whenever the function yields.
+
+This is the fundamental idea of Motion Canvas. `yield` means: "The current frame
+is ready, display it on the screen and come back to me later."
+
+With that in mind, we can make a circle flicker on the screen using the
+following code:
+
+```tsx
+export default makeScene2D(function* (view) {
+  const circle = createRef<Circle>();
+  view.add(<Circle ref={circle} width={100} height={100} />);
+
+  circle().fill('red');
+  yield;
+  circle().fill('blue');
+  yield;
+  circle().fill('red');
+  yield;
+});
+```
+
+Needless to say, it would be extremely cumbersome if we had to write all
+animations like that. Fortunately, JavaScript has another keyword for use within
+generators - `yield*`. It allows us to delegate the yielding to another
+generator.
+
+For instance, we could extract the flickering code from the above example to a
+separate generator and delegate our scene function to it:
+
+```tsx
+import {ThreadGenerator} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const circle = createRef<Circle>();
+  view.add(<Circle ref={circle} width={100} height={100} />);
+
+  yield* flicker(circle());
+});
+
+function* flicker(circle: Circle): ThreadGenerator {
+  circle.fill('red');
+  yield;
+  circle.fill('blue');
+  yield;
+  circle.fill('red');
+  yield;
+}
+```
+
+The resulting animation is exactly the same, but now we have a reusable function
+that we can use whenever we need some flickering.
+
+Motion Canvas provides a lot of useful generators like this. You may remember
+this snippet:
+
+```ts
+yield * myCircle().fill('#e6a700', 1);
+```
+
+It animates the fill color of the circle from its current value to `#e6a700`
+over a span of one second. As you may guess, the result of calling
+`fill('#e6a700', 1)` is another generator to which we can redirect our scene
+function. Generators like this are called tweens, because they animate
+be**tween** two values. You can read more about them in the
+[tweening](/tweening) section.
+
+## Flow Generators
+
+Another kind of generators are _flow generators_. They take one or more
+generators as their input and combine them together. We've mentioned the `all()`
+generator in the quickstart section, there's a few more:
+
+### `all`
+
+<hr />
+
+### `any`
+
+<hr />
+
+### `chain`
+
+<hr />
+
+### `delay`
+
+<hr />
+
+### `sequence`
+
+<hr />
+
+### `loop`
+
+<hr />
+
+## Looping
+
+There are many ways to animate multiple objects. Here are some examples. Try
+using them in the below editor.
+
+```tsx
+import {makeScene2D, Rect} from '@revideo/2d';
+import {all, waitFor, makeRef, range} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const rects: Rect[] = [];
+
+  // Create some rects
+  view.add(
+    range(5).map(i => (
+      <Rect
+        ref={makeRef(rects, i)}
+        width={100}
+        height={100}
+        x={-250 + 125 * i}
+        fill="#88C0D0"
+        radius={10}
+      />
+    )),
+  );
+
+  yield* waitFor(1);
+
+  // Animate them
+  yield* all(
+    ...rects.map(rect => rect.position.y(100, 1).to(-100, 2).to(0, 1)),
+  );
+});
+```
+
+### Using `Array.map` and `all`
+
+This is one of the most elegant ways to do simple tweens, but requires nesting
+`all` to do multiple tweens on an object since the `map` callback must return a
+`ThreadGenerator`.
+
+```tsx
+yield *
+  all(
+    ...rects.map(rect =>
+      // No yield or anything; we return this generator and deal with it outside
+      rect.position.y(100, 1).to(-100, 2).to(0, 1),
+    ),
+  );
+```
+
+### Using a `for` loop and `all`
+
+This is similar to above, but uses a `for` loop and an array of generators.
+
+```tsx
+const generators = [];
+for (const rect of rects) {
+  // No yield here, just store the generators.
+  generators.push(rect.position.y(100, 1).to(-100, 2).to(0, 1));
+}
+
+// Run all of the generators.
+yield * all(...generators);
+```
+
+### Using a `for` loop
+
+This is a bit of a cumbersome option because you have to figure out how long it
+would take for the generator in the loop to complete, but is useful in some
+situations.
+
+```tsx
+for (const rect of rects) {
+  // Note the absence of a * after this yield
+  yield rect.position.y(100, 1).to(-100, 2).to(0, 1);
+}
+
+// Wait for the duration of the above generators
+yield * waitFor(4);
+```

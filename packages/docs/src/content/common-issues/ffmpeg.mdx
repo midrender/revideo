@@ -1,0 +1,51 @@
+# FFmpeg Issues
+
+Ffmpeg is a powerful tool for video editing. Revideo uses FFmpeg for multiple
+tasks, such as concatenating frames into a video, and audio manipulation among
+other things.
+
+Revideo uses FFmpeg v6. To make installation easier, we ship a small version of
+FFmpeg with Revideo. It is automatically downloaded into the `node_modules`
+folder. This means that you do not need to install FFmpeg globally on your
+machine.
+
+Below, we list some common issues with ffmpeg and how to fix them.
+
+### SIGSEGV (Segmentation Fault) when running Ffmpeg.
+
+If you're on Linux, the ffmpeg version used in Revideo might cause a
+segmentation fault if you use remote urls for media files instead of local
+files.
+
+You can normally fix this issue by installing nscd:
+
+```
+sudo apt-get install nscd
+```
+
+If you want to learn more about the root cause of this issue and its fix, check
+out
+[this](https://stackoverflow.com/questions/60528501/ffmpeg-segmentation-fault-with-network-stream-source)
+Stackoverflow thread,
+
+### Using a custom ffmpeg path
+
+If you want to use a custom version of FFmpeg, you can either set the
+environment variable `FFMPEG_PATH` to the path of your FFmpeg binary, or you can
+set the path to ffmpeg in the render function. Here is an example:
+
+```tsx
+import {renderVideo} from '@revideo/renderer';
+
+// ...
+
+await renderVideo('./src/project.ts', undefined, undefined, {
+  ffmpeg: {
+    // Points to the global ffmpeg installation,
+    ffmpegPath: 'ffmpeg',
+  },
+});
+```
+
+See the [renderVideo](/api/renderer/renderVideo) API documentation for more
+information.

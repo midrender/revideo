@@ -1,0 +1,98 @@
+# Using your Render Endpoint
+
+Your deployments are listed at
+`https://re.video/platform/{org-name}/{repo-name}`. Here, you can find a list of
+deployments corresponding to every commit you made:
+
+![](https://revideo-example-assets.s3.amazonaws.com/platform-deployments-screenshot.png)
+
+## Rendering a Video
+
+To render a video using one of your deployments, you can get its render url by
+clicking onto "Copy url". Now, you can send a POST request like this (see
+[here](/platform/render-endpoint#arguments) for all request parameters):
+
+```bash
+curl -X POST \
+  https://api.re.video/v1/render/{your-deployment-id} \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: <your-api-key>' \
+  -d '{
+    "variables": {
+      "text": "Hello world",
+      "color": "#FF0000"
+    },
+    "settings": {
+      "workers": 5
+    }
+  }'
+```
+
+## Arguments
+
+### variables
+
+_any_
+
+The parameters of your video
+
+### callbackUrl?
+
+_string, optional_
+
+A callback to send the request response to. This is optional and probably not
+neccessary if you don't render very long videos - if not supplied, the request
+will remain open during rendering.
+
+### settings
+
+An object with the following parameters
+
+#### workers
+
+_number_
+
+The number of workers you want to parallelize the rendering job across
+
+## Return Value
+
+The return value depends on whether a `callbackUrl` is provided in the request.
+
+### Without callbackUrl
+
+If no `callbackUrl` is provided, the API will respond with a JSON object
+containing the render result. The response will have a status code of 200 if
+successful.
+
+```json
+{
+  "resultUrl": "https://<revideo-storage-url>.com/<your-video-id>.mp4"
+}
+```
+
+### With callbackUrl
+
+If a `callbackUrl` is provided:
+
+1. The API will immediately respond with a status code of 200 and the body "ok".
+2. Once the rendering is complete, a POST request will be sent to the provided
+   `callbackUrl` with the following structure:
+
+```json
+{
+  "resultUrl": "https://<revideo-storage-url>.com/<your-video-id>.mp4"
+}
+```
+
+### Error Responses
+
+The API may return the following error responses:
+
+- 401 Unauthorized: If the provided API key is invalid.
+- 400 Bad Request: If the `deploymentId` is invalid, if the request body fails
+  validation, or if the deployment is not running.
+- 404 Not Found: If the specified deployment doesn't exist.
+- 500 Internal Server Error: If there's an error getting the deployment,
+  creating the render job, or during the rendering process.
+
+Error responses will contain a plain text message describing the error.

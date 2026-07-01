@@ -1,0 +1,169 @@
+# renderPartialVideo()
+
+The `renderPartialVideo()` function lets you render partial videos if you want
+to distribute the rendering workload across multiple workers. You can find an
+example of this in our
+[Cloud Functions example](https://github.com/redotvideo/examples/tree/main/google-cloud-run-parallelized).
+To use `renderPartialVideo()`, you don't have to manually assign a range of
+frames or timestamps to render. Instead, you just pass the worker id and the
+total number of workers your rendering job uses, and the function will figure
+out the frames to render by itself.
+
+Since merging partial videos gives you audio issues (audio becomes laggy), this
+function returns the path to the audio file and mute video file of the partial
+video. Afterwards, you should first concatenate all of the partial audio files
+and then concatenate all of the partial mute video files, and then merge the
+full audio and video to obtain your final mp4 file.
+
+To do this, you can use the `concatenateMedia()`
+([docs](/ffmpeg/concatenateMedia)) and `mergeAudioWithVideo()`
+([docs](/ffmpeg/mergeAudioWithVideo)) functions from `@revideo/ffmpeg`.
+
+## Example Usage
+
+```tsx
+import {renderPartialVideo} from '@revideo/renderer';
+
+const {audioFile, videoFile} = renderPartialVideo({
+  projectFile: './src/project.ts',
+  variables: {color: 'white'},
+  numWorkers: 10,
+  workerId: 3,
+  settings: {
+    dimensions: [1080, 1792],
+    logProgress: true,
+    fmpeg: {
+      ffmpegLogLevel: 'error',
+      ffmpegPath: 'ffmpeg',
+    },
+    puppeteer: {
+      args: ['--no-sandbox'],
+    },
+  },
+});
+```
+
+## Arguments
+
+An object of type `RenderPartialVideoProps` with the following attributes:
+
+### projectFile:
+
+_string_
+
+A string pointing towards your Vite config file. This will probably be
+`./src/project.ts`.
+
+### workerId
+
+_number_
+
+The id of the worker. We start counting at 0, so if you have 5 workers, values
+from 0 to 4 are accepted.
+
+### numWorkers
+
+_number_
+
+The number of workers you use in total. This informs the function which range of
+the video to render. For instance, worker 0 out of 10 workers would render 1/10
+of the full video, whereas worker 0 out of 2 would render half of the video.
+
+### variables?
+
+_Record&lt;string, any&gt;_
+
+Parameters / or variables passed to your video. See [here](/parameterized-video)
+learn more about parameterized videos.
+
+### settings?
+
+A `Omit<RenderSettings, 'workers'>` object with the following properties:
+
+#### outFile?
+
+_string, has to end with '.mp4'_
+
+The file name of the video output
+
+#### outDir?
+
+_string_
+
+The output directory of the rendered video. `default="./output"`
+
+#### range?
+
+_[number, number]_
+
+The start and end second of the video. Can be used to only render a part of the
+video.
+
+#### dimensions?
+
+_[number, number]_
+
+Dimensions of the video to render as [x,y]. Uses the value specified in
+`project.meta` by default.
+
+#### logProgress?
+
+_boolean_
+
+Logs render progress to the console if set to `true`.
+
+#### ffmpeg?
+
+FFmpeg options - is an instance of `FfmpegSettings`. These overwrite the
+following settings set through environment variables:
+
+##### ffmpegLogLevel?
+
+_`error` | `warning` | `info` | `verbose`, `debug` | `trace`_
+
+The log level of FFmpeg. Can be one of `error`, `warning`, `info`, `verbose`,
+`debug`, `trace`. Default is `error`.
+
+##### ffmpegPath?
+
+The path to the FFmpeg binary. If not specified, the FFmpeg binary shipped with
+Revideo will be used.
+
+#### puppeteer?
+
+_BrowserLaunchArgumentOptions_
+
+Launch options for puppeteer - is an instance of puppeteer's
+[BrowserLaunchArgumentOptions](https://pptr.dev/api/puppeteer.browserlaunchargumentoptions/)
+
+#### viteBasePort?
+
+_number_
+
+The "base port" we use for the vite server. When you have three workers and a
+base port 5000, the vite servers created by the three workers will use port
+5000, 5001, and 5002. Default is 9000.
+
+#### viteConfig?
+
+_InlineConfig_
+
+Configuration of the vite server used for rendering, an instance of
+[InlineConfig](https://vitejs.dev/guide/api-javascript#inlineconfig). You can
+use these options to configure the server port, the cache directory, and more.
+
+#### progressCallback?
+
+_(worker: number, progress: number) => void_
+
+A function that gets called with the progress of the rendering process, can be
+used to report progress back to users (e.g. in a web app). The function gets
+called with two arguments: the id of the worker that is calling the function,
+and the progress of the rendering process (float between 0 and 1). Does nothing
+by default
+
+## Return Value
+
+`{ audioFile: string, videoFile: string }`
+
+Paths to the audio and video files of the partial render.

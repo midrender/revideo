@@ -1,0 +1,80 @@
+# Filters and Effects
+
+_Note: These docs were adopted from the original
+[Motion Canvas](https://motioncanvas.io/docs/) docs_
+
+Because Motion Canvas is built on top of the Browser's 2D Rendering Context, we
+can make use of several canvas operations that are provided by the Browser.
+
+## Filters
+
+Filters let you apply various effects to your nodes. You can find all available
+filters on
+[MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter).
+
+Every node has a `filters` property containing an array of
+[filters](/api/2d/partials#Functions) that will be applied to the node. You can
+declare this array yourself, or use the `filters` property to configure
+individual filters. Both ways are shown in the following example:
+
+> [!NOTE]
+>
+> Some filters, like `opacity` and `drop-shadow`, have their own dedicated
+> properties directly on the [`Node`](/api/2d/components/Node#opacity), class.
+>
+
+```tsx
+// snippet Filters Property
+
+
+export default makeScene2D(function* (view) {
+  view.fill('#141414');
+
+  const iconRef = createRef## Masking and composite operations
+
+Composite operations define how the thing we draw (source) interacts with what
+is already on the canvas (destination). Among other things, it allows us to
+define complex masks. MDN has a
+[great visualisation of all available composite operations](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation#operations).
+
+You can create a mask by treating one node as the "masking" / "stencil" layer,
+and another node as the "value" layer. The mask layer will define if the value
+layer will be visible or not. The value layer will be what's actually visible in
+the end.
+
+Any of the following composite operations can be used to create a mask:
+`source-in`, `source-out`, `destination-in`, and `destination-out`. There is
+also a `xor` operation which can be helpful if you want two value layers that
+hide each other on overlap. Use the dropdown below to browse all examples.
+
+
+
+
+
+
+
+## Cached nodes
+
+Both filters and composite operations require a cached
+[`Node`](/api/2d/components/Node). Filters can set it automatically, while
+composite operations require you to set it explicitly on an ancestor
+[`Node`](/api/2d/components/Node) (usually the parent node).
+
+A cached [`Node`](/api/2d/components/Node) and its children are rendered on an
+offscreen canvas first, before getting added to the main scene.  
+For filters this is needed because they are applied to the entire canvas. By
+creating a new canvas and moving the elements that should get affected by the
+filters over, applying filters to the entire "new" canvas, and then moving back
+the result, you effectively only apply the filters to the moved elements.
+
+To turn a [`Node`](/api/2d/components/Node) into a cached node, simply pass the
+[`cache`](/api/2d/components/NodeProps/#cache) property
+
+```tsx
+<Node cache>...</Node>
+// or
+<Node cache={true}>...</Node>
+```
+
+All components inherit from [`Node`](/api/2d/components/Node), so you can set
+the cache on all of them.

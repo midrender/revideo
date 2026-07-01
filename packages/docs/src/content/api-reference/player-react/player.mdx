@@ -1,0 +1,134 @@
+# Player
+
+You can embed your videos into your website using the Revideo react player.
+
+## Setup
+
+Install the `@revideo/player-react` package into your project:
+
+```bash
+npm install @revideo/player-react
+```
+
+## Usage
+
+You have two options to use the player:
+
+### 1. Through the CLI (recommended)
+
+Inside your Revideo project directory, run:
+
+```bash
+npx revideo serve
+```
+
+This will start a local server that builds (and rebuilds) your project and
+serves all required assets. You can then embed the player into your website like
+this:
+
+```tsx
+import {Player} from '@revideo/player-react';
+
+<Player src="http://localhost:4000/player" />;
+```
+
+### 2. Manually
+
+If you don't want to use the CLI to serve your built project, you can build it
+manually by running:
+
+```bash
+npm run build
+```
+
+This will create an `out` directory in your project root. You can then copy all
+of these files to any public directory on your server and embed the player by
+specifying the path to the directory. Say you copied the files to
+`/public/outDir`, and the folder is accessible via `https://example.com/outDir`,
+you can embed the player like this:
+
+```tsx
+import {Player} from '@revideo/player-react';
+
+<Player src="https://example.com/outDir" />;
+```
+
+## Props
+
+### src
+
+The path to your bundle folder.
+
+### controls (optional)
+
+`boolean`
+
+Disables the player controls when set to false. `default=true`
+
+### variables (optional)
+
+`Record<string, any>`
+
+Parameters / or variables passed to your video. See [here](/parameterized-video)
+learn more about parameterized videos. `default={}`
+
+### playing (optional)
+
+`boolean`
+
+Specifies if the player is currently playing. `default=false`
+
+### currentTime (optional)
+
+`number`
+
+Current time of the player in seconds.
+
+### looping (optional)
+
+`boolean`
+
+Controls whether the to loop back to the beginning when the player reaches the
+end of the video. `default=true`
+
+### width (optional)
+
+`number`
+
+Width of the underlying canvas element in pixels. It's recommended to leave this
+setting empty as it crops the scene instead of stretching it.
+`default=undefined`
+
+### height (optional)
+
+`number`
+
+See `width`. `default=undefined`
+
+### quality (optional)
+
+`number`
+
+Reduces or increases the resolution of the canvas element without affecting the
+positioning of elements. `default=1`
+
+### onDurationChange (optional)
+
+`(duration: number) => void`
+
+Gets called every time the duration of the video changes (this can happen due to
+the input variables changing).
+
+### onTimeUpdate (optional)
+
+`(time: number) => void`
+
+Gets called every time the current time of the video is changed (every few ms
+during playback). Useful when visualizing the progress of the player outside of
+the player component.
+
+### displayTimeFormat
+
+`'MM:SS' | 'MM:SS.m' | 'MM:SS.mm'`
+
+Determines how time is displayed on the player.

@@ -1,0 +1,84 @@
+# Rendering Videos
+
+As mentioned in the quickstart guide, you can render videos directly through the
+user interface of the editor, or through a function call.
+
+### Rendering with `renderVideo()` function
+
+To render videos through a function call, you can use the `renderVideo()`
+function ([API reference](/api/renderer/renderVideo)):
+
+```ts
+
+async function render() {
+  console.log('Rendering video...');
+
+  // This is the main function that renders the video
+  const file = await renderVideo({
+    projectFile: './src/project.ts',
+    settings: {logProgress: true},
+  });
+
+  console.log(`Rendered video to ${file}`);
+}
+
+render();
+```
+
+### Rendering from the browser
+
+To render videos from the editor, simply click the "Render" Button after opening
+the editor with `npm start`:
+
+![Render Button](https://revideo-example-assets.s3.amazonaws.com/render-button.png)
+
+### How does Rendering work?
+
+The rendering process mostly runs in the browser. The only part that runs in a
+separate "backend" nodejs process is everything related to audio processing.
+
+The code in the browser loops through all frames in the defined video, draws the
+defined frames onto an
+[HTML Canvas](https://www.w3schools.com/html/html5_canvas.asp) and feeds them
+into the `VideoEncoder` of the
+[WebCodecs API](https://developer.mozilla.org/en-US/docs/Web/API/VideoEncoder).
+This turns all frames into a mute mp4 file.
+
+In the "backend", ffmpeg is used to extract all audio from the `` and
+`` elements of the project and to merge them into a single audio file.
+This file finally gets merged with the mute video produced in the browser to
+obtain the resulting mp4 video.
+
+### Rendering Speeds
+
+Since the release of v0.4.6, rendering videos is almost always faster than
+real-time (meaning that rendering a 1-minute video takes less than one minute).
+We have created a [guide](/common-issues/slow-rendering) that describes what
+affects rendering speeds and how to make rendering faster.
+
+### Parallelized Rendering
+
+If you want to speed up rendering, you can parallelize the rendering process of
+your videos. This means that instead of rendering your full video through a
+single process, you can use multiple processes to render only small parts of
+your video and subsequently merge the single parts together (for example, you
+can use 10 processes to render 1 minute of a 10-minute video each).
+
+The `renderVideo()` function
+([API reference](http://localhost:3000/renderer/renderVideo)) provides a
+`settings.worker` argument that you can use to parallelize rendering in a single
+process. This is useful when you have a lot of RAM available.
+
+Alternatively, the best way to set up parallelized rendering is to use
+serverless function providers like AWS Lambda. Revideo provides a
+`renderPartialVideo()` function
+([API reference](http://localhost:3000/renderer/renderPartialVideo)) that you
+can use to render a partial video - you can use it together with
+`concatenateMedia()` ([API reference](/ffmpeg/concatenateMedia)) and
+`mergeAudioWithVideo()`
+([API reference](http://localhost:3000/ffmpeg/mergeAudioWithVideo)) to
+parallelize rendering across serverless functions. We also provide guides and
+example projects for setting up parallelized rendering on
+[AWS Lambda](https://github.com/redotvideo/examples/tree/main/parallelized-aws-lambda)
+(recommended) and
+[Google Cloud Functions](https://github.com/redotvideo/examples/tree/main/google-cloud-run-parallelized).

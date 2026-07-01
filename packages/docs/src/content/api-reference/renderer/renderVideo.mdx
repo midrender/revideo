@@ -1,0 +1,150 @@
+# renderVideo()
+
+The `renderVideo` function lets you render (parameterized) videos in a nodejs
+process. It uses a headless browser to achieve this.
+
+## Example Usage
+
+```tsx
+
+function logProgressToConsole(id: number, progress: number) {
+  console.log(`[${id}] Progress: ${(progress * 100).toFixed(1)}%`);
+}
+
+renderVideo({
+  projectFile: './src/project.ts',
+  variables: {color: 'white'},
+  settings: {
+    outFile: 'video.mp4',
+    workers: 1,
+    range: [1, 3],
+    dimensions: [1080, 1792],
+    logProgress: true,
+    ffmpeg: {
+      ffmpegLogLevel: 'error',
+      ffmpegPath: 'ffmpeg',
+    },
+    puppeteer: {
+      args: ['--no-sandbox'],
+    }
+    progressCallback: logProgressToConsole
+  }
+});
+```
+
+## Arguments
+
+The input arguments are a `RenderVideoProps` object, which has the following
+properties:
+
+### projectFile
+
+_string_
+
+Points towards your project file. This will probably be `./src/project.ts`.
+
+### variables?
+
+_Record&lt;string, any&gt;_
+
+Parameters / or variables passed to your video. See [here](/parameterized-video)
+learn more about parameterized videos.
+
+### settings?
+
+A `RenderSettings` object with the following properties:
+
+#### outFile?
+
+_string, has to end with '.mp4'_
+
+The file name of the video output
+
+#### outDir?
+
+_string_
+
+The output directory of the rendered video. `default="./output"`
+
+#### range?
+
+_[number, number]_
+
+The start and end second of the video. Can be used to only render a part of the
+video.
+
+#### workers?
+
+_number_
+
+The number of processes you want to use to parallelize rendering, default is 1.
+Rendering a 100s long video with 10 workers means that 10 processes handle 10s
+of video each. Your laptop will probably render fastest with one worker, but VMs
+with a lot of computing power can benefit from using more than one
+
+#### dimensions?
+
+_[number, number]_
+
+Dimensions of the video to render as [x,y]. Uses the value specified in
+`project.meta` by default.
+
+#### logProgress?
+
+_boolean_
+
+Logs render progress to the console if set to `true`.
+
+#### ffmpeg?
+
+FFmpeg options - is an instance of `FfmpegSettings`. These overwrite the
+following settings set through environment variables:
+
+##### ffmpegLogLevel?
+
+_`error` | `warning` | `info` | `verbose`, `debug` | `trace`_
+
+The log level of FFmpeg. Can be one of `error`, `warning`, `info`, `verbose`,
+`debug`, `trace`. Default is `error`.
+
+##### ffmpegPath?
+
+The path to the FFmpeg binary. If not specified, the FFmpeg binary shipped with
+Revideo will be used.
+
+#### puppeteer?
+
+_BrowserLaunchArgumentOptions_
+
+Launch options for puppeteer - is an instance of puppeteer's
+[BrowserLaunchArgumentOptions](https://pptr.dev/api/puppeteer.browserlaunchargumentoptions/)
+
+#### viteBasePort?
+
+_number_
+
+The "base port" we use for the vite server. When you have three workers and a
+base port 5000, the vite servers created by the three workers will use port
+5000, 5001, and 5002. Default is 9000.
+
+#### viteConfig?
+
+_InlineConfig_
+
+Configuration of the vite server used for rendering, an instance of
+[InlineConfig](https://vitejs.dev/guide/api-javascript#inlineconfig). You can
+use these options to configure the server port, the cache directory, and more.
+
+#### progressCallback?
+
+_(worker: number, progress: number) => void_
+
+A function that gets called with the progress of the rendering process, can be
+used to report progress back to users (e.g. in a web app). The function gets
+called with two arguments: the id of the worker that is calling the function,
+and the progress of the rendering process (float between 0 and 1). Does nothing
+by default
+
+## Return Value
+
+The function returns a string containing the path to the rendered video.

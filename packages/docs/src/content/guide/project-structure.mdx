@@ -1,0 +1,173 @@
+# Project Structure
+
+Revideo projects are structured similar to most Typescript projects. Here is the
+structure of the default project that gets initialized when you run
+`npm init @revideo@latest`:
+
+```
+my-project/
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── vite.config.ts
+├── src/
+│   ├── project.ts
+│   ├── render.ts
+│   ├── project.meta
+│   └── scenes/
+│       └── example.tsx
+└── public/
+    └── my-video.mp4
+```
+
+Let's walk through the most relevant files:
+
+### `./src/scenes/example.tsx`
+
+Files inside the `./src/scenes` folder such as `example.tsx` are the ones you'll
+modify the most in order to define video templates. Scenes describe how your
+video should look like. They need to specify a default export that calls
+`makeScene2D` on a generator function describing what the desired video should
+look like:
+
+```tsx
+import {Video, makeScene2D} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const videoFile = useScene().variables.get(
+    'video',
+    'https://revideo-example-assets.s3.amazonaws.com/stars.mp4',
+  )();
+
+  yield view.add(<Video src={videoFile} size={['100%', '100%']} play={true} />);
+
+  yield* waitFor(10);
+});
+```
+
+### `./src/project.ts`
+
+Your project file does two things:
+
+1. It defines an array of scenes to create a full video
+2. It accepts video variables that will be passed to your video when you look at
+   it in the visual editor (when you run `npm start`)
+
+```tsx
+import {makeProject} from '@revideo/core';
+
+import example from './scenes/example?scene';
+import example2 from './scenes/example2?scene';
+
+export default makeProject({
+  scenes: [example, example2],
+  variables: {
+    video: 'https://revideo-example-assets.s3.amazonaws.com/beach.mp4',
+  },
+});
+```
+
+When specifying multiple scenes, the scenes will be played after another. You
+can also add [transitions](/transitions) between them. A new scene will not
+inherit any nodes from an old scene. This can have a positive influence on
+performance, especially when your scene is very bloated (as it contains a lot of
+nodes). In this case, recalculating the scene (for instance when navigating to a
+new time in the player) can be an expensive operation and is faster when you
+have multiple smaller scenes instead.
+
+However, in most cases, it is not necessary to use multiple scenes. For logical
+seperation, you can instead define generator function outside of your main
+generator function in `makeScene2D` and call them there.
+
+### `vite.config.ts`
+
+Revideo projects are served using [vite](https://vitejs.dev/). The
+`vite.config.ts` file specifically configures the server used to serve the
+visual editor you see when running `npm start` inside your project. The default
+config looks as follows:
+
+```ts
+import {defineConfig} from 'vite';
+import motionCanvas from '@revideo/vite-plugin';
+
+export default defineConfig({
+  plugins: [motionCanvas()],
+});
+```
+
+As you can see, the default settings are sufficient, and the only thing we
+modify is using the 'motionCanvas' plugin. This plugin enables Motion Canvas /
+Revideo-related functionality, such as communication between the browser in
+which the HTML canvas is rendered and drawn to, and a "backend" process running
+ffmpeg for audio processing.
+
+You can modify some settings of the motion canvas plugin, for instance to point
+to another project file than the default `project.ts`, or to select another
+output folder than the default `./output`. You can also modify some vite server
+settings here, for instance on which port your application is served:
+
+```ts
+import {defineConfig} from 'vite';
+import motionCanvas from '@revideo/vite-plugin';
+
+export default defineConfig({
+  plugins: [
+    motionCanvas({
+      output: './other-output-folder',
+      project: './src/project2.ts',
+    }),
+  ],
+  server: {
+    port: 5000,
+  },
+});
+```
+
+### `./src/render.ts`
+
+This file contains code to render your video. By default, you can execute its
+code by running `npm run render` (assuming that you bootstrapped your project
+using `npm init @revideo@latest`). Note that the
+[`renderVideo()`](/api/renderer/renderVideo) function accepts variables of its
+own and does not use the ones from `./src/project.ts`.
+
+```tsx
+
+async function render() {
+	console.log('Rendering video...');
+
+	// This is the main function that renders the video
+	const file = await renderVideo({
+		projectFile: './src/project.ts',
+        variables: { video: "" }
+		settings: { logProgress: true }
+	});
+
+	console.log(`Rendered video to ${file}`);
+}
+
+render();
+```
+
+This code is not neccessary to start the editor or your project and is not tied
+to any other rendering functionality (like the renderer of the development
+server from `npx revideo serve`). You can safely remove it if you don't need it.
+
+### Files in `/public`
+
+If you want to work with local files, you can put them into the `/public`
+folder. You can then access them inside your scene via their name:
+
+```tsx
+import {Video, makeScene2D} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  yield view.add(
+    <Video src={'/my-video.mp4'} size={['100%', '100%']} play={true} />,
+  );
+
+  yield* waitFor(10);
+});
+```

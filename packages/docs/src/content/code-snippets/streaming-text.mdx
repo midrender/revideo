@@ -1,0 +1,46 @@
+# Streaming Text
+
+In many cases, you might want to stream texts to a video rather than having all
+of it appear at once.
+
+One way to achieve this is by using the `.text()` method of the `<Txt>` tag.
+
+```tsx
+import {Txt, makeScene2D} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const textRef = createRef<Txt>();
+  yield view.add(
+    <Txt fontFamily={'Sans-Serif'} fill={'red'} ref={textRef}></Txt>,
+  );
+
+  yield* textRef().text('This is a text', 2);
+});
+```
+
+The second argument (in this case, `2`) refers to the time it takes for the text
+to appear.
+
+If you want more control over when words appear (for instance for captions with
+exact timestamps), you can repeatedly `.add()` text to your `<Txt>` node:
+
+```tsx
+import {Txt, makeScene2D} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const textRef = createRef<Txt>();
+  yield view.add(
+    <Txt fontFamily={'Sans-Serif'} fill={'red'} ref={textRef}></Txt>,
+  );
+
+  const words = ['This', 'is', 'a', 'text'];
+  const secondsToAppear = [0.3, 0.6, 0.4, 0.2, 0.5];
+
+  for (let i = 0; i < words.length; i++) {
+    textRef().add(<Txt>{words[i]} </Txt>);
+    yield* waitFor(secondsToAppear[i]);
+  }
+});
+```

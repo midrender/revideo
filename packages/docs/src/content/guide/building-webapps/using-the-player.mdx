@@ -1,0 +1,68 @@
+# Video Preview with Player
+
+Revideo provides a React Player component
+([API reference](/api/player-react/player)) to embed Revideo projects into your
+React or NextJS web app. The component lets you preview videos and changes made
+to your variables in real-time without forcing you to export your project to mp4
+beforehand. A full example of this can be found in our
+[SaaS Template](https://github.com/redotvideo/examples/tree/main/saas-template).
+
+To display a project using the player, you first need to build your Revideo
+project, give your web app access to the built project file and reference it
+through the `src` prop of the ``. If you use custom css (e.g. to
+specify fonts) or local assets (through the `/public` folder in your Revideo
+project), you will also have to make these assets available to your web app
+(either through serving them or copying over files).
+
+Revideo provides a CLI command to serve your project that automatically serves
+your Revideo project and rebuilds it when you make changes, which you can use
+during development along with the Player.
+
+### Using the Player with the CLI (recommended)
+
+Inside your Revideo project, run:
+
+```bash
+npx revideo serve
+```
+
+This will start to serve the project located in `./src/project.ts` on port 4000
+(you can change these values using the `--port` and `--projectFile` flags). Now,
+inside your web app, you can use the player like this:
+
+```tsx
+import {Player} from '@revideo/player-react';
+
+<Player src="http://localhost:4000/player/" />;
+```
+
+The `serve` command in the CLI is the recommended and most convenient option for
+local development. It automatically builds your project and serves all the
+required assets (such as your project file, assets in `/public`, and css), so
+that you don't have to copy them over into your web app - what you see inside
+the player in your web app should be the same as what you see in the editor that
+you see when you run `npm start`. When you make changes to your Revideo project,
+you also won't have to rebuild your project, as the CLI watches for changes and
+will handle them automatically.
+
+### Using the Player manually
+
+If you don't want to use the CLI to serve your built project, you can build it
+manually by running:
+
+```bash
+npm run build
+```
+
+This will create a directory in your project root containing your built project,
+typically in `dist`. You can then copy all of these files to any public
+directory on your web app server and embed the player by specifying the path to
+the directory. Say you copied the files to `/public/outDir` inside your web app,
+and the folder is accessible via `https://example.com/outDir` - you can then
+embed the player like this:
+
+```tsx
+import {Player} from '@revideo/player-react';
+
+<Player src="https://example.com/outDir/" />;
+```

@@ -1,0 +1,96 @@
+# Spawners
+
+_Note: These docs were adopted from the original
+[Motion Canvas](https://motioncanvas.io/docs/) docs_
+
+Sometimes we want the children of a given node to be reactive. In other words,
+we want them to change according to some external state. Consider the following
+example:
+
+```tsx
+const count = createSignal(10);
+
+view.add(
+  <Layout layout>
+    {range(count()).map(() => (
+      <Circle size={32} fill={'white'} />
+    ))}
+  </Layout>,
+);
+```
+
+We first create the `count` signal and then use its value to generate N number
+of circles.
+
+This example is not reactive - changing the `count` signal won't change the
+number of circles inside the `Layout` node. We can fix that by using a function
+that returns the children instead of writing them directly:
+
+```tsx
+const count = createSignal(10);
+
+view.add(
+  <Layout layout>
+    {() => range(count()).map(() => <Circle size={32} fill={'white'} />)}
+  </Layout>,
+);
+```
+
+Throughout this guide, we will refer to functions that return children as
+**spawners**. Like any other signal, this function will keep track of its
+dependencies and recompute its value whenever they change. We can animate our
+`count` signal to see if it works:
+
+```tsx
+import {makeScene2D, Layout, Circle} from '@revideo/2d';
+import {createSignal, linear, range} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const count = createSignal(10);
+
+  view.add(
+    <Layout layout>
+      {() => range(count()).map(() => <Circle size={32} fill={'white'} />)}
+    </Layout>,
+  );
+
+  yield* count(3, 2, linear).wait(1).back(2);
+});
+```
+
+It's important to remember that creating new nodes comes with some overhead. If
+our spawner happens to generate a large number of nodes and its dependencies
+change every frame, it may drastically reduce the playback's performance. To
+counteract this, we can use an object pool that will let us reuse the same nodes
+instead of recreating them each time:
+
+```tsx
+const count = createSignal(10);
+
+const pool = range(64).map(i => (
+  <Circle x={i * 32} width={32} height={32} fill={'lightseagreen'} />
+));
+
+const layout = createRef<Layout>();
+view.add(
+  <Layout layout ref={layout}>
+    {() => pool.slice(0, count())}
+  </Layout>,
+);
+```
+
+Apart from the spawner function, the pool should never be accessed directly. Use
+the helper methods on the parent object to get references to the spawned
+children:
+
+```tsx
+// ... continuing from above ...
+let spawnedCircles = layout().childrenAs<Circle>();
+yield * all(...spawnedCircles.map(circle => circle.scale(1.5, 1).to(1, 1)));
+```
+
+Be aware that the references returned by a call to `children()` may be
+invalidated when the number of spawned objects changes, and accessing the
+invalidated objects may cause undefined behavior. Try not to save references to
+spawned objects for too long, and use `children()` wherever possible to get the
+updated list of spawned objects.

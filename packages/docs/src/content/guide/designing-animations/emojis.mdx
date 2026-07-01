@@ -1,0 +1,44 @@
+# Emojis
+
+Using Emojis can cause issues as they might be rendered inconsistently across
+different browser versions. To get consistent results for rendering emojis, you
+should explicitly use a font that supports a variant of emojis you like. You can
+read in detail about how to use fonts [here](/custom-font).
+
+An example of a font that (only) supports emojis is `Noto Color Emoji`. If your
+main font for text is `Lexend` and you want to use `Noto Color Emoji` for
+emojis, you can use the following css in `src/global.css`:
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@600&family=Noto+Color+Emoji&display=swap');
+```
+
+Now, you can import the css file in `src/project.ts` and select the fonts for
+your `` nodes:
+
+**src/project.ts:**
+
+```tsx
+import {makeProject} from '@revideo/core';
+import example from './scenes/example?scene';
+import './global.css';
+
+export default makeProject({
+  scenes: [text],
+});
+```
+
+**src/scenes/example.tsx:**
+
+```tsx
+import {Txt, makeScene2D} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  yield view.add(
+    <Txt text={'Hello 🚀'} fontFamily={"Lexend, 'Noto Color Emoji'"} />,
+  );
+
+  yield* waitFor(1);
+});
+```

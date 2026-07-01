@@ -1,0 +1,157 @@
+# Logical Separation of Scene Components
+
+A question that frequently comes up from Revideo users is how to organize your
+scene code to achieve good logical separation and make things readable.
+
+## Custom Generator Functions
+
+Revideo lets you define your scene code as a generator function wrapped in
+`makeScene2D`. Here is a mininal example that displays an image for five
+seconds:
+
+```tsx
+import {Img, makeScene2D, View2D} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  yield view.add(
+    <Img
+      width={'30%'}
+      ref={logoRef}
+      src={
+        'https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png'
+      }
+    />,
+  );
+
+  yield* waitFor(5);
+});
+```
+
+Let's say that you additionally want to display some text:
+
+```tsx
+import {Img, Txt, makeScene2D} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  yield view.add(
+    <Img
+      width={'30%'}
+      ref={logoRef}
+      src={
+        'https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png'
+      }
+    />,
+  );
+
+  yield view.add(<Txt fill="red" y={300} text={'Hello World!'} />);
+
+  yield* waitFor(5);
+});
+```
+
+Instead of adding the text node inside your main function, you can also create a
+separate generator function that does so and is called within your main
+generator function:
+
+```tsx
+import {Img, Txt, makeScene2D} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  yield view.add(
+    <Img
+      width={'30%'}
+      ref={logoRef}
+      src={
+        'https://revideo-example-assets.s3.amazonaws.com/revideo-logo-white.png'
+      }
+    />,
+  );
+
+  yield addText(view, 'Hello World!');
+
+  yield* waitFor(5);
+});
+
+function* addText(view: View2D, displayText: string) {
+  yield view.add(<Txt fill="red" y={300} text={displayText} />);
+
+  yield* waitFor(5);
+}
+```
+
+Especially as your scenes get more complex, it makes sense to separate different
+parts of them (for example, you might have your main video definition in one
+function and subtitling logic in another one).
+
+### Calling generator functions with `yield` and `yield*`:
+
+When you have multiple generator functions that you want to use, it is important
+to mention the difference between `yield` and `yield*`:
+
+`yield` will call your generator function but not wait for it to finish
+executing before executing the rest of your code. If you have a generator
+function `displaySubtitles()`, this will make a big difference:
+
+Say you have the following code:
+
+```tsx
+yield displaySubtitles();
+// rest of your scene code, will get displayed at the same time as subtitles
+```
+
+This will display your subtitles along the rest of your scene code - it will not
+wait for all subtitles to have finished.
+
+On the other hand, if you use `yield*`, the main generator function will wait
+for `displaySubtitles()` to finish executing before displaying your remaining
+animations:
+
+```tsx
+yield * displaySubtitles(); // wait for displaySubtitles to finish
+// rest of your scene code, will get displayed after subtitles
+```
+
+If you have two generator functions that you want to display at the same time,
+you can therefore call both subsequently with `yield`:
+
+```tsx
+yield displaySubtitles();
+yield displayImages();
+```
+
+Alternatively, you can use the `all` function:
+
+```tsx
+yield * all(displaySubtitles(), displayImages());
+```
+
+If you want to display functions subsequently, you can call them subsequently
+with `yield*` or use `chain`:
+
+```tsx
+yield * displaySubtitles();
+yield * displayImages();
+```
+
+This yields the same result as:
+
+```tsx
+yield * chain(displaySubtitles(), displayImages());
+```
+
+You can learn more about controlling the animation flow with functions like
+`all` and `chain` [here](/flow).
+
+## Custom Components
+
+You can build your own `` to use in your revideo projects. A
+good guide for this is available in the
+[Motion Canvas guide](/custom-components).
+
+**Note:** In most cases, you won't have to implement a custom `draw()` function
+when building a custom component. If you do, note that `draw()` functions in
+Revideo need to be implemented as async functions, while they are synchronous in
+Motion Canvas.

@@ -1,0 +1,167 @@
+# Layouts
+
+_Note: These docs were adopted from the original
+[Motion Canvas](https://motioncanvas.io/docs/) docs_
+
+Layouts allow you to arrange your nodes using [Flexbox][flexbox]. Any node
+extending the [`Layout`](/api/2d/components/Layout) node can become a part of
+the layout. This includes, but is not limited to:
+[`Rect`](/api/2d/components/Rect), [`Circle`](/api/2d/components/Circle), and
+[`Img`](/api/2d/components/Img).
+
+## Layout root
+
+Layouts are an opt-in feature, meaning that they need to be enabled. It's done
+by setting the [`layout`](/api/2d/components/Layout#layout) property on the Node
+that we want to become the root of our layout:
+
+```tsx
+// ↓ layout root
+<Rect layout>
+  {/* ↓ layout child */}
+  <Circle width={320} height={320} />
+</Rect>
+```
+
+In the example above, we marked the `<Rect>` as the layout root. This will cause
+the position and size of its descendants to be controlled by Flexbox (In this
+case there's only one valid descendant: `<Circle>`). The layout root itself is
+treated differently than its children - its size is controlled by Flexbox, but
+the position stays unaffected.
+
+> [!NOTE]
+>
+> Just setting the `layout` property doesn't always turn the node into a layout
+> root. If the node is already a part of the layout, it will be treated like the
+> rest of the descendants:
+> 
+> ```tsx
+> // ↓ layout root
+> <Rect layout>
+>   {/* ↓ layout child, NOT a layout root */}
+>   <Rect layout>
+>     {/* ↓ layout child */}
+>     <Circle width={320} height={320} />
+>   </Rect>
+> </Rect>
+> ```
+>
+
+## Size and offset
+
+Aside from the position, rotation, and scale, any node extending the `Layout`
+class has additional `size` and `offset` properties:
+
+### `Layout.size`
+
+<hr />
+
+### `Layout.offset`
+
+<hr />
+
+## Cardinal directions
+
+Layout nodes come with a set of helper properties that let you position them in
+respect to their edges/corners. In the example below we use them to place two
+squares on the left and right side of a gray rectangle. The yellow square is
+positioned so that its right edge is in the same place as the left edge of the
+rectangle. Meanwhile, the red square is placed so that its bottom left corner
+aligns with the bottom right corner of the rectangle. All possible directions
+include: [`middle`](/api/2d/components/Layout#middle),
+[`top`](/api/2d/components/Layout#top),
+[`bottom`](/api/2d/components/Layout#bottom),
+[`left`](/api/2d/components/Layout#left),
+[`right`](/api/2d/components/Layout#right),
+[`topLeft`](/api/2d/components/Layout#topLeft),
+[`topRight`](/api/2d/components/Layout#topRight),
+[`bottomLeft`](/api/2d/components/Layout#bottomLeft), and
+[`bottomRight`](/api/2d/components/Layout#bottomRight).
+
+```tsx
+import {makeScene2D, Rect} from '@revideo/2d';
+import {createRef} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const rect = createRef<Rect>();
+
+  view.add(
+    <>
+      <Rect
+        ref={rect}
+        width={200}
+        height={100}
+        rotation={-10}
+        fill={'#333333'}
+      />
+      <Rect
+        size={50}
+        fill={'#e6a700'}
+        rotation={rect().rotation}
+        // Try changing "right" to "top"
+        right={rect().left}
+      />
+      <Rect
+        size={100}
+        fill={'#e13238'}
+        rotation={10}
+        bottomLeft={rect().bottomRight}
+      />
+    </>,
+  );
+
+  yield* rect().rotation(10, 1).to(-10, 1);
+});
+```
+
+## Flexbox configuration
+
+Most flexbox attributes available in CSS are available as
+[`Layout` properties](/api/2d/components/Layout#Properties). You can check out
+this [Flexbox guide][flexbox] to better understand how they work. The most
+useful properties are listed below:
+
+### `Layout.padding`
+
+<hr />
+
+### `Layout.margin`
+
+<hr />
+
+### `Layout.gap`
+
+<hr />
+
+### `Layout.direction`
+
+<hr />
+
+### `Layout.alignItems`
+
+<hr />
+
+### `Layout.justifyContent`
+
+<hr />
+
+## Groups
+
+Nodes that don't extend the `Layout` class, such as the `Node` itself, are
+unaffected by the layout and are treated as if they were never there. This lets
+you apply filters and transformations to layout nodes without affecting the
+hierarchy.
+
+From the layout's perspective, all `<Rect>`s in the example below are siblings:
+
+```tsx
+<Layout direction={'column'} width={960} gap={40} layout>
+  <Node opacity={0.1}>
+    <Rect height={240} fill={'#ff6470'} />
+    <Rect height={240} fill={'#ff6470'} />
+  </Node>
+  <Rect height={240} fill={'#ff6470'} />
+</Layout>
+```
+
+[flexbox]: https://css-tricks.com/snippets/css/a-guide-to-flexbox/

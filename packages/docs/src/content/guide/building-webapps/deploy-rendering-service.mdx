@@ -1,0 +1,101 @@
+# Deploying a Rendering Service in Production
+
+Rendering videos is a relatively expensive operation compared to most other
+requests served in a web app - you should therefore pay attention to which
+hardware and deployment setup you want to use to deploy a rendering service for
+your Revideo apps.
+
+You should expect a rendering job (a function call to `renderVideo()` or
+`renderPartialVideo()` ([API Reference](/api/renderer/renderVideo))) to
+**require at least 8-10GB of RAM** to run fast and without issues. When multiple
+rendering jobs run at the same time, they will get slower if more RAM is not
+available.
+
+Below, we discuss a few possibilities of how you can deploy a rendering service
+in production:
+
+## Parallelized Rendering with Serverless Functions (Recommended)
+
+To speed up rendering in production, it's useful to parallelize rendering with
+serverless functions using `renderPartialVideo()`
+([docs](https://docs.re.video/renderer/renderPartialVideo)). When rendering a 10
+minute video, parallelizing across 10 workers would spin up 10 serverless
+functions that each render one minute of the video. We have created example
+guides for parallelized rendering on AWS Lambda and Google Cloud Functions.
+
+**Note: In our experiments, parallelized Rendering on AWS Lambda performs
+significantly faster due to much better cold start times. We highly recommend
+using AWS Lambda for rendering instead of Google Cloud Functions**
+
+### Parallelized Rendering on AWS Lambda
+
+You can find the example project for parallelized rendering on AWS Lambda along
+with a setup guide
+[here](https://github.com/redotvideo/examples/tree/main/parallelized-aws-lambda)
+
+### Parallelized Rendering with Google Cloud Functions
+
+You can find the example project for parallelized rendering with Cloud Functions
+along with a setup guide
+[here](https://github.com/redotvideo/examples/tree/main/google-cloud-run-parallelized)
+
+## Single-process Rendering
+
+If your videos are short and / or rendering speeds are not a huge factor for
+you, you can render videos across a single process instead of setting up
+parallelized rendering. For example, here is a super simple express server for
+rendering a video:
+
+```ts
+
+
+
+
+
+const app = express();
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.status(200).send(`Hello World!`);
+});
+
+app.post('/render', async (req, res) => {
+  try {
+    const {variables} = req.body;
+    const jobId = uuidv4();
+
+    console.log('Rendering video...');
+    await renderVideo({
+      projectFile: './src/project.ts',
+      variables,
+      settings: {outFile: `${jobId}.mp4`, logProgress: true},
+    });
+    console.log('Finished rendering');
+
+    const outputFilePath = path.join(process.cwd(), `./output/${jobId}.mp4`);
+
+    if (fs.existsSync(outputFilePath)) {
+      res.sendFile(outputFilePath); // alternatively (and recommended), upload file to a bucket
+    } else {
+      res.status(500).send('Rendered video not found');
+    }
+  } catch (err) {
+    console.error('Error rendering video:', err);
+    res.status(500).send('Error rendering video');
+  }
+});
+
+const port = parseInt(process.env.PORT) || 8000;
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
+});
+```
+
+You can deploy a server like this on a normal VM instance or on a serverless
+deployment platform like Google Cloud Run.
+
+## Revideo platform
+
+We are building a cloud platform that makes it easy to deploy Revideo projects
+and uses infrastructure optimized for fast rendering speeds. You can sign up to
+its waitlist [here](https://tally.so/r/mOz4GK).

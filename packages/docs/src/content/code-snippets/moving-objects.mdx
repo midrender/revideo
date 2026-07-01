@@ -1,0 +1,30 @@
+# Moving and Manipulating Objects
+
+You can easily move objects and manipulate them using a variety of functions.
+Here, we move a square along with some text around the screen, make it larger,
+and finally turn it into a circle:
+
+```tsx
+import {Rect, Txt, makeScene2D} from '@revideo/2d';
+import {all, waitFor, createRef, easeInBounce, easeInExpo} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const rectRef = createRef<Rect>();
+
+  yield view.add(
+    <Rect fill={'blue'} size={[100, 100]} ref={rectRef}>
+      <Txt fontSize={30} fontFamily={'Sans-Serif'} fill={'white'}>
+        Hi!
+      </Txt>
+    </Rect>,
+  );
+
+  yield* waitFor(0.5); // do nothing for 0.5s
+  yield* all(rectRef().position.x(200, 1), rectRef().position.y(50, 1)); // move the rectangle to [200, 50] in 1s
+  yield* all(rectRef().position.x(0, 2), rectRef().position.y(0, 2)); // move the rectangle to [0,0] (center) in 2s
+
+  yield* rectRef().scale(2, 1); // scale the rectangle by 2 in 1s
+  yield* rectRef().radius(100, 1); // increase the radius to 100 in 1s
+  yield* waitFor(1); // do nothing for 1s
+});
+```

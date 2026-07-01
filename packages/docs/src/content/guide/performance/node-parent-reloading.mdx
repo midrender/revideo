@@ -1,0 +1,114 @@
+# Isolating Frequently Changed Nodes
+
+A common use case for Revideo is adding subtitles to a video. Often, this gets
+handled like this:
+
+```tsx
+import {Txt, Video, makeScene2D} from '@revideo/2d';
+import {useScene, waitFor, createRef} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const words = [
+    'Here',
+    'are',
+    'some',
+    'subtitles',
+    'added',
+    'to',
+    'the',
+    'video',
+  ];
+
+  yield view.add(
+    <>
+      <Video
+        src={'https://revideo-example-assets.s3.amazonaws.com/beach-3.mp4'}
+        play={true}
+        size={['100%', '100%']}
+      />
+    </>,
+  );
+
+  for (const w of words) {
+    const textRef = createRef<Txt>();
+    yield view.add(
+      <Txt
+        fontFamily={'Sans-Serif'}
+        fill={'white'}
+        fontSize={40}
+        ref={textRef}
+        text={w}
+      />,
+    );
+    yield* waitFor(0.3);
+    textRef().remove();
+  }
+
+  yield* waitFor(1);
+});
+```
+
+## Speed up Rendering by not adding `` to `view`
+
+The implementation shown above can be made **significantly faster**, especially
+when we have more words in our subtitles:
+
+The existing implementation repeatedly modifies the `view` node by always adding
+new `` elements to it. All of these operations will cause Revideo to
+reload the `view` node and therefore also reload the `` tag, which takes
+up a lot of time.
+
+The solution to this is to not add `` elements to the `view` node
+directly, but to a child container of `view` that is not a parent of our
+`` element. Now, we will not reload all children of `view` during every
+`` change:
+
+```tsx
+import {Txt, Video, Layout, makeScene2D} from '@revideo/2d';
+import {useScene, waitFor, createRef} from '@revideo/core';
+
+export default makeScene2D(function* (view) {
+  const textContainer = createRef<Layout>();
+  const words = [
+    'Here',
+    'are',
+    'some',
+    'subtitles',
+    'added',
+    'to',
+    'the',
+    'video',
+  ];
+
+  yield view.add(
+    <>
+      <Video
+        src={'https://revideo-example-assets.s3.amazonaws.com/beach-3.mp4'}
+        play={true}
+        size={['100%', '100%']}
+      />
+      <Layout size={['100%', '100%']} ref={textContainer} />
+    </>,
+  );
+
+  for (const w of words) {
+    const textRef = createRef<Txt>();
+    yield textContainer().add(
+      <Txt
+        fontFamily={'Sans-Serif'}
+        fill={'white'}
+        fontSize={40}
+        ref={textRef}
+        text={w}
+      />,
+    );
+    yield* waitFor(0.3);
+    textRef().remove();
+  }
+
+  yield* waitFor(1);
+});
+```
+
+Of course, this does not just apply to `` nodes, but any node that you
+modify frequently.

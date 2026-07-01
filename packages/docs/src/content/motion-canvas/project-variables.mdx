@@ -1,0 +1,35 @@
+# Project variables
+
+_Note: These docs were adopted from the original
+[Motion Canvas](https://motioncanvas.io/docs/) docs_
+
+Making animations dynamic can be achieved using project variables. These could
+be used for light/dark themes, changing Node styling or editing text content.
+Project variables make use of signals - allowing variables to be updated during
+animations.
+
+Adding variables via the player component can be done by passing a stringified
+json object to the variables attribute:
+
+```html
+<revideo-player
+  src="/path/to/project.js"
+  variables='{"circleFill":"red"}'
+></revideo-player>
+```
+
+They can also be added using makeProject():
+
+```ts
+export default makeProject({
+  scenes: [example],
+  variables: {circleFill: 'red'},
+});
+```
+
+Accessing the variables inside of a scene is through
+[`useScene()`](/api/core/utils#useScene):
+
+```ts
+const circleFill = useScene().variables.get('circleFill', 'blue');
+```

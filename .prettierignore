@@ -10,3 +10,6 @@ CHANGELOG.md
 /packages/*/lib
 /packages/*/static
 /packages/*/build
+
+# The docs app is a self-contained Next.js project with its own prettier config
+/packages/docs

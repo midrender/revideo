@@ -14,6 +14,7 @@ export default tseslint.config(
       '**/editor/**',
       'packages/template/**',
       'packages/create/template-*/**',
+      'packages/docs/**',
     ],
   },
   js.configs.recommended,

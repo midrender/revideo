@@ -1,0 +1,5 @@
+# Robots.txt for https://new.docs.re.video
+# Disallow everything while we're still migrating
+
+User-agent: *
+Disallow: /
