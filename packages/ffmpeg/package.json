@@ -20,7 +20,7 @@
     "@revideo/core": "0.10.4",
     "@revideo/telemetry": "0.10.4",
     "fluent-ffmpeg": "^2.1.2",
-    "uuid": "^10.0.0"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@types/ffprobe-static": "^2.0.3",

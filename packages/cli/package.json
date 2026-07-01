@@ -29,9 +29,9 @@
     "@revideo/telemetry": "0.10.4",
     "@revideo/vite-plugin": "0.10.4",
     "chokidar": "^3.5.3",
-    "commander": "^12.0.0",
+    "commander": "^15.0.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.1"
   }
 }
