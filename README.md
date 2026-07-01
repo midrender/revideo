@@ -1,10 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://midrender.com/revideo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./logo_dark.svg">
-      <img width="360" alt="Revideo logo" src="./logo.svg">
-    </picture>
+    <img width="600" alt="Revideo" src="./logo.svg">
   </a>
 </p>
 <p align="center">
