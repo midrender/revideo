@@ -18,19 +18,11 @@ TypeScript — shapes, text, media, and animation — and Revideo renders it to 
 video file. It ships a headless render API for generating videos
 programmatically and a React player for previewing scenes in the browser.
 
-It borrows concepts from Remotion and Rive, but is, in its core, zero dep.
+A scene is plain TypeScript, so Claude or Codex can produce one from a prompt.
 
-Revideo Engine is the rendering core behind
-[Midrender](https://midrender.com).
+Revideo borrows concepts from Remotion and Rive, but is, in its core, zero dep.
 
-<br/>
-
-## Writing scenes with an LLM
-
-A scene is plain TypeScript, so language models can write it without special
-tooling or fine-tuning. You can describe the video you want to Claude or Codex,
-get a scene back, and render it. The `<RubiksCube/>` component used in the
-example below was written this way.
+It's the rendering core behind [Midrender](https://midrender.com).
 
 <br/>
 
