@@ -7,9 +7,6 @@ import './global.css';
 export const project = makeProject({
   name: 'project',
   scenes: [example],
-  variables: {
-    fill: 'green',
-  },
   settings: {
     shared: {
       background: new Color('#0d0d12'),
