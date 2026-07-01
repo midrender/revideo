@@ -28,13 +28,13 @@
     "tsconfig.project.json"
   ],
   "devDependencies": {
-    "@preact/signals": "^1.2.1",
+    "@preact/signals": "1.2.3",
     "@revideo/ui": "0.10.4",
     "@rollup/plugin-node-resolve": "^15.2.4",
     "@rollup/plugin-typescript": "^12.1.0",
     "clsx": "^2.0.0",
     "jsdom": "^22.1.0",
-    "preact": "^10.19.2",
+    "preact": "10.20.1",
     "rollup-plugin-postcss": "^4.0.2"
   },
   "dependencies": {

@@ -6,6 +6,7 @@
     "strict": true,
     "module": "esnext",
     "target": "es2020",
+    "lib": ["es2022", "dom", "dom.iterable"],
     "allowJs": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,

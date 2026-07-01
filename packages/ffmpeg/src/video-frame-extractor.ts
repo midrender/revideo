@@ -222,9 +222,6 @@ export class VideoFrameExtractor {
       })
       .on('stderr', stderrLine => {
         console.log(stderrLine);
-      })
-      .on('stdout', stderrLine => {
-        console.log(stderrLine);
       });
 
     const ffstream = process.pipe();
@@ -265,9 +262,6 @@ export class VideoFrameExtractor {
         this.handleError(err);
       })
       .on('stderr', stderrLine => {
-        console.log(stderrLine);
-      })
-      .on('stdout', stderrLine => {
         console.log(stderrLine);
       });
 

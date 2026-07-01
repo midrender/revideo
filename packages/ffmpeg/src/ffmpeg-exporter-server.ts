@@ -79,7 +79,7 @@ export class FFmpegExporterServer {
 
     this.command.outputOptions(['-movflags +faststart']);
     this.promise = new Promise<void>((resolve, reject) => {
-      this.command.on('end', resolve).on('error', reject);
+      this.command.on('end', () => resolve()).on('error', reject);
     });
   }
 
