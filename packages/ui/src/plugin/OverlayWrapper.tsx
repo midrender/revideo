@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import type {JSX} from 'preact';
+import type {HTMLAttributes} from 'preact';
 import styles from './index.module.scss';
 
-type PreviewCanvasProps = JSX.HTMLAttributes<HTMLDivElement>;
+type PreviewCanvasProps = HTMLAttributes<HTMLDivElement>;
 
 /**
  * A wrapper for custom overlays.

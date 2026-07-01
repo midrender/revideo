@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import type {JSX} from 'preact';
+import type {ButtonHTMLAttributes} from 'preact';
 import {ChevronRight} from '../icons/ChevronRight';
 import styles from './Controls.module.scss';
 
 export interface ToggleProps
-  extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, 'onToggle'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onToggle'> {
   open?: boolean;
   onToggle?: (value: boolean) => void;
   animated?: boolean;

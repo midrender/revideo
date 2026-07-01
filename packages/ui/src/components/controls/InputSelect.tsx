@@ -1,11 +1,11 @@
-import type {JSX} from 'preact';
+import type {InputHTMLAttributes} from 'preact';
 import styles from './Controls.module.scss';
 import {Input} from './Input';
 import type {SelectProps} from './Select';
 import {Select} from './Select';
 
 export type InputSelectProps<T> = Omit<
-  JSX.HTMLAttributes<HTMLInputElement>,
+  InputHTMLAttributes<HTMLInputElement>,
   'value' | 'onChange'
 > &
   SelectProps<T>;

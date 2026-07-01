@@ -1,10 +1,7 @@
 import clsx from 'clsx';
-import type {JSX} from 'preact';
+import type {HTMLAttributes} from 'preact';
 import styles from './Header.module.scss';
 
-export function Header({
-  className,
-  ...props
-}: JSX.HTMLAttributes<HTMLDivElement>) {
+export function Header({className, ...props}: HTMLAttributes<HTMLDivElement>) {
   return <div className={clsx(styles.header, className)} {...props} />;
 }

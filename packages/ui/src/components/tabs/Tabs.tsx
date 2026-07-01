@@ -1,6 +1,12 @@
 import clsx from 'clsx';
-import type {ComponentChildren, Ref} from 'preact';
-import {createContext, type JSX} from 'preact';
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ComponentChildren,
+  HTMLAttributes,
+  Ref,
+} from 'preact';
+import {createContext} from 'preact';
 import {useContext} from 'preact/hooks';
 import styles from './Tabs.module.scss';
 
@@ -14,10 +20,7 @@ const TabsContext = createContext<TabsState>({
   setTab: () => {},
 });
 
-export function Tabs({
-  className,
-  ...props
-}: JSX.HTMLAttributes<HTMLDivElement>) {
+export function Tabs({className, ...props}: HTMLAttributes<HTMLDivElement>) {
   return <div className={clsx(className, styles.tabs)} {...props} />;
 }
 
@@ -29,7 +32,7 @@ export function TabGroup({children, ...rest}: TabGroupProps) {
   return <TabsContext.Provider value={rest}>{children}</TabsContext.Provider>;
 }
 
-export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface TabProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ComponentChildren;
   forwardRef?: Ref<HTMLButtonElement>;
   tab: string;
@@ -49,8 +52,7 @@ export function Tab({className, tab, forwardRef, ...props}: TabProps) {
   );
 }
 
-export interface TabLinkProps
-  extends JSX.AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface TabLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   children: ComponentChildren;
   disabled?: boolean;
 }

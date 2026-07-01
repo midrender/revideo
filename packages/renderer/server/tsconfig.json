@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "../lib/server",
     "inlineSourceMap": true,
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "module": "commonjs",
+    "moduleResolution": "bundler",
     "target": "es2022",
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
     "skipLibCheck": true,
-    "ignoreDeprecations": "6.0",
+    "paths": {
+      "render-video": ["./render-video.ts"]
+    },
     "rootDir": "."
   },
   "include": ["."]

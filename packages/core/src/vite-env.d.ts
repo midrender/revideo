@@ -1,7 +1,5 @@
 /// <reference types="vite/client" />
 
-import 'vite/types/customEvent';
-
 declare module 'vite/types/customEvent' {
   interface CustomEventMap {
     'revideo:meta': {source: string; data: any};

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
-import type {ComponentChildren, JSX} from 'preact';
+import type {ComponentChildren, HTMLAttributes} from 'preact';
 import {useEffect, useLayoutEffect, useRef, useState} from 'preact/hooks';
 import {useReducedMotion} from '../../hooks';
 import styles from './Collapse.module.scss';
 
-export interface CollapseProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface CollapseProps extends HTMLAttributes<HTMLDivElement> {
   open: boolean;
   children: ComponentChildren;
   animated?: boolean;

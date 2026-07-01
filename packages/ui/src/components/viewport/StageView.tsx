@@ -1,12 +1,12 @@
 import type {Stage} from '@revideo/core';
 import clsx from 'clsx';
-import type {JSX} from 'preact';
+import type {HTMLAttributes} from 'preact';
 import type {MutableRef} from 'preact/hooks';
 import {useLayoutEffect, useRef} from 'preact/hooks';
 import {useSharedSettings} from '../../hooks';
 import styles from './Viewport.module.scss';
 
-export interface StageViewProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface StageViewProps extends HTMLAttributes<HTMLDivElement> {
   forwardRef?: MutableRef<HTMLDivElement>;
   stage: Stage;
 }

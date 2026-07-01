@@ -4,19 +4,17 @@
     "strict": false,
     "module": "esnext",
     "target": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "esModuleInterop": false,
     "useDefineForClassFields": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "types": ["node"],
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "ignoreDeprecations": "6.0"
+    "lib": ["DOM", "DOM.Iterable", "ESNext"]
   },
   "include": ["src"]
 }

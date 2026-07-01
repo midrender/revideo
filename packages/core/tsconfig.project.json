@@ -7,10 +7,9 @@
     "target": "es2020",
     "allowJs": true,
     "noEmit": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "ignoreDeprecations": "6.0"
+    "experimentalDecorators": true
   }
 }

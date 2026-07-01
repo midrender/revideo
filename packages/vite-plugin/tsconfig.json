@@ -5,13 +5,12 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "incremental": true,
-    "ignoreDeprecations": "6.0",
     "rootDir": "src"
   },
   "include": ["src"]

@@ -7,12 +7,9 @@ async function render() {
     projectFile: './src/project.ts',
     settings: {
       logProgress: true,
-      renderSettings: {
+      projectSettings: {
         exporter: {
           name: '@revideo/core/wasm',
-          options: {
-            format: 'mp4',
-          },
         },
       },
     },

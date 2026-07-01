@@ -1,4 +1,4 @@
-import {Color, makeProject, Vector2} from '@revideo/core';
+import {makeProject} from '@revideo/core';
 
 import example from './example';
 
@@ -9,9 +9,9 @@ export const project = makeProject({
   scenes: [example],
   settings: {
     shared: {
-      background: new Color('#0d0d12'),
+      background: '#0d0d12',
       range: [0, Infinity],
-      size: new Vector2(1080, 1080),
+      size: {x: 1080, y: 1080},
     },
     preview: {
       fps: 30,

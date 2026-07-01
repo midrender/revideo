@@ -1,17 +1,15 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "../lib/client",
     "inlineSourceMap": true,
     "noImplicitAny": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "module": "esnext",
     "target": "es2020",
     "declaration": true,
     "declarationMap": true,
-    "ignoreDeprecations": "6.0",
     "rootDir": "."
   },
   "include": ["."]

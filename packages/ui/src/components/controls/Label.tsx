@@ -1,7 +1,7 @@
-import type {JSX} from 'preact';
+import type {LabelHTMLAttributes} from 'preact';
 import styles from './Controls.module.scss';
 
-type LabelProps = JSX.HTMLAttributes<HTMLLabelElement>;
+type LabelProps = LabelHTMLAttributes<HTMLLabelElement>;
 
 export function Label(props: LabelProps) {
   return (
