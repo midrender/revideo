@@ -55,5 +55,9 @@
   "lint-staged": {
     "*.{ts,tsx}": "eslint --fix",
     "*.{js,jsx,ts,tsx,md,scss}": "prettier --write"
+  },
+  "overrides": {
+    "preact": "10.20.1",
+    "@preact/signals": "1.2.3"
   }
 }
