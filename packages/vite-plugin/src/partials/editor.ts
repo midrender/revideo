@@ -30,7 +30,7 @@ export function editorPlugin({editor, projects}: EditorPluginConfig): Plugin {
           /* language=typescript */
           return `\
 import {editor} from '${editor}';
-import project from '${projects.list[0].url}';
+import project from '/@fs/${path.resolve(projects.list[0].url)}';
 import {addEditorToProject} from '@revideo/core';
 editor(await addEditorToProject(project));
 `;
@@ -43,7 +43,7 @@ editor(await addEditorToProject(project));
             /* language=typescript */
             return `\
 import {editor} from '${editor}';
-import project from '${projects.lookup.get(name)!.url}';
+import project from '/@fs/${path.resolve(projects.lookup.get(name)!.url)}';
 import {addEditorToProject} from '@revideo/core';
 editor(await addEditorToProject(project));
 `;

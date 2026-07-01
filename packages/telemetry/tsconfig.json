@@ -11,7 +11,9 @@
     "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "incremental": true
+    "incremental": true,
+    "ignoreDeprecations": "6.0",
+    "rootDir": "src"
   },
   "include": ["src"]
 }

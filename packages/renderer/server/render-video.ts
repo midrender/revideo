@@ -17,7 +17,7 @@ import motionCanvas from '@revideo/vite-plugin';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import type {Browser, PuppeteerLaunchOptions} from 'puppeteer';
+import type {Browser, LaunchOptions} from 'puppeteer';
 import puppeteer from 'puppeteer';
 import type {InlineConfig, ServerOptions, ViteDevServer} from 'vite';
 import {createServer} from 'vite';
@@ -33,7 +33,7 @@ export interface RenderSettings {
 
   ffmpeg?: FfmpegSettings;
 
-  puppeteer?: PuppeteerLaunchOptions;
+  puppeteer?: LaunchOptions;
 
   workers?: number;
   logProgress?: boolean;
@@ -85,7 +85,9 @@ async function initBrowserAndServer(
   variables?: Record<string, unknown>,
 ) {
   const args = settings.puppeteer?.args ?? [];
-  args.includes('--single-process') || args.push('--single-process');
+  if (!args.includes('--single-process')) {
+    args.push('--single-process');
+  }
 
   const resolvedProjectPath = path.join(process.cwd(), projectFile);
   const [browser, server] = await Promise.all([

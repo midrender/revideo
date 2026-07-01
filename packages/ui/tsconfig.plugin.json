@@ -15,6 +15,7 @@
     "skipLibCheck": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "preserve",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "preact",
+    "ignoreDeprecations": "6.0"
   }
 }

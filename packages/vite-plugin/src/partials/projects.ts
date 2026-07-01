@@ -21,7 +21,12 @@ export function projectsPlugin({
     config(config) {
       return {
         build: {
-          target: buildForEditor ? 'esnext' : 'modules',
+          // Vite dropped its `'modules'` target alias in v8; use its former
+          // expansion (browsers with native ESM support) to keep project
+          // bundles broadly compatible when played back.
+          target: buildForEditor
+            ? 'esnext'
+            : ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
           assetsDir: './',
           rollupOptions: {
             preserveEntrySignatures: 'strict',
@@ -33,9 +38,14 @@ export function projectsPlugin({
         server: {
           port: config?.server?.port ?? 9000,
         },
-        esbuild: {
-          jsx: 'automatic',
-          jsxImportSource: '@revideo/2d/lib',
+        // Vite 8 transforms source with `oxc`, so scenes compile against the
+        // revideo JSX runtime through it. (Vite <8 used `esbuild.jsx` here, but
+        // that option no longer exists on Vite 8's config type.)
+        oxc: {
+          jsx: {
+            runtime: 'automatic',
+            importSource: '@revideo/2d/lib',
+          },
         },
         optimizeDeps: {
           entries: projects.list.map(project => project.url),

@@ -15,6 +15,7 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "composite": true,
-    "incremental": true
+    "incremental": true,
+    "ignoreDeprecations": "6.0"
   }
 }

@@ -68,7 +68,7 @@ function AnimatedCollapse({open, children, className, ...rest}: CollapseProps) {
     } else {
       if (ref.current.style.height === 'auto') {
         ref.current.style.height = `${ref.current.scrollHeight}px`;
-        ref.current.scrollHeight;
+        void ref.current.scrollHeight;
       }
       ref.current.style.height = '0px';
     }

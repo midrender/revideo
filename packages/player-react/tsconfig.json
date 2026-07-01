@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "noImplicitAny": true,
+    "strict": false,
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
@@ -19,7 +20,9 @@
     "types": ["node"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "ignoreDeprecations": "6.0",
+    "rootDir": "src"
   },
   "include": ["src"]
 }

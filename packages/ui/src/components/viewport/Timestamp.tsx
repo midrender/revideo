@@ -4,7 +4,7 @@ import {usePlayerState} from '../../hooks';
 import {formatDuration} from '../../utils';
 import styles from './Viewport.module.scss';
 
-interface TimestampProps extends JSX.HTMLAttributes<HTMLInputElement> {
+interface TimestampProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   frame: number;
   title: string;
   frameTitle: string;

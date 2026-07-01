@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import {afterAll, beforeAll, describe, expect, test} from 'vitest';
 import {waitFor} from '.';
 import {PlaybackManager, PlaybackStatus} from '../app';

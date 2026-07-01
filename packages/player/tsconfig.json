@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
+    "strict": false,
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
@@ -14,7 +15,8 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "types": ["node"],
-    "lib": ["DOM", "DOM.Iterable", "ESNext"]
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }

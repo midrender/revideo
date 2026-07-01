@@ -10,7 +10,7 @@ node_modules
 /packages/*/output
 
 .rollup.cache
-tsconfig.tsbuildinfo
+*.tsbuildinfo
 
 .idea
 id.txt

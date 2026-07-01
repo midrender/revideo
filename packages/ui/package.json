@@ -26,12 +26,12 @@
     "tsconfig.plugin.json"
   ],
   "dependencies": {
-    "@preact/signals": "^1.2.1",
+    "@preact/signals": "^2.9.2",
     "@revideo/core": "0.10.4",
     "preact": "^10.19.2"
   },
   "devDependencies": {
-    "@preact/preset-vite": "2.5.0",
+    "@preact/preset-vite": "^2.10.5",
     "clsx": "^2.0.0",
     "highlight.js": "^11.9.0",
     "sass": "^1.69.5",

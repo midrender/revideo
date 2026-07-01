@@ -29,7 +29,7 @@ export function TabGroup({children, ...rest}: TabGroupProps) {
   return <TabsContext.Provider value={rest}>{children}</TabsContext.Provider>;
 }
 
-export interface TabProps extends JSX.HTMLAttributes<HTMLButtonElement> {
+export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   children: ComponentChildren;
   forwardRef?: Ref<HTMLButtonElement>;
   tab: string;
@@ -49,7 +49,8 @@ export function Tab({className, tab, forwardRef, ...props}: TabProps) {
   );
 }
 
-export interface TabLinkProps extends JSX.HTMLAttributes<HTMLAnchorElement> {
+export interface TabLinkProps
+  extends JSX.AnchorHTMLAttributes<HTMLAnchorElement> {
   children: ComponentChildren;
   disabled?: boolean;
 }

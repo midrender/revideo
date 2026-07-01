@@ -2,6 +2,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "noImplicitAny": true,
+    "strict": false,
     "module": "esnext",
     "target": "es2020",
     "allowJs": true,
@@ -9,6 +10,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "ignoreDeprecations": "6.0"
   }
 }

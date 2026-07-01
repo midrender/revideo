@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "lib",
+    "rootDir": "src",
     "inlineSourceMap": true,
     "noImplicitAny": true,
     "strict": true,
@@ -14,7 +15,8 @@
     "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "incremental": true
+    "incremental": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }

@@ -10,7 +10,9 @@
     "module": "esnext",
     "target": "es2020",
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   },
   "include": ["."]
 }

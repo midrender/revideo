@@ -11,7 +11,9 @@
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   },
   "include": ["."]
 }

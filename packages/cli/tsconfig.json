@@ -8,7 +8,8 @@
     "strict": true,
     "esModuleInterop": true,
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

@@ -6,7 +6,8 @@ import {useSubscribable, useViewportMatrix} from '../../hooks';
 import type {PluginDrawFunction} from '../../plugin';
 import styles from './Viewport.module.scss';
 
-interface OverlayCanvasProps extends JSX.HTMLAttributes<HTMLCanvasElement> {
+interface OverlayCanvasProps
+  extends JSX.CanvasHTMLAttributes<HTMLCanvasElement> {
   drawHooks: (() => PluginDrawFunction)[];
 }
 
