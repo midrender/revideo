@@ -1,6 +1,6 @@
 /** @jsxImportSource @revideo/2d/lib */
-import {Node, initial, signal} from '@revideo/2d';
 import type {NodeProps} from '@revideo/2d';
+import {Node, initial, signal} from '@revideo/2d';
 import type {SignalValue, SimpleSignal} from '@revideo/core';
 import {Random, all, createSignal, easeInOutCubic} from '@revideo/core';
 
@@ -131,7 +131,11 @@ export class RubiksCube extends Node {
   }
 
   private project(v: Vec3): Vec3 {
-    return rotateAxis(rotateAxis(v, 1, this.baseYaw + this.yaw()), 0, this.pitch);
+    return rotateAxis(
+      rotateAxis(v, 1, this.baseYaw + this.yaw()),
+      0,
+      this.pitch,
+    );
   }
 
   protected override async draw(context: CanvasRenderingContext2D) {
@@ -141,7 +145,8 @@ export class RubiksCube extends Node {
     const faces: Array<{points: Vec3[]; depth: number; color: string}> = [];
     for (const sticker of this.stickers) {
       const turning =
-        this.active !== null && sticker.pos[this.active.axis] === this.active.layer;
+        this.active !== null &&
+        sticker.pos[this.active.axis] === this.active.layer;
 
       let normal = sticker.normal;
       if (turning) {
@@ -155,15 +160,25 @@ export class RubiksCube extends Node {
       const outer = this.stickerCorners(sticker, 0.5);
       const inner = this.stickerCorners(sticker, 0.44);
       const transform = (corners: Vec3[]) =>
-        corners.map(c => this.project(turning ? rotateAxis(c, this.active!.axis, angle) : c));
+        corners.map(c =>
+          this.project(turning ? rotateAxis(c, this.active!.axis, angle) : c),
+        );
 
       const outerView = transform(outer);
       const innerView = transform(inner);
       const depth =
-        (innerView[0][2] + innerView[1][2] + innerView[2][2] + innerView[3][2]) / 4;
+        (innerView[0][2] +
+          innerView[1][2] +
+          innerView[2][2] +
+          innerView[3][2]) /
+        4;
 
       faces.push({points: outerView, depth, color: '#0a0a0d'});
-      faces.push({points: innerView, depth: depth + 0.001, color: sticker.color});
+      faces.push({
+        points: innerView,
+        depth: depth + 0.001,
+        color: sticker.color,
+      });
     }
 
     faces.sort((a, b) => a.depth - b.depth);

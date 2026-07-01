@@ -13,8 +13,8 @@
 
 # Revideo
 
-Revideo is a rendering engine for creating videos in code. You describe a scene in
-TypeScript — shapes, text, media, and animation — and Revideo renders it to a
+Revideo is a rendering engine for creating videos in code. You describe a scene
+in TypeScript — shapes, text, media, and animation — and Revideo renders it to a
 video file. It ships a headless render API for generating videos
 programmatically and a React player for previewing scenes in the browser.
 
@@ -103,6 +103,5 @@ MIT — see [LICENSE](./LICENSE).
 
 ## Links
 
-[Documentation](https://docs.re.video/) ·
-[Midrender](https://midrender.com) ·
+[Documentation](https://docs.re.video/) · [Midrender](https://midrender.com) ·
 [Discord](https://discord.com/invite/JDjbfp6q2G)
