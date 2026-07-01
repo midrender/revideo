@@ -89,8 +89,8 @@ view.add([
 
 After the hierarchy has been created, it's still possible to add, remove, and
 rearrange nodes at any time. The [`Node`][node] class contains the
-[`children`](/api/2d/components/Node#children) and
-[`parent`](/api/2d/components/Node#parent) properties that can be used to
+[`children`](/api-reference/2d/components/classes/Node#children) and
+[`parent`](/api-reference/2d/components/classes/Node#parent) properties that can be used to
 traverse the tree. But in order to modify it, it's recommended to use the
 following helper methods:
 
@@ -173,7 +173,7 @@ export default makeScene2D(function* (view) {
 It contains multiple text nodes whose color oscillates between white and yellow.
 To achieve that, we used `view.findAll(is(Txt))` to search through all
 descendants of the view node and select only those of type `Txt`. The first
-argument passed to the [`findAll`](/api/2d/components/Node#findAll) method is a
+argument passed to the [`findAll`](/api-reference/2d/components/classes/Node#findAll) method is a
 so-called `predicate`. It's a function that takes a node and returns `true` if
 it's a node we're looking for.
 
@@ -191,7 +191,7 @@ const texts = view.findAll(node => node instanceof Txt);
 ```
 
 But Motion Canvas comes with a helpful utility function called
-[`is`](/api/2d/utils#is) that can create this predicate for us:
+[`is`](/api-reference/2d/utils/functions/is) that can create this predicate for us:
 
 ```ts
 import {is} from '@revideo/2d';
@@ -202,7 +202,7 @@ const texts = view.findAll(is(Txt));
 These can be used with any JavaScript function that accepts a predicate. The
 `findAll` method has been implemented to traverse all descendants of a node, but
 if we wanted to query only the direct children, we could retrieve the
-[`children`](/api/2d/components/Node#children) array and call the built-in
+[`children`](/api-reference/2d/components/classes/Node#children) array and call the built-in
 `filter` method with our predicate:
 
 ```ts

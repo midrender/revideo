@@ -18,7 +18,7 @@ find the exact timestamp to wait for, but also each time you modify the
 voiceover, you have to go through your code and adjust these hard-coded numbers.
 
 That's why Motion Canvas allows you to edit these delays not through code, but
-through the editor. With the use of [`waitUntil`](/api/core/flow#waitUntil) you
+through the editor. With the use of [`waitUntil`](/api-reference/core/flow) you
 can pause the animation without specifying the actual duration:
 
 ```ts
@@ -44,7 +44,7 @@ from happening.
 
 Aside from specifying _when_ something should happen, Time Events can also be
 used to control _how long_ something should last. You can use the
-[`useDuration`](/api/core/utils#useDuration) function to retrieve the duration
+[`useDuration`](/api-reference/core/utils) function to retrieve the duration
 of an event and use it in your animation:
 
 ```ts

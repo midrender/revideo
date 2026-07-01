@@ -1,15 +1,15 @@
 # Layouts
 
 Layouts allow you to arrange your nodes using [Flexbox][flexbox]. Any node
-extending the [`Layout`](/api/2d/components/Layout) node can become a part of
+extending the [`Layout`](/api-reference/2d/components/classes/Layout) node can become a part of
 the layout. This includes, but is not limited to:
-[`Rect`](/api/2d/components/Rect), [`Circle`](/api/2d/components/Circle), and
-[`Img`](/api/2d/components/Img).
+[`Rect`](/api-reference/2d/components/classes/Rect), [`Circle`](/api-reference/2d/components/classes/Circle), and
+[`Img`](/api-reference/2d/components/classes/Img).
 
 ## Layout root
 
 Layouts are an opt-in feature, meaning that they need to be enabled. It's done
-by setting the [`layout`](/api/2d/components/Layout#layout) property on the Node
+by setting the [`layout`](/api-reference/2d/components/classes/Layout#layout) property on the Node
 that we want to become the root of our layout:
 
 ```tsx
@@ -65,15 +65,15 @@ squares on the left and right side of a gray rectangle. The yellow square is
 positioned so that its right edge is in the same place as the left edge of the
 rectangle. Meanwhile, the red square is placed so that its bottom left corner
 aligns with the bottom right corner of the rectangle. All possible directions
-include: [`middle`](/api/2d/components/Layout#middle),
-[`top`](/api/2d/components/Layout#top),
-[`bottom`](/api/2d/components/Layout#bottom),
-[`left`](/api/2d/components/Layout#left),
-[`right`](/api/2d/components/Layout#right),
-[`topLeft`](/api/2d/components/Layout#topLeft),
-[`topRight`](/api/2d/components/Layout#topRight),
-[`bottomLeft`](/api/2d/components/Layout#bottomLeft), and
-[`bottomRight`](/api/2d/components/Layout#bottomRight).
+include: [`middle`](/api-reference/2d/components/classes/Layout#middle),
+[`top`](/api-reference/2d/components/classes/Layout#top),
+[`bottom`](/api-reference/2d/components/classes/Layout#bottom),
+[`left`](/api-reference/2d/components/classes/Layout#left),
+[`right`](/api-reference/2d/components/classes/Layout#right),
+[`topLeft`](/api-reference/2d/components/classes/Layout#topLeft),
+[`topRight`](/api-reference/2d/components/classes/Layout#topRight),
+[`bottomLeft`](/api-reference/2d/components/classes/Layout#bottomLeft), and
+[`bottomRight`](/api-reference/2d/components/classes/Layout#bottomRight).
 
 ```tsx
 import {makeScene2D, Rect} from '@revideo/2d';
@@ -114,7 +114,7 @@ export default makeScene2D(function* (view) {
 ## Flexbox configuration
 
 Most flexbox attributes available in CSS are available as
-[`Layout` properties](/api/2d/components/Layout#Properties). You can check out
+[`Layout` properties](/api-reference/2d/components/classes/Layout#Properties). You can check out
 this [Flexbox guide][flexbox] to better understand how they work. The most
 useful properties are listed below:
 

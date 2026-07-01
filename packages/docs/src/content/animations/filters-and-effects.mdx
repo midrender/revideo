@@ -10,14 +10,14 @@ filters on
 [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter).
 
 Every node has a `filters` property containing an array of
-[filters](/api/2d/partials#Functions) that will be applied to the node. You can
+[filters](/api-reference/2d/partials) that will be applied to the node. You can
 declare this array yourself, or use the `filters` property to configure
 individual filters. Both ways are shown in the following example:
 
 > [!NOTE]
 >
 > Some filters, like `opacity` and `drop-shadow`, have their own dedicated
-> properties directly on the [`Node`](/api/2d/components/Node#opacity), class.
+> properties directly on the [`Node`](/api-reference/2d/components/classes/Node#opacity), class.
 >
 
 ```tsx
@@ -53,19 +53,19 @@ hide each other on overlap. Use the dropdown below to browse all examples.
 ## Cached nodes
 
 Both filters and composite operations require a cached
-[`Node`](/api/2d/components/Node). Filters can set it automatically, while
+[`Node`](/api-reference/2d/components/classes/Node). Filters can set it automatically, while
 composite operations require you to set it explicitly on an ancestor
-[`Node`](/api/2d/components/Node) (usually the parent node).
+[`Node`](/api-reference/2d/components/classes/Node) (usually the parent node).
 
-A cached [`Node`](/api/2d/components/Node) and its children are rendered on an
+A cached [`Node`](/api-reference/2d/components/classes/Node) and its children are rendered on an
 offscreen canvas first, before getting added to the main scene.  
 For filters this is needed because they are applied to the entire canvas. By
 creating a new canvas and moving the elements that should get affected by the
 filters over, applying filters to the entire "new" canvas, and then moving back
 the result, you effectively only apply the filters to the moved elements.
 
-To turn a [`Node`](/api/2d/components/Node) into a cached node, simply pass the
-[`cache`](/api/2d/components/NodeProps/#cache) property
+To turn a [`Node`](/api-reference/2d/components/classes/Node) into a cached node, simply pass the
+[`cache`](/api-reference/2d/components/interfaces/NodeProps#cache) property
 
 ```tsx
 <Node cache>...</Node>
@@ -73,5 +73,5 @@ To turn a [`Node`](/api/2d/components/Node) into a cached node, simply pass the
 <Node cache={true}>...</Node>
 ```
 
-All components inherit from [`Node`](/api/2d/components/Node), so you can set
+All components inherit from [`Node`](/api-reference/2d/components/classes/Node), so you can set
 the cache on all of them.

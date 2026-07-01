@@ -5,7 +5,7 @@ export default {
   'common-issues': '',
   'get-help': '',
   'guide': '',
-  'motion-canvas': '',
+  'animations': '',
   'platform': '',
   'upgrading': '',
 }

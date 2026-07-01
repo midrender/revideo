@@ -1,7 +1,7 @@
 # Custom Components
 
-Components are classes like [`Rect`](/api/2d/components/Rect) and
-[`Circle`](/api/2d/components/Circle) that can abstract rendering and data
+Components are classes like [`Rect`](/api-reference/2d/components/classes/Rect) and
+[`Circle`](/api-reference/2d/components/classes/Circle) that can abstract rendering and data
 functionality into reusable, modular pieces. To use a component in a scene, add
 it to the view and provide arguments to the component.
 
@@ -11,7 +11,7 @@ it to the view and provide arguments to the component.
 
 To define what arguments a component will take, first define an interface. All
 properties of the interface must be wrapped in
-[`SignalValue<>`](/api/core/signals#SignalValue) as such:
+[`SignalValue<>`](/api-reference/core/signals/type-aliases/SignalValue) as such:
 
 ```tsx
 //  You can extend an existing props interface
@@ -30,13 +30,13 @@ export interface SwitchProps extends NodeProps {
 ```
 
 Next, create a class for your components. The component class must extend
-[`Node`](/api/2d/components/Node) or one of its subclasses. If you don't want to
+[`Node`](/api-reference/2d/components/classes/Node) or one of its subclasses. If you don't want to
 inherit any methods from an existing component, extend your class from `Node`.
 We advise extending from the component most similar to the component you are
 building. For instance, if you were to make a component including a
-[`Layout`](/api/2d/components/Layout), you should extend
-[`Layout`](/api/2d/components/Layout) and
-[`LayoutProps`](/api/2d/components/LayoutProps).
+[`Layout`](/api-reference/2d/components/classes/Layout), you should extend
+[`Layout`](/api-reference/2d/components/classes/Layout) and
+[`LayoutProps`](/api-reference/2d/components/interfaces/LayoutProps).
 
 ```tsx
 export interface SwitchProps extends NodeProps {
@@ -50,7 +50,7 @@ export class Switch extends Node {
 
 To use the properties defined in the interface, your class _must_ contain a
 property with the same name. Motion Canvas provides type decorators to
-facilitate this like `@initial()` and `@signal()`. Click [here](/signals) for
+facilitate this like `@initial()` and `@signal()`. Click [here](/animations/signals) for
 more information on signals.
 
 Here is an example of how you would define such properties:
@@ -102,7 +102,7 @@ export class Switch extends Node {
 The `props` parameter can also be useful outside the `super()` call to access
 your data elsewhere. For example, if you were building a component to display an
 array, you could use props to set the color of every
-[Rect](/api/2d/components/Rect) in the array.
+[Rect](/api-reference/2d/components/classes/Rect) in the array.
 
 Now we can add elements to the view by using `this.add()`, much like you would
 add to a scene's view:

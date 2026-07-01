@@ -28,7 +28,7 @@ export default makeScene2D(function* (view) {
 });
 ```
 
-The [`Code`](/api/2d/components/Code) node is used for displaying code snippets.
+The [`Code`](/api-reference/2d/components/classes/Code) node is used for displaying code snippets.
 It supports syntax highlighting and a handful of different methods for animating
 the code.
 
@@ -88,7 +88,7 @@ highlight the snippets. If you want to use more than one language, check out the
 
 ## Defining Code
 
-The code to display is set via the [`code`](/api/2d/components/Code#code)
+The code to display is set via the [`code`](/api-reference/2d/components/classes/Code#code)
 property. In the simplest case, you can just use a string:
 
 ```tsx
@@ -200,7 +200,7 @@ export default makeScene2D(function* (view) {
 
 This happens because template strings are parsed immediately when our code is
 executed. To work around this, you can use a custom [tag function][tag-function]
-called [`CODE`](/api/2d/code#CODE). It allows the `Code` node to parse the
+called [`CODE`](/api-reference/2d/code/functions/CODE). It allows the `Code` node to parse the
 template string in a custom way and correctly support signals. It's really easy
 to use, simply put the `CODE` tag function before your template string:
 
@@ -248,8 +248,8 @@ view.add();
 ```
 
 You might have noticed that these examples used a specialized type of signal
-created using [`Code.createSignal()`](/api/2d/components/Code#createSignal).
-While the generic [`createSignal()`](/api/core/signals#createSignal) would work
+created using [`Code.createSignal()`](/api-reference/2d/components/classes/Code#createSignal).
+While the generic [`createSignal()`](/api-reference/core/signals/functions/createSignal) would work
 fine in these simple examples, the specialized signal will shine once you start
 animating your code snippets.
 
@@ -283,8 +283,8 @@ between the old and new code snippets. It then animates the changes accordingly.
 ### `append` and `prepend`
 
 For cases where you want to add some code at the beginning or end of the
-snippet, you can use the [`append`](/api/2d/code/CodeSignalContext#append) and
-[`prepend`](/api/2d/code/CodeSignalContext#prepend) methods. They can either
+snippet, you can use the [`append`](/api-reference/2d/code/classes/CodeSignalContext#append) and
+[`prepend`](/api-reference/2d/code/classes/CodeSignalContext#prepend) methods. They can either
 modify the code immediately or animate the changes over time:
 
 ```tsx
@@ -318,9 +318,9 @@ const three = 3;`;
 ### `insert`, `replace`, and `remove`
 
 For more granular control over the changes, you can use
-[`insert`](/api/2d/code/CodeSignalContext#insert),
-[`replace`](/api/2d/code/CodeSignalContext#replace), and
-[`remove`](/api/2d/code/CodeSignalContext#remove) to modify the code at specific
+[`insert`](/api-reference/2d/code/classes/CodeSignalContext#insert),
+[`replace`](/api-reference/2d/code/classes/CodeSignalContext#replace), and
+[`remove`](/api-reference/2d/code/classes/CodeSignalContext#remove) to modify the code at specific
 points. Check out [Code Ranges](#code-ranges) for more information on how to
 specify points in your code snippets.
 
@@ -355,10 +355,10 @@ export default makeScene2D(function* (view) {
 
 ### `edit`
 
-The [`edit`](/api/2d/code/CodeSignalContext#edit) method offers a different way
+The [`edit`](/api-reference/2d/code/classes/CodeSignalContext#edit) method offers a different way
 of defining code transitions. It's used together with the
-[`replace`](/api/2d/code#insert), [`insert`](/api/2d/code#insert), and
-[`remove`](/api/2d/code#remove) helper functions that are inserted into the
+[`replace`](/api-reference/2d/code/functions/insert), [`insert`](/api-reference/2d/code/functions/insert), and
+[`remove`](/api-reference/2d/code/functions/remove) helper functions that are inserted into the
 template string. They let you specify the changes in a more visual way, without
 having to know the exact positions in the code:
 
@@ -390,7 +390,7 @@ Notice that all the methods used above are not invoked on the `Code` node but
 rather on its `code` property. It may seem unnecessarily verbose but there's a
 good reason for it: the `code` property is a specialized code signal, just like
 the ones created by
-[`Code.createSignal()`](/api/2d/components/Code#createSignal). This means that
+[`Code.createSignal()`](/api-reference/2d/components/classes/Code#createSignal). This means that
 all the animation methods are also available on your own signals:
 
 ```tsx
@@ -445,7 +445,7 @@ function hello() {
 
 ## Code Ranges
 
-A [`CodeRange`](/api/2d/code#CodeRange) is used to specify a continuous span of
+A [`CodeRange`](/api-reference/2d/code/type-aliases/CodeRange) is used to specify a continuous span of
 characters using line and column numbers. It can be used for editing the code,
 visually selecting a part of it, or querying the positions and sizes of
 characters.
@@ -470,8 +470,8 @@ should think of columns as being located on the left side of the characters,
 meaning that if you want to include the character at column `n` you should use
 `n + 1` as the end column.
 
-For convenience, the [`word`](/api/2d/code#word) and
-[`lines`](/api/2d/code#lines) helper functions are provided to create some of
+For convenience, the [`word`](/api-reference/2d/code/functions/word) and
+[`lines`](/api-reference/2d/code/functions/lines) helper functions are provided to create some of
 the common types of ranges:
 
 ```ts
@@ -491,9 +491,9 @@ lines(2);
 ```
 
 Once you create a `Code` node, you can use its
-[`findFirstRange`](/api/2d/components/Code#findFirstRange),
-[`findAllRanges`](/api/2d/components/Code#findAllRanges), and
-[`findLastRange`](/api/2d/components/Code#findLastRange) methods to find the
+[`findFirstRange`](/api-reference/2d/components/classes/Code#findFirstRange),
+[`findAllRanges`](/api-reference/2d/components/classes/Code#findAllRanges), and
+[`findLastRange`](/api-reference/2d/components/classes/Code#findLastRange) methods to find the
 ranges that contain a specific string or match the given regular expression:
 
 ```tsx
@@ -519,7 +519,7 @@ export default makeScene2D(function* (view) {
 
 ## Code Selection
 
-The [`selection`](/api/2d/code/CodeSignalContext#selection) property can be used
+The [`selection`](/api-reference/2d/code/classes/CodeSignalContext#selection) property can be used
 to visually distinguish a part of the code snippet. The selection is specified
 using an individual [`code range`](#code-ranges) or an array of ranges:
 
@@ -549,10 +549,10 @@ export default makeScene2D(function* (view) {
 
 ## Querying Positions and Sizes
 
-[`getPointBBox`](/api/2d/components/Code#getPointBBox) and
-[`getSelectionBBox`](/api/2d/components/Code#getSelectionBBox) can be used to
+[`getPointBBox`](/api-reference/2d/components/classes/Code#getPointBBox) and
+[`getSelectionBBox`](/api-reference/2d/components/classes/Code#getSelectionBBox) can be used to
 retrieve the position and size of a specific character or a range of characters,
-respectively. The returned value is a [`bounding box`](/api/core/types/BBox) in
+respectively. The returned value is a [`bounding box`](/api-reference/core/types/classes/BBox) in
 the local space of the `Code` node.
 
 The following example uses `getSelectionBBox` to draw a rectangle around the
@@ -589,7 +589,7 @@ export default makeScene2D(function* (view) {
 `LezerHighlighter` uses CodeMirror's
 [`HighlightStyle`](https://codemirror.net/examples/styling/) to assign colors to
 specific code tokens. By default, the
-[`DefaultHighlightStyle`](/api/2d/code#DefaultHighlightStyle) is used. You can
+[`DefaultHighlightStyle`](/api-reference/2d/code/variables/DefaultHighlightStyle) is used. You can
 specify your own style by passing it as the second argument to the
 `LezerHighlighter` constructor:
 
@@ -613,7 +613,7 @@ Code.defaultHighlighter = new LezerHighlighter(parser, MyStyle);
 ## Multiple Languages
 
 You can configure highlighters on a per-node basis using the
-[`highlighter`](/api/2d/components/Code#highlighter) property. This will
+[`highlighter`](/api-reference/2d/components/classes/Code#highlighter) property. This will
 override the default highlighter set in the project configuration file:
 
 ```tsx
@@ -633,7 +633,7 @@ view.add(
 ```
 
 It can be useful to create a custom component for the languages you often use.
-You can use the [`withDefaults`](/api/2d/utils#withDefaults) helper function to
+You can use the [`withDefaults`](/api-reference/2d/utils) helper function to
 quickly extend any node with your own defaults:
 
 ```ts

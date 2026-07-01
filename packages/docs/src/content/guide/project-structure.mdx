@@ -69,7 +69,7 @@ export default makeProject({
 ```
 
 When specifying multiple scenes, the scenes will be played after another. You
-can also add [transitions](/transitions) between them. A new scene will not
+can also add [transitions](/animations/transitions) between them. A new scene will not
 inherit any nodes from an old scene. This can have a positive influence on
 performance, especially when your scene is very bloated (as it contains a lot of
 nodes). In this case, recalculating the scene (for instance when navigating to a
@@ -129,7 +129,7 @@ export default defineConfig({
 This file contains code to render your video. By default, you can execute its
 code by running `npm run render` (assuming that you bootstrapped your project
 using `npm init @revideo@latest`). Note that the
-[`renderVideo()`](/api/renderer/renderVideo) function accepts variables of its
+[`renderVideo()`](/api-reference/renderer/renderVideo) function accepts variables of its
 own and does not use the ones from `./src/project.ts`.
 
 ```tsx

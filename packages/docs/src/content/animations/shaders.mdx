@@ -2,7 +2,7 @@
 
 Shaders allow you to apply custom effects to any node using WebGL.
 
-Shaders can be specified using the [`shaders`](/api/2d/components/Node#shaders)
+Shaders can be specified using the [`shaders`](/api-reference/2d/components/classes/Node#shaders)
 property. In the simplest case, the value should be a string containing the GLSL
 code for the fragment shader:
 
@@ -159,7 +159,7 @@ implementing the [`WebGLConvertible`][WebGLConvertible] interface.
 
 When a node is cached, its contents are first rendered to a separate canvas and
 then transferred to the screen (You can read more about it in the
-[Filters and Effects](/filters-and-effects#cached-nodes) section) When a shader
+[Filters and Effects](/animations/filters-and-effects#cached-nodes) section) When a shader
 is applied to a descendant of a cached node, the `destinationTexture` will only
 contain the things drawn in the context of that cached node and nothing else.
 This is analogous to how composite operations work.
@@ -170,7 +170,7 @@ know the size and position of everything rendered by the node. This goes beyond
 its logical size. Things like shadows, strokes, and filters can make the
 rendered area larger. We account for that in the case of built-in effects, but
 for custom shaders you may need to adjust the cache size manually. The
-[`cachePadding`](/api/2d/components/Node#cachePadding) property can be used to
+[`cachePadding`](/api-reference/2d/components/classes/Node#cachePadding) property can be used to
 do exactly that. It specifies the extra space around the node that should be
 included in the cache.
 

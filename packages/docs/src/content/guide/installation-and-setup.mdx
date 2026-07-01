@@ -113,7 +113,7 @@ async function render() {
 render();
 ```
 
-For more information, check out the [renderVideo()](/api/renderer/renderVideo)
+For more information, check out the [renderVideo()](/api-reference/renderer/renderVideo)
 API reference.
 
 Alternatively, you can also render your video using the button in the editor
@@ -152,14 +152,14 @@ execute until they first encounter a `yield` statement, and return the yielded
 value. Revideo renders animations by continually calling the generator function,
 which will yield frames that we can export. It is not neccessary to understand
 how this works exactly, but if you are interested, you can read about the
-animation flow in revideo [here](/flow).
+animation flow in revideo [here](/animations/flow).
 
 ### Adding Video and Audio elements
 
-At the start of our generator function, we add [Video](/api/2d/components/Video)
-and [Audio](/api/2d/components/Audio) tags to our `view`, which will display
+At the start of our generator function, we add [Video](/api-reference/2d/components/classes/Video)
+and [Audio](/api-reference/2d/components/classes/Audio) tags to our `view`, which will display
 them on the canvas. Other components you could add include
-[Txt](/api/2d/components/Txt) or [Img](/api/2d/components/Img) tags, or basic
+[Txt](/api-reference/2d/components/classes/Txt) or [Img](/api-reference/2d/components/classes/Img) tags, or basic
 shapes like [Rect](api/2d/components/Rect) or
 [Circle](api/2d/components/Circle). You can find the API for all components
 [here](api/2d/components).
@@ -198,7 +198,7 @@ After adding our background video and audio, we execute
 yield * waitFor(1);
 ```
 
-The function [waitFor](/api/core/flow/#waitFor) does - as the name suggests -
+The function [waitFor](/api-reference/core/flow/functions/waitFor) does - as the name suggests -
 nothing. It is particularly useful when waiting for media (like videos and
 audio) to play or when we want to have a still-standing image.
 
@@ -225,9 +225,9 @@ yield *
 ```
 
 A few things happen here: First, we add the revideo logo as an
-[Img](/api/2d/components/Img) to our canvas. We set its initial width to only 1%
+[Img](/api-reference/2d/components/classes/Img) to our canvas. We set its initial width to only 1%
 of the screen, as we want it to grow as the video plays. We also pass a
-[reference](/references) through `ref={logoRef}`, which we had initialized
+[reference](/animations/references) through `ref={logoRef}`, which we had initialized
 before. Like [React refs](https://react.dev/learn/referencing-values-with-refs),
 references allow us to access and modify the behavior of elements after they've
 been initialized.
@@ -239,13 +239,13 @@ Particularly, we run the following commands:
   within `n` seconds.
 - `rotation(d, s)`: rotates the image by `d` degrees within `s` seconds
 
-The flow of these animations is determined by the keywords [chain](/flow/#chain)
-and [all](/flow/#all). The former instructs revideo to play its input animations
+The flow of these animations is determined by the keywords [chain](/animations/flow/#chain)
+and [all](/animations/flow/#all). The former instructs revideo to play its input animations
 after one another, while the latter instructs revideo to play them
 simultaneously. As a result, we first see the revideo logo rotating around 360
 degrees while growing to 40x its original size. After this is done, the logo
 still grows to 60x its original size. You can learn more about the animation
-flow in revideo [here](/flow).
+flow in revideo [here](/animations/flow).
 
 {/*
 
@@ -291,8 +291,8 @@ the animation, while the provided `view` argument is used to add elements to the
 scene.
 
 You can learn more about scenes, nodes, and this XML-like syntax in the
-[scene hierarchy](/hierarchy) section. For now, what's important is that,
-in our example, we add an individual [``](/api/2d/components/Circle)
+[scene hierarchy](/animations/hierarchy) section. For now, what's important is that,
+in our example, we add an individual [``](/api-reference/2d/components/classes/Circle)
 node to our scene. We make it red, set its width and height as `140` pixels and
 position it `300` pixels left from the center:
 
@@ -310,10 +310,10 @@ view.add(
 ```
 
 To animate our circle we first need to
-[grab a reference to it](/references). That's the purpose of the
-[`createRef`](/api/core/utils#createRef) function. We use it to create a
+[grab a reference to it](/animations/references). That's the purpose of the
+[`createRef`](/api-reference/core/utils/functions/createRef) function. We use it to create a
 reference and pass it to our circle using the
-[`ref`](/api/2d/components/NodeProps#ref) attribute:
+[`ref`](/api-reference/2d/components/interfaces/NodeProps#ref) attribute:
 
 ```tsx
 // highlight-next-line
@@ -377,7 +377,7 @@ as the second argument:
 myCircle().fill('#e6a700', 1);
 ```
 
-This [creates a tween animation](/tweening) that smoothly changes the fill
+This [creates a tween animation](/animations/tweening) that smoothly changes the fill
 color over one second.
 
 Animations in Motion Canvas don't play on their own, we need to explicitly tell
@@ -429,7 +429,7 @@ yield *
 ```
 
 [`all`][all] takes one or more animations and merges them together. Now they'll
-happen at the same time. The [animation flow](/flow) section goes into more
+happen at the same time. The [animation flow](/animations/flow) section goes into more
 depth about generators and flow functions such as [`all`][all].
 
 This brings us back to our initial example:

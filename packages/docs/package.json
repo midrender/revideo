@@ -4,8 +4,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
+    "api:generate": "node scripts/generate-api.mjs",
+    "build": "npm run api:generate && next build",
+    "dev": "npm run api:generate && next dev",
     "start": "next start"
   },
   "dependencies": {
@@ -27,6 +28,9 @@
     "@types/react-dom": "^18.3.7",
     "pagefind": "^1.3.0",
     "tailwindcss": "^4",
-    "tw-animate-css": "^1.3.4"
+    "tw-animate-css": "^1.3.4",
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-frontmatter": "^1.3.1",
+    "typedoc-plugin-markdown": "^4.12.0"
   }
 }

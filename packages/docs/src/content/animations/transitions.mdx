@@ -77,7 +77,7 @@ All available transitions are listed below:
 
 ## Custom transitions
 
-You can use the [`useTransition`](/api/core/transitions#useTransition) function
+You can use the [`useTransition`](/api-reference/core/transitions/functions/useTransition) function
 to implement custom transitions. It allows you to specify two callbacks that
 will modify the contexts of the current and previous scene respectively. The
 value it returns is a callback that you need to call once you finish the
@@ -138,7 +138,7 @@ export function* slideTransition(
 By default, Motion Canvas will transition to the next scene once the generator
 of the current scene has reached the end. In this case, the scene will freeze
 for the duration of the transition. You can use the
-[`finishScene`](/api/core/utils#finishScene) function to trigger the transition
+[`finishScene`](/api-reference/core/utils/functions/finishScene) function to trigger the transition
 early, allowing the animation to continue while transitioning:
 
 ```tsx

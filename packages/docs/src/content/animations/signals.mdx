@@ -7,7 +7,7 @@ all other values that depend on it get automatically updated.
 ## Overview
 
 Signals for primitive types are created using the
-[`createSignal()`](/api/core/signals#createSignal) function, where the first
+[`createSignal()`](/api-reference/core/signals/functions/createSignal) function, where the first
 argument specifies their initial value:
 
 ```ts
@@ -44,7 +44,7 @@ actions (The action is chosen based on the number of arguments):
    ```ts
    signal(3);
    ```
-3. create a [tween](/tweening) for the value:
+3. create a [tween](/animations/tweening) for the value:
    ```ts
    yield * signal(2, 0.3);
    ```
@@ -112,7 +112,7 @@ value is requested again by calling `area()`.
 
 Signals keep track of the initial values specified during creation. At any time,
 we can reset a signal to its initial value by passing the
-[`DEFAULT`](/api/core/signals#DEFAULT) symbol to it:
+[`DEFAULT`](/api-reference/core/signals/variables/DEFAULT) symbol to it:
 
 ```ts
 import {DEFAULT, createSignal} from '@revideo/core';
@@ -124,16 +124,16 @@ signal(DEFAULT);
 signal(); // <- value is reset back to 3
 ```
 
-We can also use the [`DEFAULT`](/api/core/signals#DEFAULT) symbol for
-[tweening](/tweening):
+We can also use the [`DEFAULT`](/api-reference/core/signals/variables/DEFAULT) symbol for
+[tweening](/animations/tweening):
 
 ```ts
 yield * signal(DEFAULT, 2);
 ```
 
 Resetting to the default value is especially useful with node properties. In the
-example below, we set the [`lineHeight`](/api/2d/components/Layout#lineHeight)
-of the [`Txt`](/api/2d/components/Txt) node to `150%`. This will override its
+example below, we set the [`lineHeight`](/api-reference/2d/components/classes/Layout#lineHeight)
+of the [`Txt`](/api-reference/2d/components/classes/Txt) node to `150%`. This will override its
 default value, which would be simply inherited from its parent:
 
 ```tsx
@@ -145,9 +145,9 @@ view.add(
 );
 ```
 
-If we want to reset the [`lineHeight`](/api/2d/components/Layout#lineHeight)
+If we want to reset the [`lineHeight`](/api-reference/2d/components/classes/Layout#lineHeight)
 back to the default, inherited value, we can do so with
-[`DEFAULT`](/api/core/signals#DEFAULT):
+[`DEFAULT`](/api-reference/core/signals/variables/DEFAULT):
 
 ```ts
 text().lineHeight(DEFAULT);
