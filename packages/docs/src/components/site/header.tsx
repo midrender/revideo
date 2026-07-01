@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import {usePathname} from 'next/navigation';
 import {useState} from 'react';
 
 import {Buffer} from './buffer';
@@ -14,42 +13,6 @@ import {cn} from '@/lib/utils';
 
 const GITHUB_URL = 'https://github.com/redotvideo/revideo';
 
-const NAV_LINKS = [{label: 'Documentation', href: '/docs'}] as const;
-
-function isLinkActive(pathname: string, href: string) {
-	return href === '/' ? pathname === '/' : pathname.startsWith(href);
-}
-
-function HeaderNavLink({
-	href,
-	label,
-	onClick,
-	className,
-}: {
-	href: string;
-	label: string;
-	onClick?: () => void;
-	className?: string;
-}) {
-	const pathname = usePathname();
-	const isActive = isLinkActive(pathname, href);
-
-	return (
-		<Link
-			href={href}
-			onClick={onClick}
-			className={cn(
-				buttonVariants({variant: 'ghost', size: 'lg'}),
-				'text-muted-foreground hover:text-foreground',
-				isActive && 'text-foreground',
-				className,
-			)}
-		>
-			{label}
-		</Link>
-	);
-}
-
 export function SiteHeader() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -61,13 +24,7 @@ export function SiteHeader() {
 				</Link>
 
 				{/* Desktop navigation */}
-				<div className="hidden md:flex items-center">
-					<div className="flex items-center gap-0.5">
-						{NAV_LINKS.map((link) => (
-							<HeaderNavLink key={link.href} href={link.href} label={link.label} />
-						))}
-					</div>
-					<div className="mx-2 h-5 w-px bg-border-light" aria-hidden />
+				<div className="hidden md:flex items-center gap-2">
 					<Link
 						href={GITHUB_URL}
 						target="_blank"
@@ -80,7 +37,11 @@ export function SiteHeader() {
 					>
 						<GitHubIcon className="w-[18px] h-[18px]" />
 					</Link>
-					<div className="mx-2 h-5 w-px bg-border-light" aria-hidden />
+					<Link href="/docs" className="justify-center">
+						<Button variant="outline" size="lg">
+							Docs
+						</Button>
+					</Link>
 					<Link href="https://app.midrender.com" className="justify-center">
 						<Button size="lg" shortcut={<EnterIcon />}>
 							Try Midrender
@@ -103,15 +64,6 @@ export function SiteHeader() {
 				<SideBordered borderTop className="md:hidden bg-background">
 					<div className="flex flex-col p-4 gap-3">
 						<div className="flex flex-col gap-1">
-							{NAV_LINKS.map((link) => (
-								<HeaderNavLink
-									key={link.href}
-									href={link.href}
-									label={link.label}
-									onClick={() => setMobileMenuOpen(false)}
-									className="w-full justify-start"
-								/>
-							))}
 							<Link
 								href={GITHUB_URL}
 								target="_blank"
@@ -125,6 +77,15 @@ export function SiteHeader() {
 								GitHub
 							</Link>
 						</div>
+						<Link
+							href="/docs"
+							className="w-full"
+							onClick={() => setMobileMenuOpen(false)}
+						>
+							<Button variant="outline" size="lg" className="w-full">
+								Docs
+							</Button>
+						</Link>
 						<Link href="https://app.midrender.com" className="w-full">
 							<Button size="lg" shortcut={<EnterIcon />} className="w-full">
 								Try Midrender

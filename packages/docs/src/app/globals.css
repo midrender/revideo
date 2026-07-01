@@ -120,6 +120,22 @@ html.dark {
 	--sidebar-ring: oklch(0.556 0 0);
 }
 
+/*
+ * Nextra theme overrides — make the docs interior match the marketing design
+ * system. Nextra ships its own prefixed Tailwind build whose typography
+ * references these font variables; point them at the IBM Plex fonts loaded in
+ * layout.tsx so the docs content, headings, and code blocks share the same
+ * typeface as the rest of the site.
+ */
+:root {
+	--default-font-family: var(--font-ibm-plex-sans), ui-sans-serif, system-ui,
+		sans-serif;
+	--default-mono-font-family: var(--font-ibm-plex-mono), ui-monospace,
+		SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	--x-font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo,
+		Monaco, Consolas, monospace;
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;

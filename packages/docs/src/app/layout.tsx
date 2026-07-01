@@ -51,7 +51,13 @@ export default async function RootLayout({children}: {children: React.ReactNode}
 	const pageMap = await getPageMap();
 	return (
 		<html lang="en" dir="ltr" suppressHydrationWarning>
-			<Head />
+			{/* Match the monochrome marketing palette: a grayscale "accent" (links,
+			    active items, selection) instead of Nextra's default blue, and a
+			    background that matches --background (#0a0a0a dark / #fff light). */}
+			<Head
+				color={{hue: 0, saturation: 0, lightness: {dark: 90, light: 25}}}
+				backgroundColor={{dark: "#0a0a0a", light: "#ffffff"}}
+			/>
 			<body
 				className={cn(
 					ibmPlexSans.variable,
