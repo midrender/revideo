@@ -4,13 +4,14 @@
     "strict": true,
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es2021",
-    "moduleResolution": "node",
+    "target": "es2022",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "incremental": true
+    "incremental": true,
+    "rootDir": "src"
   },
   "include": ["src"]
 }

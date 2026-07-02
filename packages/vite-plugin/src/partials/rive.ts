@@ -16,7 +16,7 @@ async function getRiveWasmPath() {
     return wasmPath;
   } catch (error) {
     console.error('Error finding Rive WASM file:', error);
-    throw new Error('Could not find Rive WASM file');
+    throw new Error('Could not find Rive WASM file', {cause: error});
   }
 }
 

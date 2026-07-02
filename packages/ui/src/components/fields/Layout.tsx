@@ -1,7 +1,7 @@
 import styles from './Layout.module.scss';
 
 import clsx from 'clsx';
-import type {ComponentChildren, JSX} from 'preact';
+import type {ComponentChildren, HTMLAttributes} from 'preact';
 import {useRef, useState} from 'preact/hooks';
 import {useFormattedNumber} from '../../hooks';
 import {Toggle} from '../controls';
@@ -31,7 +31,7 @@ export function FieldSet({children, header, nested}: FieldSetProps) {
   );
 }
 
-export interface FieldValueProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface FieldValueProps extends HTMLAttributes<HTMLDivElement> {
   children: ComponentChildren;
   alignRight?: boolean;
   grow?: boolean;
@@ -90,7 +90,7 @@ export function Field({label, copy, children}: FieldProps) {
   );
 }
 
-export interface FieldSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface FieldSurfaceProps extends HTMLAttributes<HTMLDivElement> {
   disabled?: boolean;
   open?: boolean;
 }

@@ -17,6 +17,9 @@ export default defineConfig({
       entry: 'src/main.tsx',
       formats: ['es'],
       fileName: 'main',
+      // Vite 8 derives the lib CSS name from `fileName` (main.css); the editor
+      // HTML references it as `style.css`, so keep the historical name.
+      cssFileName: 'style',
     },
     rollupOptions: {
       external: [/^@revideo\/core/, /^@?preact/],

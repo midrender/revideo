@@ -2,7 +2,7 @@
   "name": "revideo",
   "private": true,
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.12.0"
   },
   "workspaces": [
     "packages/*"
@@ -37,27 +37,30 @@
     "prettier:fix": "prettier --write ."
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.4.0",
-    "@commitlint/config-conventional": "^19.2.2",
-    "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
-    "eslint": "^8.54.0",
+    "@commitlint/cli": "^21.2.0",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.62.1",
+    "@typescript-eslint/parser": "^8.62.1",
+    "eslint": "^10.6.0",
     "eslint-plugin-tsdoc": "^0.5.2",
-    "husky": "^9.1.5",
-    "lerna": "^8.1.8",
-    "lint-staged": "^15.2.9",
+    "globals": "^17.7.0",
+    "husky": "^9.1.7",
+    "lerna": "^9.0.7",
+    "lint-staged": "^17.0.8",
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "4.1.0",
-    "typescript": "^5.2.2",
-    "vite": "4.5.2",
-    "vitest": "^0.34.6"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.1",
+    "vite": "^8.1.2",
+    "vitest": "^4.1.9"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --fix",
     "*.{js,jsx,ts,tsx,md,scss}": "prettier --write"
   },
   "overrides": {
-    "preact": "10.20.1",
-    "@preact/signals": "1.2.3"
+    "preact": "10.29.3",
+    "@preact/signals": "2.9.2"
   }
 }

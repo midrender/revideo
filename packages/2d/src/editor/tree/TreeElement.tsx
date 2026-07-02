@@ -1,14 +1,13 @@
 import type {Signal} from '@preact/signals';
 import {Collapse, Toggle} from '@revideo/ui';
 import {clsx} from 'clsx';
-import type {ComponentChildren, JSX} from 'preact';
-import type {Ref} from 'preact/hooks';
+import type {ComponentChildren, HTMLAttributes, Ref} from 'preact';
 import styles from './index.module.scss';
 
 const DEPTH_VAR = '--depth';
 
 interface TreeElementProps
-  extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'label' | 'icon'> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'label' | 'icon'> {
   icon?: ComponentChildren;
   label: ComponentChildren;
   children?: ComponentChildren;

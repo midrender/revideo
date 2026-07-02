@@ -1,10 +1,10 @@
-import type {JSX} from 'preact';
+import type {InputHTMLAttributes} from 'preact';
 import {useApplication} from '../../contexts';
 import {usePlayerState} from '../../hooks';
 import {formatDuration} from '../../utils';
 import styles from './Viewport.module.scss';
 
-interface TimestampProps extends JSX.HTMLAttributes<HTMLInputElement> {
+interface TimestampProps extends InputHTMLAttributes<HTMLInputElement> {
   frame: number;
   title: string;
   frameTitle: string;

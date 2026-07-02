@@ -12,7 +12,7 @@
     "@revideo/core": "*",
     "@revideo/ffmpeg": "*",
     "jest-image-snapshot": "^6.2.0",
-    "puppeteer": "^23.4.0"
+    "puppeteer": "^25.3.0"
   },
   "devDependencies": {
     "@revideo/ui": "*",

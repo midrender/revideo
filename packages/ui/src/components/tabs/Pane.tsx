@@ -1,8 +1,8 @@
-import type {ComponentChildren, JSX} from 'preact';
+import type {ComponentChildren, HTMLAttributes} from 'preact';
 import {Header} from '../layout';
 import styles from './Tabs.module.scss';
 
-export interface PaneProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface PaneProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   id?: string;
   children: ComponentChildren;

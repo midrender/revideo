@@ -1,6 +1,6 @@
-import type {JSX} from 'preact';
+import type {HTMLAttributes} from 'preact';
 
-export interface SeparatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
 }
 

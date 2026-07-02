@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "outDir": "./dist",
     "inlineSourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "module": "CommonJS",
     "target": "es2020",
     "declaration": true,
     "declarationMap": true,
-    "incremental": true
+    "incremental": true,
+    "rootDir": "src"
   },
   "include": ["."]
 }

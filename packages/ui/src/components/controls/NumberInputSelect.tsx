@@ -1,11 +1,11 @@
-import type {JSX} from 'preact';
+import type {InputHTMLAttributes} from 'preact';
 import styles from './Controls.module.scss';
 import {NumberInput} from './NumberInput';
 import type {SelectProps} from './Select';
 import {Select} from './Select';
 
 export type NumberInputSelectProps = Omit<
-  JSX.HTMLAttributes<HTMLInputElement>,
+  InputHTMLAttributes<HTMLInputElement>,
   'value' | 'onChange' | 'min' | 'max' | 'step'
 > &
   SelectProps<number> & {

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "lib",
+    "rootDir": "src",
     "inlineSourceMap": true,
     "noImplicitAny": true,
     "strict": true,
@@ -8,7 +9,7 @@
     "target": "es2020",
     "lib": ["es2022", "dom", "dom.iterable"],
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,

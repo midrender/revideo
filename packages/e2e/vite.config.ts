@@ -10,6 +10,9 @@ export default defineConfig({
     }),
   ],
   test: {
-    testTimeout: 60000,
+    // The editor and render pipeline are transformed on demand by the Vite dev
+    // server on first load, which is slow when cold; allow generous headroom.
+    hookTimeout: 120000,
+    testTimeout: 180000,
   },
 });

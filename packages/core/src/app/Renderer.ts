@@ -156,10 +156,13 @@ export class Renderer {
         try {
           await this.exporter.stop?.(result);
         } catch (_) {
-          throw Error(e.message);
+          // A failure while stopping the exporter is secondary; surface the
+          // original render error rather than the stop() failure.
+          // eslint-disable-next-line preserve-caught-error
+          throw new Error(e.message, {cause: e});
         }
         this.exporter = null;
-        throw Error(e.message);
+        throw new Error(e.message, {cause: e});
       }
     }
 

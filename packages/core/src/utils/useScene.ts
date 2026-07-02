@@ -1,3 +1,4 @@
+import type {Logger} from '../app/Logger';
 import type {Scene} from '../scenes';
 
 const SceneStack: Scene[] = [];
@@ -23,8 +24,11 @@ export function endScene(scene: Scene) {
   }
 }
 
-export function useLogger() {
-  return SceneStack.at(-1)?.logger ?? console;
+export function useLogger(): Logger {
+  // Outside a scene we fall back to `console`, which covers the common log
+  // methods; the return is typed as `Logger` so callers get the full API
+  // (e.g. `profile`), matching how the logger is used within a scene.
+  return (SceneStack.at(-1)?.logger ?? console) as Logger;
 }
 
 /**

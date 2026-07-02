@@ -16,7 +16,7 @@ const TYPE_MAP: Record<symbol, FunctionComponent<{value: any}>> = {
 };
 
 export function AutoField({value}: AutoFieldProps) {
-  let Field = UnknownField;
+  let Field: FunctionComponent<{value: any}> = UnknownField;
   if (isType(value)) {
     Field = TYPE_MAP[value.toSymbol()] ?? UnknownField;
   } else if (typeof value === 'number') {

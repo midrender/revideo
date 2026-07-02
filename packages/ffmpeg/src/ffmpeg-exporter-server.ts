@@ -4,11 +4,11 @@ import type {
   RendererSettings,
 } from '@revideo/core';
 import {EventName, sendEvent} from '@revideo/telemetry';
-import * as ffmpeg from 'fluent-ffmpeg';
 import * as os from 'os';
 import * as path from 'path';
 import {ImageStream} from './image-stream';
 import {ffmpegSettings} from './settings';
+import ffmpeg = require('fluent-ffmpeg');
 
 export interface FFmpegExporterSettings extends RendererSettings {
   fastStart: boolean;
