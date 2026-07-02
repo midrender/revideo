@@ -79,7 +79,10 @@ async function generateProject(project) {
 			entryFileName: "index",
 			hideBreadcrumbs: false,
 			hidePageHeader: false,
-			useCodeBlocks: true,
+			// Fenced TypeDoc signatures explode the generated API tree into tens of
+			// thousands of highlighted code blocks. Nextra then runs Shiki over all of
+			// them during `next build`, which dominates docs build time and memory.
+			useCodeBlocks: false,
 			expandObjects: true,
 			// keep angle-bracket generics MDX-safe (wrap types in code)
 			formatWithPrettier: false,
