@@ -9,6 +9,7 @@ node_modules
 /packages/*/build
 /packages/*/output
 /packages/*/.next
+/.next
 
 .rollup.cache
 *.tsbuildinfo
