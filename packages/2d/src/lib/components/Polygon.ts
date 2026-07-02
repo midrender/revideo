@@ -41,7 +41,7 @@ export interface PolygonProps extends CurveProps {
  * import {makeScene2D, Polygon} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const ref = createRef<Polygon>();
  *   view.add(
  *     <Polygon
@@ -58,7 +58,7 @@ export interface PolygonProps extends CurveProps {
  * // snippet Pentagon outline
  * import {makeScene2D, Polygon} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   view.add(
  *     <Polygon
  *       sides={5}

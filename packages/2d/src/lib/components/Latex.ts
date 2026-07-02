@@ -25,7 +25,7 @@ export interface LatexProps extends ImgProps {
  * ```tsx editor
  * import {Latex, makeScene2D} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   view.add(
  *     <Latex
  *       // Note how this uses \color to set the color.

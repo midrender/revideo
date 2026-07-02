@@ -30,7 +30,9 @@
   "devDependencies": {
     "@preact/signals": "^2.9.2",
     "@revideo/ui": "0.10.4",
+    "@rollup/plugin-commonjs": "^28.0.9",
     "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.3.0",
     "clsx": "^2.0.0",
     "jsdom": "^29.1.1",

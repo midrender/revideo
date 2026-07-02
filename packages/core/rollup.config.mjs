@@ -11,6 +11,20 @@ export default [
       format: 'es',
       sourcemap: true,
     },
-    plugins: [resolve(), commonjs(), typescript(), terser()],
+    plugins: [
+      resolve(),
+      commonjs(),
+      typescript({
+        // The package tsconfig emits declarations into lib/; the bundle only
+        // needs plain JS routed to dist/.
+        compilerOptions: {
+          outDir: 'dist',
+          declaration: false,
+          declarationMap: false,
+          incremental: false,
+        },
+      }),
+      terser(),
+    ],
   },
 ];

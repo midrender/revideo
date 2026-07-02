@@ -59,7 +59,7 @@ jobs:
       - run: npm install @ffmpeg-installer/ffmpeg
       - run: npm install @ffprobe-installer/ffprobe
       - run: npm list
-      - run: npx lerna run build
+      - run: npx lerna run build --ignore @revideo/docs
       - run: npm run examples:build
   tests:
     name: Unit tests
@@ -71,7 +71,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx lerna run build
+      - run: npx lerna run build --ignore @revideo/docs
       - run: npx lerna run test
   e2e:
     name: E2E
@@ -87,7 +87,7 @@ jobs:
       # TODO: FFmpeg and ffprobe installer don't automatically install the binaries
       - run: npm install @ffmpeg-installer/ffmpeg
       - run: npm install @ffprobe-installer/ffprobe
-      - run: npx lerna run build
+      - run: npx lerna run build --ignore @revideo/docs
       - run: npm run e2e:test
       - uses: actions/upload-artifact@v4
         if: failure()

@@ -1,0 +1,235 @@
+.root {
+  /* Light theme palette (ported from the old docusaurus docs). */
+  --fiddle-surface-color: #ffffff;
+  --fiddle-background-color: #f6f7f8;
+  --fiddle-border-color: rgba(0, 0, 0, 0.1);
+  --fiddle-active-color: rgba(0, 0, 0, 0.05);
+  --fiddle-selection-color: rgba(0, 0, 0, 0.1);
+  --fiddle-muted-color: rgba(0, 0, 0, 0.4);
+  --fiddle-text-color: #1c1e21;
+  --fiddle-error-color: #e13238;
+  --fiddle-error-background: rgba(225, 50, 56, 0.08);
+  --fiddle-accent-color: #737373;
+  --fiddle-pre-padding: 1rem;
+
+  --hl-color: rgb(57, 58, 52);
+  --hl-background: var(--fiddle-surface-color);
+  --hl-comment: #999988;
+  --hl-keyword: #00009f;
+  --hl-number: #36acaa;
+  --hl-string: #e3116c;
+  --hl-punctuation: #393a34;
+  --hl-constant: #36acaa;
+  --hl-variable: var(--hl-color);
+  --hl-tag: #00009f;
+  --hl-function: #d73a49;
+  --hl-class: #00009f;
+  --hl-char: rgb(209, 105, 105);
+
+  position: relative;
+  border: 1px solid var(--fiddle-border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 1.5rem 0;
+  color: var(--fiddle-text-color);
+}
+
+:global(.dark) .root {
+  /* Dark theme palette (ported from the old docusaurus docs). */
+  --fiddle-surface-color: #161616;
+  --fiddle-background-color: #0a0a0a;
+  --fiddle-border-color: rgba(255, 255, 255, 0.12);
+  --fiddle-active-color: rgba(255, 255, 255, 0.05);
+  --fiddle-selection-color: rgba(255, 255, 255, 0.12);
+  --fiddle-muted-color: rgba(255, 255, 255, 0.35);
+  --fiddle-text-color: #e3e3e3;
+  --fiddle-error-color: #ff5c57;
+  --fiddle-error-background: rgba(255, 92, 87, 0.1);
+  --fiddle-accent-color: #a3a3a3;
+
+  --hl-color: #f8f8f8;
+  --hl-comment: rgb(106, 153, 85);
+  --hl-keyword: rgb(86, 156, 214);
+  --hl-number: rgb(181, 206, 168);
+  --hl-string: rgb(206, 145, 120);
+  --hl-punctuation: rgb(212, 212, 212);
+  --hl-constant: rgb(100, 102, 149);
+  --hl-variable: rgb(156, 220, 254);
+  --hl-tag: rgb(78, 201, 176);
+  --hl-function: rgb(220, 220, 170);
+  --hl-class: rgb(78, 201, 176);
+  --hl-char: rgb(209, 105, 105);
+}
+
+.root:focus-within .layoutControl,
+.root:hover .layoutControl {
+  opacity: 1;
+}
+
+.layoutControl {
+  z-index: 1;
+  transition: opacity 200ms ease-in-out;
+  opacity: 0;
+  display: flex;
+  column-gap: 0.2rem;
+  position: absolute;
+  right: calc(var(--fiddle-pre-padding) / 2);
+  top: calc(var(--fiddle-pre-padding) / 2);
+}
+
+.layoutControl .icon {
+  transition: color 100ms ease-in-out;
+  color: var(--fiddle-muted-color);
+}
+
+.icon.active {
+  color: var(--fiddle-text-color);
+  pointer-events: none;
+}
+
+.progress {
+  height: 1px;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
+  background-color: var(--fiddle-accent-color);
+}
+
+.controls {
+  background-color: var(--fiddle-surface-color);
+  display: flex;
+  border-bottom: 1px solid var(--fiddle-border-color);
+  border-top: 1px solid var(--fiddle-border-color);
+}
+
+.previewOnly .controls {
+  border-bottom: none;
+}
+
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.section.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.section:first-child {
+  flex-basis: 100%;
+  justify-content: start;
+}
+
+.section:last-child {
+  flex-basis: 100%;
+  justify-content: end;
+}
+
+.icon {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--fiddle-text-color);
+  transition: background 100ms ease-in-out;
+}
+
+.icon:hover {
+  background-color: var(--fiddle-selection-color);
+  color: var(--fiddle-text-color);
+}
+
+.root button {
+  appearance: none;
+  background-color: unset;
+  border: none;
+  font: inherit;
+}
+
+.error {
+  border-radius: 0;
+  margin: 0;
+  padding: var(--fiddle-pre-padding);
+  border-top: 1px solid var(--fiddle-error-color);
+  border-bottom: 1px solid var(--fiddle-error-color);
+  background-color: var(--fiddle-error-background);
+  color: var(--fiddle-text-color);
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+}
+
+/* The statically rendered code block acts as a placeholder until CodeMirror
+   takes over, and as the displayed source in code-only mode. */
+.root .editor .source {
+  display: none;
+}
+
+.root .editor .source pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background-color: var(--hl-background);
+}
+
+.root .editor .source:first-child:last-child {
+  display: block;
+}
+
+.preview {
+  background-color: var(--fiddle-surface-color);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.button {
+  cursor: pointer;
+  height: 2rem;
+  padding: 0 0.375rem;
+  color: var(--fiddle-text-color);
+  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.button kbd {
+  border: 1px solid var(--fiddle-border-color);
+  border-radius: 0.25rem;
+  padding: 0 0.3rem;
+  font-size: 0.75rem;
+  font-family: var(--font-ibm-plex-mono), monospace;
+}
+
+.picker {
+  margin-right: 0.375rem;
+}
+
+.codeOnly .preview,
+.codeOnly .controls,
+.codeOnly .error,
+.codeOnly .progress,
+.codeOnly :global(.cm-editor) {
+  display: none !important;
+}
+.codeOnly .editor .source {
+  display: block;
+}
+
+.previewOnly .editor {
+  display: none;
+}

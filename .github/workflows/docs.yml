@@ -1,0 +1,34 @@
+name: Docs
+
+# The documentation site (packages/docs) has its own pipeline, independent of
+# the package build/publish flow in verify.yml and publish.yml. It only runs
+# when the docs actually change.
+
+on:
+  pull_request:
+    paths:
+      - 'packages/docs/**'
+      - '.github/workflows/docs.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/docs/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch: {}
+
+env:
+  HUSKY: 0
+
+jobs:
+  build:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run docs:build

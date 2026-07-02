@@ -1,0 +1,606 @@
+# Filters and Effects
+
+Because Motion Canvas is built on top of the Browser's 2D Rendering Context, we
+can make use of several canvas operations that are provided by the Browser.
+
+## Filters
+
+Filters let you apply various effects to your nodes. You can find all available
+filters on
+[MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter).
+
+```tsx editor mode=preview
+import {Img, Txt, makeScene2D} from '@revideo/2d';
+import {all, createRef, createSignal, linear} from '@revideo/core';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const timePassed = createSignal(0);
+  const iconRef = createRef<Img>();
+  const currentEffectText = createSignal('');
+  yield view.add(
+    <>
+      <Img src={'/revideo/img/logo_dark.svg'} size={200} x={-200} ref={iconRef} />
+      <Txt
+        fill={'rgba(255, 255, 255, 0.6)'}
+        fontSize={20}
+        x={200}
+        text={() => 'Current Filter: ' + currentEffectText()}
+      />
+    </>,
+  );
+
+  function* filters() {
+    yield currentEffectText('Blur');
+    yield* iconRef().filters.blur(20, 1);
+    yield* iconRef().filters.blur(0, 1);
+    yield currentEffectText('Grayscale');
+    yield* iconRef().filters.grayscale(1, 1);
+    yield* iconRef().filters.grayscale(0, 1);
+    yield currentEffectText('Hue');
+    yield* iconRef().filters.hue(360, 2);
+    yield currentEffectText('Contrast');
+    yield* iconRef().filters.contrast(0, 1);
+    yield* iconRef().filters.contrast(1, 1);
+  }
+
+  yield* all(timePassed(4, 2 * 4, linear), filters());
+});
+```
+
+Every node has a `filters` property containing an array of
+[filters](/api-reference/2d/partials) that will be applied to the node. You can
+declare this array yourself, or use the `filters` property to configure
+individual filters. Both ways are shown in the following example:
+
+> [!NOTE]
+>
+> Some filters, like `opacity` and `drop-shadow`, have their own dedicated
+> properties directly on the [`Node`](/api-reference/2d/components/classes/Node#opacity), class.
+>
+
+```tsx editor
+// snippet Filters Property
+import {Img, makeScene2D} from '@revideo/2d';
+import {createRef} from '@revideo/core';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const iconRef = createRef<Img>();
+  yield view.add(<Img src={'/revideo/img/logo_dark.svg'} size={200} ref={iconRef} />);
+  // Modification happens by accessing the `filters` property.
+  // Individual filters don't need to be initialized. If a filter you set doesn't
+  // exists, it will be automatically created and added to the list of filters.
+  // If you have multiple filters of the same type, this will only
+  // modify the first instance (you can use the array method for more control).
+  yield* iconRef().filters.blur(10, 1);
+  yield* iconRef().filters.blur(0, 1);
+});
+
+// snippet Filters Array
+import {makeScene2D, Img, blur} from '@revideo/2d';
+import {createSignal} from '@revideo/core';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const blurSignal = createSignal(0);
+  yield view.add(
+    <Img
+      src={'/revideo/img/logo_dark.svg'}
+      size={200}
+      /* Modification happens by changing the Filters inside the 'filters' array */
+      filters={[blur(blurSignal)]}
+    />,
+  );
+  yield* blurSignal(10, 1);
+  yield* blurSignal(0, 1);
+});
+```
+
+Keep in mind that the order in which you apply the effects does matter, as can
+be seen in the following example:
+
+```tsx editor mode=preview ratio=3
+import {
+  Circle,
+  Grid,
+  Layout,
+  Rect,
+  Txt,
+  contrast,
+  makeScene2D,
+  saturate,
+} from '@revideo/2d';
+import {createSignal, linear, map, waitFor} from '@revideo/core';
+
+export default makeScene2D('scene', function* (view) {
+  view.fontFamily('monospace').fontSize(20).fill('#141414');
+  view.add(<Rect size={5000} fill={'#111'} />);
+
+  const t = createSignal(0);
+  const saturateValue = createSignal(1);
+  const contrastValue = createSignal(1);
+
+  view.add(
+    // Left Segment
+    <Layout x={-300} direction={'column'} alignItems={'center'} gap={20} layout>
+      <Circle
+        size={150}
+        fill={'#99c47a'}
+        filters={[saturate(saturateValue), contrast(contrastValue)]}
+      />
+      <Layout direction={'row'} gap={20}>
+        <Txt fill={'#ffa'}>saturation</Txt>
+        <Txt fill={'#aff'}>constrast</Txt>
+      </Layout>
+    </Layout>,
+  );
+
+  // Right Segment
+  yield view.add(
+    <Layout x={300} direction={'column'} alignItems={'center'} gap={20} layout>
+      <Circle
+        size={150}
+        fill={'#99c47a'}
+        filters={[contrast(contrastValue), saturate(saturateValue)]}
+      />
+      <Layout direction={'row'} gap={20}>
+        <Txt fill={'#aff'}>constrast</Txt>
+        <Txt fill={'#ffa'}>saturation</Txt>
+      </Layout>
+    </Layout>,
+  );
+
+  // Center Segment
+  view.add(
+    <Layout y={-10}>
+      <Grid size={200} stroke={'gray'} lineWidth={1} spacing={40} />
+      <Grid size={200} stroke={'#333'} lineWidth={1} spacing={20} />
+      <Rect size={200} stroke={'gray'} lineWidth={2} />
+      <Txt
+        fill={'white'}
+        text={'saturation'}
+        rotation={-90}
+        x={-115}
+        fill={'#ffa'}
+      />
+      <Txt fill={'white'} text={'contrast'} y={115} fill={'#aff'} />
+      <Txt fill={'white'} text={'1'} position={[-115, 100]} />
+      <Txt fill={'white'} text={'1'} position={[-100, 115]} />
+      <Txt fill={'white'} text={'5'} position={[-115, -90]} />
+      <Txt fill={'white'} text={'5'} position={[100, 115]} />
+      <Circle
+        x={() => map(-150, -100, contrastValue())}
+        y={() => map(150, 100, saturateValue())}
+        fill={'white'}
+        size={20}
+      />
+    </Layout>,
+  );
+
+  yield t(2, 8, linear);
+  yield* saturateValue(5, 2);
+  yield* contrastValue(5, 2);
+  yield* waitFor(1);
+  yield* saturateValue(1, 2);
+  yield* contrastValue(1, 2);
+});
+```
+
+## Masking and composite operations
+
+Composite operations define how the thing we draw (source) interacts with what
+is already on the canvas (destination). Among other things, it allows us to
+define complex masks. MDN has a
+[great visualisation of all available composite operations](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation#operations).
+
+You can create a mask by treating one node as the "masking" / "stencil" layer,
+and another node as the "value" layer. The mask layer will define if the value
+layer will be visible or not. The value layer will be what's actually visible in
+the end.
+
+```tsx editor mode=preview ratio=3
+import {Grid, Img, Layout, makeScene2D, Node, Rect, Txt} from '@revideo/2d';
+import {
+  all,
+  createRef,
+  createSignal,
+  Origin,
+  Vector2,
+  waitFor,
+} from '@revideo/core';
+
+const ImageSource =
+  'https://images.unsplash.com/photo-1685901088371-f498db7f8c46';
+
+export default makeScene2D('scene', function* (view) {
+  view.fontSize(20).fill('#141414');
+
+  const valuePosition = createSignal(new Vector2(150, -30));
+  const maskPosition = createSignal(new Vector2(-150, -30));
+
+  const maskLayerRotation = createSignal(0);
+  const valueLayerRotation = createSignal(0);
+
+  const fakeMaskLayerGroup = createRef<Node>();
+  const fakeValueLayerGroup = createRef<Node>();
+
+  // First show fake a Mask Layer. Funnily enough, this also makes use of masking!
+  yield view.add(
+    <Node ref={fakeMaskLayerGroup} opacity={0} cache>
+      <Img
+        src="/revideo/img/logo_dark.svg"
+        size={200}
+        position={maskPosition}
+        rotation={maskLayerRotation}
+      />
+      <Grid
+        compositeOperation={'source-in'}
+        stroke={'white'}
+        width={1000}
+        height={400}
+        spacing={5}
+        lineWidth={1}
+      />
+    </Node>,
+  );
+  yield view.add(
+    <Node ref={fakeValueLayerGroup} opacity={0} cache>
+      {/*
+      We do not specifically need to use the Image here, a simple Rectangle would be enough.
+      It is however convenient because we get the correct aspect ratio.
+      */}
+      <Img
+        src={ImageSource}
+        width={360}
+        position={valuePosition}
+        rotation={valueLayerRotation}
+      />
+      <Grid
+        compositeOperation={'source-in'}
+        stroke={'#ff0'}
+        width={1000}
+        rotation={45}
+        height={1000}
+        spacing={5}
+        lineWidth={1}
+      />
+    </Node>,
+  );
+
+  // Legend (Bottom Center)
+  yield view.add(
+    <Rect
+      fill={'#1a1a1aa0'}
+      layout
+      direction={'row'}
+      gap={20}
+      padding={20}
+      bottom={() => view.getOriginDelta(Origin.Bottom)}
+    >
+      <Layout gap={5} alignItems={'center'}>
+        <Grid
+          stroke={'white'}
+          width={18}
+          height={18}
+          spacing={5}
+          lineWidth={1}
+        />
+        <Txt fill={'white'}>Hidden Stencil / Mask Layer</Txt>
+      </Layout>
+      <Layout gap={5} alignItems={'center'}>
+        <Grid
+          stroke={'#ff0'}
+          rotation={45}
+          width={18}
+          height={18}
+          spacing={5}
+          lineWidth={1}
+        />
+        <Txt fill={'white'}>Hidden Value Layer</Txt>
+      </Layout>
+    </Rect>,
+  );
+  yield* all(
+    fakeMaskLayerGroup().opacity(1, 1),
+    fakeValueLayerGroup().opacity(1, 1),
+  );
+  // Here comes the *actual* value and stencil mask. Because it got added last it will be ontop of the "fake" layers.
+  yield view.add(
+    <Node cache>
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img
+        src="/revideo/img/logo_dark.svg"
+        size={200}
+        position={maskPosition}
+        rotation={maskLayerRotation}
+      />
+      {/** Value Layer. Anything from here will be visible if the Stencil Layer allows for it. */}
+      <Img
+        src={ImageSource}
+        width={360}
+        position={valuePosition}
+        rotation={valueLayerRotation}
+        compositeOperation={'source-in'}
+      />
+    </Node>,
+  );
+
+  // Visible Loop
+  yield* all(
+    maskPosition(new Vector2(0, -30), 2),
+    valuePosition(new Vector2(0, -30), 2),
+  );
+  yield* maskLayerRotation(360, 2);
+  yield* valueLayerRotation(-360, 2);
+  yield* waitFor(1);
+  yield* all(
+    maskPosition(new Vector2(-150, -30), 2),
+    valuePosition(new Vector2(150, -30), 2),
+  );
+  yield* all(
+    fakeMaskLayerGroup().opacity(0, 1),
+    fakeValueLayerGroup().opacity(0, 1),
+  );
+
+  // Hidden Loop
+  yield* all(
+    maskPosition(new Vector2(0, -30), 2),
+    valuePosition(new Vector2(0, -30), 2),
+  );
+  yield* maskLayerRotation(2 * 360, 2);
+  yield* valueLayerRotation(2 * -360, 2);
+  yield* waitFor(1);
+  yield* all(
+    maskPosition(new Vector2(-150, -30), 2),
+    valuePosition(new Vector2(150, -30), 2),
+  );
+});
+```
+
+Any of the following composite operations can be used to create a mask:
+`source-in`, `source-out`, `destination-in`, and `destination-out`. There is
+also a `xor` operation which can be helpful if you want two value layers that
+hide each other on overlap. Use the dropdown below to browse all examples.
+
+```tsx editor
+// snippet source-in
+import {Img, Node, makeScene2D} from '@revideo/2d';
+import {createRef, linear} from '@revideo/core';
+
+// Image by Marek Piwnicki (https://unsplash.com/photos/_4o-1pr2oqU)
+const ImageSource =
+  'https://images.unsplash.com/photo-1685901088371-f498db7f8c46';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const maskRef = createRef<Img>();
+  const valueRef = createRef<Img>();
+
+  yield view.add(
+    <Node cache>
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img ref={maskRef} size={250} src="/revideo/img/logo_dark.svg" />
+      {/** Value Layer. Anything from here will be visible if the Stencil Layer allows for it. */}
+      <Img
+        ref={valueRef}
+        x={100}
+        src={ImageSource}
+        width={600}
+        compositeOperation={'source-in'}
+      />
+    </Node>,
+  );
+
+  yield maskRef().rotation(360, 4, linear);
+  yield* valueRef().x(-100, 1.5).wait(0.5).to(100, 1.5).wait(0.5);
+});
+// snippet source-out
+import {Img, Node, makeScene2D} from '@revideo/2d';
+import {createRef, linear} from '@revideo/core';
+
+// Image by Marek Piwnicki (https://unsplash.com/photos/_4o-1pr2oqU)
+const ImageSource =
+  'https://images.unsplash.com/photo-1685901088371-f498db7f8c46';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const maskRef = createRef<Img>();
+  const valueRef = createRef<Img>();
+
+  yield view.add(
+    <Node cache>
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img ref={maskRef} size={250} src="/revideo/img/logo_dark.svg" />
+      {/** Value Layer. Anything from here will be visible if the Stencil Layer allows for it. */}
+      <Img
+        ref={valueRef}
+        x={100}
+        src={ImageSource}
+        width={600}
+        compositeOperation={'source-out'}
+      />
+    </Node>,
+  );
+
+  yield maskRef().rotation(360, 4, linear);
+  yield* valueRef().x(-100, 1.5).wait(0.5).to(100, 1.5).wait(0.5);
+});
+// snippet destination-in
+import {Img, Node, makeScene2D} from '@revideo/2d';
+import {createRef, linear} from '@revideo/core';
+
+// Image by Marek Piwnicki (https://unsplash.com/photos/_4o-1pr2oqU)
+const ImageSource =
+  'https://images.unsplash.com/photo-1685901088371-f498db7f8c46';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const maskRef = createRef<Img>();
+  const valueRef = createRef<Img>();
+
+  yield view.add(
+    <Node cache>
+      {/** Value Layer. Anything from here will be visible if the Stencil Layer allows for it. */}
+      <Img ref={valueRef} x={100} src={ImageSource} width={600} />
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img
+        ref={maskRef}
+        size={250}
+        src="/revideo/img/logo_dark.svg"
+        compositeOperation={'destination-in'}
+      />
+      {/** !!! Notice how the roles got reversed in comparison to source-in
+       * compositeOperation is now on the Mask, and the Value Layer lies above the Mask Layer.
+       */}
+    </Node>,
+  );
+
+  yield maskRef().rotation(360, 4, linear);
+  yield* valueRef().x(-100, 1.5).wait(0.5).to(100, 1.5).wait(0.5);
+});
+// snippet destination-out
+import {Img, Node, makeScene2D} from '@revideo/2d';
+import {createRef, linear} from '@revideo/core';
+
+// Image by Marek Piwnicki (https://unsplash.com/photos/_4o-1pr2oqU)
+const ImageSource =
+  'https://images.unsplash.com/photo-1685901088371-f498db7f8c46';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const maskRef = createRef<Img>();
+  const valueRef = createRef<Img>();
+
+  yield view.add(
+    <Node cache>
+      {/** Value Layer. Anything from here will be visible if the Stencil Layer allows for it. */}
+      <Img ref={valueRef} x={100} src={ImageSource} width={600} />
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img
+        ref={maskRef}
+        size={250}
+        src="/revideo/img/logo_dark.svg"
+        compositeOperation={'destination-out'}
+      />
+      {/** !!! Notice how the roles got reversed in comparison to source-out
+       * compositeOperation is now on the Mask, and the Value Layer lies above the Mask Layer.
+       */}
+    </Node>,
+  );
+
+  yield maskRef().rotation(360, 4, linear);
+  yield* valueRef().x(-100, 1.5).wait(0.5).to(100, 1.5).wait(0.5);
+});
+// snippet xor
+import {Circle, Img, Node, makeScene2D} from '@revideo/2d';
+import {createRef, easeInOutSine, linear} from '@revideo/core';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const maskRef = createRef<Img>();
+  const valueRef = createRef<Circle>();
+
+  yield view.add(
+    <Node cache>
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img ref={maskRef} size={250} src="/revideo/img/logo_dark.svg" />
+      {/** Value Layer. Anything from here will be visible if the Stencil Layer allows for it. */}
+      <Circle
+        ref={valueRef}
+        size={0}
+        fill={'white'}
+        compositeOperation={'xor'}
+      />
+    </Node>,
+  );
+
+  yield maskRef().rotation(360, 4, linear);
+  yield* valueRef()
+    .size(300, 1.5, easeInOutSine)
+    .wait(0.5)
+    .to(0, 1.5)
+    .wait(0.5);
+});
+// snippet xor and source-in
+import {Circle, Img, Node, makeScene2D} from '@revideo/2d';
+import {createRef, easeInOutSine, linear} from '@revideo/core';
+
+/*
+ * This example shows you that you can also nest composite operations.
+ * Here we use a source-in to mask out an Image and use the Result to XOR with
+ * the MC Icon
+ */
+
+// Image by Marek Piwnicki (https://unsplash.com/photos/_4o-1pr2oqU)
+const ImageSource =
+  'https://images.unsplash.com/photo-1685901088371-f498db7f8c46';
+
+export default makeScene2D('scene', function* (view) {
+  view.fill('#141414');
+
+  const maskRef = createRef<Img>();
+  const valueRef = createRef<Circle>();
+  const imageRef = createRef<Img>();
+
+  yield view.add(
+    <Node cache>
+      {/** Stencil / Mask Layer. It defines if the Value Layer is visible or not */}
+      <Img ref={maskRef} size={250} src="/revideo/img/logo_dark.svg" />
+      {/** Value Layer (which in itself is generated from a composite operation)  */}
+      <Node cache compositeOperation={'xor'}>
+        <Circle ref={valueRef} size={0} fill={'white'} />
+        <Img
+          ref={imageRef}
+          width={600}
+          rotation={180}
+          src={ImageSource}
+          compositeOperation={'source-in'}
+        />
+      </Node>
+    </Node>,
+  );
+
+  yield maskRef().rotation(360, 4, linear);
+  yield imageRef().rotation(-360 + 180, 4, linear);
+  yield* valueRef()
+    .size(300, 1.5, easeInOutSine)
+    .wait(0.5)
+    .to(0, 1.5)
+    .wait(0.5);
+});
+```
+
+## Cached nodes
+
+Both filters and composite operations require a cached
+[`Node`](/api-reference/2d/components/classes/Node). Filters can set it automatically, while
+composite operations require you to set it explicitly on an ancestor
+[`Node`](/api-reference/2d/components/classes/Node) (usually the parent node).
+
+A cached [`Node`](/api-reference/2d/components/classes/Node) and its children are rendered on an
+offscreen canvas first, before getting added to the main scene.  
+For filters this is needed because they are applied to the entire canvas. By
+creating a new canvas and moving the elements that should get affected by the
+filters over, applying filters to the entire "new" canvas, and then moving back
+the result, you effectively only apply the filters to the moved elements.
+
+To turn a [`Node`](/api-reference/2d/components/classes/Node) into a cached node, simply pass the
+[`cache`](/api-reference/2d/components/interfaces/NodeProps#cache) property
+
+```tsx
+<Node cache>...</Node>
+// or
+<Node cache={true}>...</Node>
+```
+
+All components inherit from [`Node`](/api-reference/2d/components/classes/Node), so you can set
+the cache on all of them.

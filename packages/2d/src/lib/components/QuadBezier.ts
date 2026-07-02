@@ -29,7 +29,7 @@ export interface QuadBezierProps extends CurveProps {
  * import {makeScene2D, QuadBezier} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const bezier = createRef<QuadBezier>();
  *
  *   view.add(

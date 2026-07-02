@@ -63,7 +63,7 @@ export interface ImgProps extends RectProps {
  * import {createRef} from '@revideo/core';
  * import {makeScene2D} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const ref = createRef<Img>();
  *   yield view.add(
  *     <Img

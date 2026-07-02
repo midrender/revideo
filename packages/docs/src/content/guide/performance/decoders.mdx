@@ -1,0 +1,53 @@
+# Decoders
+
+During playback, `` nodes are simply played as HTML Video Elements.
+During export, Revideo extracts video frames individually to precisely render
+the resulting video.
+
+Revideo provides different decoders (`web`, `ffmpeg`, `slow`) to extract frames,
+which you can select using the `decoder` prop (e.g
+``). Below, you'll find a description of the three
+decoders and which you should choose.
+
+## Webcodecs (`decoder={"web"}`)
+
+This decoder relies on the webcodecs API to extract frames directly in the
+browser. It is the fastest decoder, but less reliable than others and only
+supports mp4 files. If your video file is an mp4 file and you don't explicitly
+choose another decoder, Revideo will use this decoder.
+
+## Ffmpeg (`decoder={"ffmpeg"}`)
+
+This decoder runs ffmpeg outside of the browser and sends individual frames to
+the browser. Since ffmpeg is a very mature and well maintained project, it is
+very reliable and works with almost all video formats. On a laptop, the ffmpeg
+decoder is around 2-3x slower than the webcodecs decoder, as the webcodecs
+decoder makes efficient use of the laptop's hardware. However, on hardware such
+as EC2 instances or when rendering using AWS Lambda, the speed difference
+between the webcodecs and ffmpeg decoder is almost negligible.
+
+## HTMLVideoElement (`decoder={"slow"}`)
+
+This decoder seeks to specific video frames directly on the HTML Video Element
+by adjusting its `.currentTime` property. It is the slowest decoder and should
+only be chosen when you use transparent videos.
+
+## Which decoder should I choose?
+
+In general, we recommend the following:
+
+**When you build an app that renders videos in the cloud (on AWS Lambda or VM
+instances), you should most likely choose the ffmpeg decoder.** When rendering
+on server hardware, the ffmpeg decoder is almost as fast as the webcodecs
+decoder (it takes around 1.1x-1.2x as long as the webcodecs decoder based on our
+experiments), but it is more reliable and supports more video formats.
+
+There are a few exceptions to this:
+
+- You only create one-off videos and render on your laptop. In this case, you
+  can choose the webcodecs decoder
+- If speed is super important for you, you only use mp4 videos in your
+  `` nodes, and you're okay with less reliability, you could use the
+  webcodecs decoder
+- Your `` is a transparent video. In this case, you should use
+  `decoder={"slow"}`.

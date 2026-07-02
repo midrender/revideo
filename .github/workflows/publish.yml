@@ -44,7 +44,7 @@ jobs:
       - run: git config --global user.email "167322027+revideo-bot@users.noreply.github.com"
       - run: git config --global user.name "revideo-bot"
       - run: npm ci
-      - run: npx lerna run build
+      - run: npx lerna run build --ignore @revideo/docs
       - if: ${{ inputs.releaseType == 'release' }}
         run: npx lerna publish --yes --force-publish --exact ${{ inputs.version }}
       - if: ${{ inputs.releaseType == 'canary' }}

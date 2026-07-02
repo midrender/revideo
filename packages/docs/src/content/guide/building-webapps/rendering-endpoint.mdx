@@ -1,0 +1,129 @@
+# Local Development with the CLI
+
+To build web apps on your laptop, we recommend using our CLI to deploy your
+revideo project, which will expose a web server with endpoints for rendering
+videos and downloading rendered videos as mp4. An application example of this
+can be found in our
+[Saas template](https://github.com/redotvideo/examples/saas-template).
+
+To deploy a Revideo project, run the following command:
+
+```bash
+npx revideo serve --projectFile ./src/project.ts --port 3000
+```
+
+The `--port` parameter is optional. By default, the service will use port 4000.
+
+## Starting a render job
+
+Once your Revideo project is deployed, you can render videos using the `/render`
+endpoint by passing your desired `settings` and `variables` as a parameter. This
+endpoint will trigger a render process on the server, and respond with a
+download url once the rendering process has finished.
+
+**Example request:**
+
+```bash
+curl -X POST http://your-revideo-service.com/render \
+  -H "Content-Type: application/json" \
+  -d '{
+    "variables": {
+      "image": "some-image.png",
+      "color": "red"
+    },
+    "settings": { "workers": 2 }
+  }'
+```
+
+If you want to report the rendering progress back to the client, you can set the
+`streamProgress` parameter to true:
+
+```bash
+curl -X POST http://your-revideo-service.com/render \
+  -H "Content-Type: application/json" \
+  -d '{
+    "variables": {
+      "image": "some-image.png",
+      "color": "red"
+    },
+    "settings": { "workers": 2 },
+    "streamProgress": true
+  }'
+```
+
+## Rendering With Callbacks
+
+If you don't want to keep the connection to the server open during the full
+duration of the rendering process, you can render videos with the `callbackUrl`
+parameter. This will trigger a render process on the server, and respond to a
+callback url after the rendering process is done.
+
+**Example request:**
+
+```bash
+curl -X POST http://your-revideo-service.com/render \
+  -H "Content-Type: application/json" \
+  -d '{
+    "variables": {
+      "image": "some-image.png",
+      "color": "red"
+    },
+    "callbackUrl": "http://your-callback-url.com/render-status"
+  }'
+```
+
+In this request, `variables` refer to the variables passed to your video, and
+`callbackUrl` is the url that will receive an update when the rendering process
+has finished. The immediate response to the request will contain a `jobId` that
+lets the client distinguish between status updates from different rendering
+jobs.
+
+**Example response:**
+
+```json
+{
+  "jobId": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+### Downloading rendered videos
+
+Once the render job is finished or has failed, the revideo servide will send an
+update to the specified callback url via a POST request. The response will
+contain a download link from which you can download the exported video.
+
+**Example Callback Response (success):**
+
+```bash
+curl -X POST <callbackUrl> \
+-H "Content-Type: application/json" \
+-d '{
+  "jobId": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "success",
+  "downloadLink": "http://your-revideo-service.com/download/42078492-fbb9-4570-a329-785e87456618.mp4"
+}'
+```
+
+You can now download the file using the download link:
+
+```
+GET http://your-revideo-service.com/download/42078492-fbb9-4570-a329-785e87456618.mp4
+```
+
+**Note:** You should not use this link as a method of permanently serving files
+(for example to provide a download link to your users). Instead, it should only
+be used to download the file once, and afterwards the file should be stored on a
+permanent storage solution like a bucket. By default, the file will be deleted
+10 minutes after the success callback.
+
+**Example Callback Response (error):**
+
+```bash
+curl -X POST <callbackUrl> \
+-H "Content-Type: application/json" \
+-d '{
+  "jobId": "123e4567-e89b-12d3-a456-426614174000",
+  "status": "error",
+  "error": "<error message>"
+}'
+```

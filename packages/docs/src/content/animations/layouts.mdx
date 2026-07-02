@@ -1,0 +1,180 @@
+# Layouts
+
+Layouts allow you to arrange your nodes using [Flexbox][flexbox]. Any node
+extending the [`Layout`](/api-reference/2d/components/classes/Layout) node can become a part of
+the layout. This includes, but is not limited to:
+[`Rect`](/api-reference/2d/components/classes/Rect), [`Circle`](/api-reference/2d/components/classes/Circle), and
+[`Img`](/api-reference/2d/components/classes/Img).
+
+## Layout root
+
+Layouts are an opt-in feature, meaning that they need to be enabled. It's done
+by setting the [`layout`](/api-reference/2d/components/classes/Layout#layout) property on the Node
+that we want to become the root of our layout:
+
+```tsx
+// ↓ layout root
+<Rect layout>
+  {/* ↓ layout child */}
+  <Circle width={320} height={320} />
+</Rect>
+```
+
+In the example above, we marked the `<Rect>` as the layout root. This will cause
+the position and size of its descendants to be controlled by Flexbox (In this
+case there's only one valid descendant: `<Circle>`). The layout root itself is
+treated differently than its children - its size is controlled by Flexbox, but
+the position stays unaffected.
+
+> [!NOTE]
+>
+> Just setting the `layout` property doesn't always turn the node into a layout
+> root. If the node is already a part of the layout, it will be treated like the
+> rest of the descendants:
+> 
+> ```tsx
+> // ↓ layout root
+> <Rect layout>
+>   {/* ↓ layout child, NOT a layout root */}
+>   <Rect layout>
+>     {/* ↓ layout child */}
+>     <Circle width={320} height={320} />
+>   </Rect>
+> </Rect>
+> ```
+>
+
+## Size and offset
+
+Aside from the position, rotation, and scale, any node extending the `Layout`
+class has additional `size` and `offset` properties:
+
+### `Layout.size`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#size" />
+
+<hr />
+
+### `Layout.offset`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#offset" />
+
+<hr />
+
+## Cardinal directions
+
+Layout nodes come with a set of helper properties that let you position them in
+respect to their edges/corners. In the example below we use them to place two
+squares on the left and right side of a gray rectangle. The yellow square is
+positioned so that its right edge is in the same place as the left edge of the
+rectangle. Meanwhile, the red square is placed so that its bottom left corner
+aligns with the bottom right corner of the rectangle. All possible directions
+include: [`middle`](/api-reference/2d/components/classes/Layout#middle),
+[`top`](/api-reference/2d/components/classes/Layout#top),
+[`bottom`](/api-reference/2d/components/classes/Layout#bottom),
+[`left`](/api-reference/2d/components/classes/Layout#left),
+[`right`](/api-reference/2d/components/classes/Layout#right),
+[`topLeft`](/api-reference/2d/components/classes/Layout#topLeft),
+[`topRight`](/api-reference/2d/components/classes/Layout#topRight),
+[`bottomLeft`](/api-reference/2d/components/classes/Layout#bottomLeft), and
+[`bottomRight`](/api-reference/2d/components/classes/Layout#bottomRight).
+
+```tsx editor
+import {makeScene2D, Rect} from '@revideo/2d';
+import {createRef} from '@revideo/core';
+
+export default makeScene2D('scene', function* (view) {
+  const rect = createRef<Rect>();
+
+  view.add(
+    <>
+      <Rect
+        ref={rect}
+        width={200}
+        height={100}
+        rotation={-10}
+        fill={'#333333'}
+      />
+      <Rect
+        size={50}
+        fill={'#e6a700'}
+        rotation={rect().rotation}
+        // Try changing "right" to "top"
+        right={rect().left}
+      />
+      <Rect
+        size={100}
+        fill={'#e13238'}
+        rotation={10}
+        bottomLeft={rect().bottomRight}
+      />
+    </>,
+  );
+
+  yield* rect().rotation(10, 1).to(-10, 1);
+});
+```
+
+## Flexbox configuration
+
+Most flexbox attributes available in CSS are available as
+[`Layout` properties](/api-reference/2d/components/classes/Layout#Properties). You can check out
+this [Flexbox guide][flexbox] to better understand how they work. The most
+useful properties are listed below:
+
+### `Layout.padding`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#padding" />
+
+<hr />
+
+### `Layout.margin`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#margin" />
+
+<hr />
+
+### `Layout.gap`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#gap" />
+
+<hr />
+
+### `Layout.direction`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#direction" />
+
+<hr />
+
+### `Layout.alignItems`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#alignItems" />
+
+<hr />
+
+### `Layout.justifyContent`
+
+<ApiSnippet url="/api-reference/2d/components/classes/Layout#justifyContent" />
+
+<hr />
+
+## Groups
+
+Nodes that don't extend the `Layout` class, such as the `Node` itself, are
+unaffected by the layout and are treated as if they were never there. This lets
+you apply filters and transformations to layout nodes without affecting the
+hierarchy.
+
+From the layout's perspective, all `<Rect>`s in the example below are siblings:
+
+```tsx
+<Layout direction={'column'} width={960} gap={40} layout>
+  <Node opacity={0.1}>
+    <Rect height={240} fill={'#ff6470'} />
+    <Rect height={240} fill={'#ff6470'} />
+  </Node>
+  <Rect height={240} fill={'#ff6470'} />
+</Layout>
+```
+
+[flexbox]: https://css-tricks.com/snippets/css/a-guide-to-flexbox/
