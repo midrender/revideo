@@ -1,4 +1,5 @@
 export default {
+  'index': 'Overview',
   'player-react': '',
   'renderer': '',
   'revideo-ffmpeg': '',

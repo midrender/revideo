@@ -5,7 +5,7 @@ export default {
   'code-snippets': '',
   'common-issues': '',
   'upgrading': '',
-  'api-reference': '',
+  'api-reference': 'API Reference',
   'platform': '',
   'get-help': '',
 }

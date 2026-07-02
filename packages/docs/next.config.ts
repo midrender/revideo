@@ -1,4 +1,6 @@
 import nextra from "nextra";
+import remarkApiSnippet from "./remark-api-snippet.mjs";
+import remarkDocsLinks from "./remark-docs-links.mjs";
 import remarkFiddle from "./remark-fiddle.mjs";
 
 const withNextra = nextra({
@@ -8,8 +10,12 @@ const withNextra = nextra({
 	},
 	contentDirBasePath: "/docs",
 	mdxOptions: {
-		// Turns ```tsx editor fences into interactive <Fiddle> previews.
-		remarkPlugins: [remarkFiddle],
+		// Turns <ApiSnippet url="..."> elements into inline API reference
+		// excerpts, then ```tsx editor fences into interactive <Fiddle>
+		// previews, then prefixes content links with /docs. Order matters:
+		// snippets can splice in editor fences and links, so remarkApiSnippet
+		// must run before the other two.
+		remarkPlugins: [remarkApiSnippet, remarkFiddle, remarkDocsLinks],
 	},
 });
 
