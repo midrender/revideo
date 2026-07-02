@@ -4,7 +4,7 @@ export default {
   'understanding-scene-flow': '',
   'parameterized-video': '',
   'rendering-videos': '',
-  'building-webapps': '',
   'designing-animations': '',
+  'building-webapps': '',
   'performance': '',
 }

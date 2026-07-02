@@ -1,11 +1,11 @@
 export default {
   'index': '',
-  'api-reference': '',
-  'code-snippets': '',
-  'common-issues': '',
-  'get-help': '',
   'guide': '',
   'animations': '',
-  'platform': '',
+  'code-snippets': '',
+  'common-issues': '',
   'upgrading': '',
+  'api-reference': '',
+  'platform': '',
+  'get-help': '',
 }
