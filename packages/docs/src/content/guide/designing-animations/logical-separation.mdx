@@ -13,7 +13,7 @@ seconds:
 import {Img, makeScene2D, View2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <Img
       width={'30%'}
@@ -34,7 +34,7 @@ Let's say that you additionally want to display some text:
 import {Img, Txt, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <Img
       width={'30%'}
@@ -59,7 +59,7 @@ generator function:
 import {Img, Txt, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <Img
       width={'30%'}

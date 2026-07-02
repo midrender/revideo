@@ -103,7 +103,7 @@ export interface CodeProps extends ShapeProps {
  * import {Code, LezerHighlighter, makeScene2D} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   LezerHighlighter.registerParser(parser);
  *   const code = createRef<Code>();
  *

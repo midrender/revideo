@@ -38,11 +38,11 @@ Throughout this guide, we will refer to functions that return children as
 dependencies and recompute its value whenever they change. We can animate our
 `count` signal to see if it works:
 
-```tsx
+```tsx editor
 import {makeScene2D, Layout, Circle} from '@revideo/2d';
 import {createSignal, linear, range} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const count = createSignal(10);
 
   view.add(

@@ -33,7 +33,7 @@ export interface CubicBezierProps extends CurveProps {
  * import {makeScene2D, CubicBezier} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const bezier = createRef<CubicBezier>();
  *
  *   view.add(

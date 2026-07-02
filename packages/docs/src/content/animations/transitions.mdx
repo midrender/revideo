@@ -39,7 +39,7 @@ generators. To use them, `yield*` the transition generator at the beginning of
 the new scene:
 
 ```tsx
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   // set up the scene:
   view.add(/* your nodes here */);
 
@@ -142,7 +142,7 @@ for the duration of the transition. You can use the
 early, allowing the animation to continue while transitioning:
 
 ```tsx
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield* animationOne();
   // trigger the transition early:
   finishScene();

@@ -9,6 +9,7 @@ import "nextra-theme-docs/style.css";
 
 import {SiteFooter} from "@/components/site/footer";
 import {SiteHeader} from "@/components/site/header";
+import {RevideoImportMap} from "@/components/site/revideo-import-map";
 import {cn} from "@/lib/utils";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -65,6 +66,9 @@ export default async function RootLayout({children}: {children: React.ReactNode}
 					"font-sans antialiased",
 				)}
 			>
+				{/* Must come before any module script so the fiddles' dynamic
+				    import('@revideo/core') resolves through the import map. */}
+				<RevideoImportMap />
 				{/* Marketing-style framed column: a centered max-w-7xl page with a thin
 				    border all around and a margin to the viewport edge. The left/right
 				    borders run the full height here; SiteHeader (borderTop) and

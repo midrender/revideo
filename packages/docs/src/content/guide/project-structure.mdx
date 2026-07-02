@@ -34,7 +34,7 @@ look like:
 import {Video, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const videoFile = useScene().variables.get(
     'video',
     'https://revideo-example-assets.s3.amazonaws.com/stars.mp4',
@@ -133,6 +133,7 @@ using `npm init @revideo@latest`). Note that the
 own and does not use the ones from `./src/project.ts`.
 
 ```tsx
+import {renderVideo} from '@revideo/renderer';
 
 async function render() {
 	console.log('Rendering video...');
@@ -163,7 +164,7 @@ folder. You can then access them inside your scene via their name:
 import {Video, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <Video src={'/my-video.mp4'} size={['100%', '100%']} play={true} />,
   );

@@ -4,11 +4,11 @@ You can easily move objects and manipulate them using a variety of functions.
 Here, we move a square along with some text around the screen, make it larger,
 and finally turn it into a circle:
 
-```tsx
+```tsx editor
 import {Rect, Txt, makeScene2D} from '@revideo/2d';
 import {all, waitFor, createRef, easeInBounce, easeInExpo} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const rectRef = createRef<Rect>();
 
   yield view.add(

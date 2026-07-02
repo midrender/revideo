@@ -1,4 +1,5 @@
 import nextra from "nextra";
+import remarkFiddle from "./remark-fiddle.mjs";
 
 const withNextra = nextra({
 	latex: true,
@@ -6,6 +7,10 @@ const withNextra = nextra({
 		codeblocks: false,
 	},
 	contentDirBasePath: "/docs",
+	mdxOptions: {
+		// Turns ```tsx editor fences into interactive <Fiddle> previews.
+		remarkPlugins: [remarkFiddle],
+	},
 });
 
 export default withNextra({

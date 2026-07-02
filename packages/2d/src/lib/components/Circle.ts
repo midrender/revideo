@@ -38,7 +38,7 @@ export interface CircleProps extends CurveProps {
  * // snippet Simple circle
  * import {makeScene2D, Circle} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   view.add(
  *     <Circle
  *       size={160}
@@ -50,7 +50,7 @@ export interface CircleProps extends CurveProps {
  * // snippet Ellipse
  * import {makeScene2D, Circle} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   view.add(
  *     <Circle
  *       width={160}
@@ -64,7 +64,7 @@ export interface CircleProps extends CurveProps {
  * import {makeScene2D, Circle} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const ref = createRef<Circle>();
  *   view.add(
  *     <Circle
@@ -84,7 +84,7 @@ export interface CircleProps extends CurveProps {
  * import {makeScene2D, Circle} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const ref = createRef<Circle>();
  *   view.add(
  *     <Circle
@@ -104,7 +104,7 @@ export interface CircleProps extends CurveProps {
  * import {makeScene2D, Circle} from '@revideo/2d';
  * import {all, createRef, easeInCubic, easeOutCubic} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const ref = createRef<Circle>();
  *   view.add(
  *     <Circle

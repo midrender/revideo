@@ -38,11 +38,11 @@ like, you'll probably think of it as a sequence of concrete steps:
 In Revideo, your code can be translated in a relatively straightforward way -
 you can read your scene code from top to bottom to understand what is happening:
 
-```tsx
+```tsx editor
 import {Circle, makeScene2D} from '@revideo/2d';
 import {createRef, waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const circleRef = createRef<Circle>();
 
   // At first, a red circle should appear in the center of my video
@@ -135,7 +135,7 @@ drawFrame();
 Looking at some scene code, this is what would happen:
 
 ```tsx
-yield view.add(); // yielded promise, we await it and dont render a frame.
+yield view.add(<Img src={'img.png'} />); // yielded promise, we await it and dont render a frame.
 
 // we yield 30 empty values, corresponding to 30 frames (or 1 second of video in case of 30fps). This is the same as calling yield* waitFor(1);
 for (let i = 0; i < 30; i++) {

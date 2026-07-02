@@ -49,7 +49,7 @@ shown below.
 import {Audio, Img, Video, makeScene2D} from '@revideo/2d';
 import {all, chain, createRef, waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const logoRef = createRef<Img>();
 
   yield view.add(
@@ -97,6 +97,7 @@ npm run render
 This will call the `./src/render.ts` script in your code:
 
 ```ts
+import {renderVideo} from '@revideo/renderer';
 
 async function render() {
   console.log('Rendering video...');
@@ -142,7 +143,7 @@ video:
 import {Audio, Img, Video, makeScene2D} from '@revideo/2d';
 import {all, chain, createRef, waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
 // your animation flow here
 }
 ```
@@ -280,7 +281,7 @@ governs them. The most basic scene looks as follows:
 ```tsx
 import {makeScene2D} from '@revideo/2d';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   // animation
 });
 ```

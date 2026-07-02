@@ -32,7 +32,7 @@ export interface RayProps extends CurveProps {
  * import {Ray} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const ray = createRef<Ray>();
  *
  *   view.add(

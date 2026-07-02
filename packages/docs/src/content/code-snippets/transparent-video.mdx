@@ -13,11 +13,11 @@ codec to another.
 which might show up correctly in the preview through the ui or inside the
 player, which will lose their transparency when rendering.
 
-```tsx
+```tsx editor
 import {Img, Video, makeScene2D} from '@revideo/2d';
 import {waitFor, createRef, useScene} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const avatarRef = createRef<Video>();
   const backgroundRef = createRef<Img>();
 

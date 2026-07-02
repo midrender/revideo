@@ -84,7 +84,7 @@ export interface LineProps extends CurveProps {
  * // snippet Simple line
  * import {makeScene2D, Line} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   view.add(
  *     <Line
  *       points={[
@@ -103,7 +103,7 @@ export interface LineProps extends CurveProps {
  * // snippet Polygon
  * import {makeScene2D, Line} from '@revideo/2d';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   view.add(
  *     <Line
  *       points={[
@@ -122,7 +122,7 @@ export interface LineProps extends CurveProps {
  * import {makeScene2D, Line} from '@revideo/2d';
  * import {createSignal} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const tip = createSignal(-150);
  *   view.add(
  *     <Line
@@ -145,7 +145,7 @@ export interface LineProps extends CurveProps {
  * import {makeScene2D, Line} from '@revideo/2d';
  * import {createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const line = createRef<Line>();
  *   view.add(
  *     <Line

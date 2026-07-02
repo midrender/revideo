@@ -42,7 +42,7 @@ function setup3DScene() {
   return {threeScene, camera, mesh};
 }
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const {threeScene, camera, mesh} = setup3DScene();
 
   const threeRef = createRef<Three>();

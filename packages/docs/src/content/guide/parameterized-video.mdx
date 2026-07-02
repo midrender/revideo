@@ -3,11 +3,11 @@
 To render videos with dynamic inputs or to build video apps, you can use video
 parameters. Consider this example video:
 
-```tsx
+```tsx editor
 import {Txt, makeScene2D} from '@revideo/2d';
 import {useScene, createRef} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const textRef = createRef<Txt>();
 
   const name = 'new user';
@@ -29,7 +29,7 @@ name - we can do this using a project variable:
 import {Txt, makeScene2D} from '@revideo/2d';
 import {useScene, createRef} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const textRef = createRef<Txt>();
 
   const name = useScene().variables.get('username', 'new user');

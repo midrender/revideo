@@ -5,11 +5,11 @@ of it appear at once.
 
 One way to achieve this is by using the `.text()` method of the `<Txt>` tag.
 
-```tsx
+```tsx editor
 import {Txt, makeScene2D} from '@revideo/2d';
 import {createRef, waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const textRef = createRef<Txt>();
   yield view.add(
     <Txt fontFamily={'Sans-Serif'} fill={'red'} ref={textRef}></Txt>,
@@ -25,11 +25,11 @@ to appear.
 If you want more control over when words appear (for instance for captions with
 exact timestamps), you can repeatedly `.add()` text to your `<Txt>` node:
 
-```tsx
+```tsx editor
 import {Txt, makeScene2D} from '@revideo/2d';
 import {createRef, waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const textRef = createRef<Txt>();
   yield view.add(
     <Txt fontFamily={'Sans-Serif'} fill={'red'} ref={textRef}></Txt>,

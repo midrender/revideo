@@ -1,13 +1,21 @@
 # Code Animations
 
-```tsx
+```tsx editor mode=preview
+import {makeScene2D, Code} from '@revideo/2d';
+import {all, createRef, DEFAULT, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      fontFamily={'JetBrains Mono, monospace'}
+      offsetX={-1}
+      x={-400}
+      code={'const number = 7;'}
+    />,
   );
 
   yield* waitFor(0.6);
@@ -91,10 +99,10 @@ highlight the snippets. If you want to use more than one language, check out the
 The code to display is set via the [`code`](/api-reference/2d/components/classes/Code#code)
 property. In the simplest case, you can just use a string:
 
-```tsx
+```tsx editor
 import {makeScene2D, Code} from '@revideo/2d';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   view.add(
     // prettier-ignore
     <Code
@@ -111,7 +119,16 @@ character `` ` ``):
 
 ```tsx
 view.add(
-  ,
+  <Code
+    fontSize={28}
+    // highlight-start
+    code={`\
+function example() {
+  const number = 7;
+}
+`}
+    // highlight-end
+  />,
 );
 ```
 
@@ -127,7 +144,15 @@ Notice two things here:
   equivalent code would have to be written as:
   ```tsx
   view.add(
-    ,
+    <Code
+      fontSize={28}
+      // highlight-start
+      code={`function example() {
+    const number = 7;
+  }
+  `}
+      // highlight-end
+    />,
   );
   ```
 
@@ -140,7 +165,15 @@ value of the `name` variable (which is `number` in this case):
 const name = 'number';
 
 view.add(
-  ,
+  <Code
+    fontSize={28}
+    code={`\
+function example() {
+  // highlight-next-line
+  const ${name} = 7;
+}
+`}
+  />,
 );
 ```
 
@@ -152,7 +185,15 @@ code snippet:
 const isRed = true;
 
 view.add(
-  ,
+  <Code
+    fontSize={28}
+    code={`\
+function example() {
+  // highlight-next-line
+  const color = '${isRed ? 'red' : 'blue'}';
+}
+`}
+  />,
 );
 ```
 
@@ -162,14 +203,18 @@ If you try to use signals inside the `${}` syntax, you'll notice that they don't
 work as expected. Invoking a signal inside a template string uses its current
 value and then never updates the snippet again, even if the signal changes:
 
-```tsx
+```tsx editor mode=code
+import {makeScene2D, Code} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const nameSignal = Code.createSignal('number');
   view.add(
     // prettier-ignore
-    ,
+    <Code
+      fontSize={28}
+      code={`const ${nameSignal()} = 7;`}
+    />,
   );
 
   yield* waitFor(1);
@@ -182,14 +227,18 @@ export default makeScene2D(function* (view) {
 Trying to pass the signal without invoking it is even worse. Since each signal
 is a function, it will be stringified and included in the snippet:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const nameSignal = Code.createSignal('number');
   view.add(
     // prettier-ignore
-    ,
+    <Code
+      fontSize={28}
+      code={`const ${nameSignal} = 7;`}
+    />,
   );
 
   yield* waitFor(1);
@@ -204,13 +253,18 @@ called [`CODE`](/api-reference/2d/code/functions/CODE). It allows the `Code` nod
 template string in a custom way and correctly support signals. It's really easy
 to use, simply put the `CODE` tag function before your template string:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code, CODE} from '@revideo/2d';
+import {waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const nameSignal = Code.createSignal('number');
   view.add(
-    ,
+    <Code
+      fontSize={28}
+      // Note the CODE tag function here:
+      code={CODE`const ${nameSignal} = 7;`}
+    />,
   );
 
   yield* waitFor(1);
@@ -238,7 +292,7 @@ ${method}
 }
 `;
 
-view.add();
+view.add(<Code code={klass} />);
 // class Example {
 //   greet() {
 //     console.log('Hello!');
@@ -263,14 +317,24 @@ depending on the level of control you need.
 The default method for animating code is diffing. It's used whenever you tween
 the `code` property:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code} from '@revideo/2d';
+import {createRef} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+      code={`\
+function example() {
+  const number = 9;
+}`}
+    />,
   );
 
   yield* code().code('const nine = 9;', 0.6).wait(0.6).back(0.6).wait(0.6);
@@ -287,15 +351,21 @@ snippet, you can use the [`append`](/api-reference/2d/code/classes/CodeSignalCon
 [`prepend`](/api-reference/2d/code/classes/CodeSignalContext#prepend) methods. They can either
 modify the code immediately or animate the changes over time:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
     // prettier-ignore
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+    />,
   );
 
   // append immediately
@@ -324,14 +394,24 @@ For more granular control over the changes, you can use
 points. Check out [Code Ranges](#code-ranges) for more information on how to
 specify points in your code snippets.
 
-```tsx
+```tsx editor
+import {makeScene2D, Code, word, lines} from '@revideo/2d';
+import {all, createRef, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+      code={`\
+function example() {
+  console.log('Hello!');
+}`}
+    />,
   );
 
   // insert code at line 2, column 0
@@ -362,15 +442,21 @@ of defining code transitions. It's used together with the
 template string. They let you specify the changes in a more visual way, without
 having to know the exact positions in the code:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code, replace, insert, remove} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
     // prettier-ignore
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+    />,
   );
 
   yield* code().code.edit(0.6)`\
@@ -393,15 +479,24 @@ the ones created by
 [`Code.createSignal()`](/api-reference/2d/components/classes/Code#createSignal). This means that
 all the animation methods are also available on your own signals:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code, CODE} from '@revideo/2d';
+import {all, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const message = Code.createSignal(`Hello, world!`);
   const body = Code.createSignal(CODE`console.log('${message}');`);
 
   view.add(
-    ,
+    <Code
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+      code={CODE`\
+function hello() {
+  ${body}
+}`}
+    />,
   );
 
   yield* waitFor(0.3);
@@ -417,15 +512,22 @@ export default makeScene2D(function* (view) {
 Code signals can also be nested in the template strings passed to the animation
 methods:
 
-```tsx
+```tsx editor mode=code
+import {makeScene2D, Code, CODE} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
     // prettier-ignore
-    ,
+    <Code 
+      ref={code} 
+      fontSize={28} 
+      offsetX={-1} 
+      x={-400} 
+      code={'// example'} 
+    />,
   );
 
   const body = Code.createSignal(CODE`console.log('Hello!');`);
@@ -496,14 +598,24 @@ Once you create a `Code` node, you can use its
 [`findLastRange`](/api-reference/2d/components/classes/Code#findLastRange) methods to find the
 ranges that contain a specific string or match the given regular expression:
 
-```tsx
+```tsx editor mode=code
+import {makeScene2D, Code} from '@revideo/2d';
+import {createRef, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+      code={`\
+function example() {
+  console.log('Hello!');
+}`}
+    />,
   );
 
   yield* code().code.replace(
@@ -523,14 +635,24 @@ The [`selection`](/api-reference/2d/code/classes/CodeSignalContext#selection) pr
 to visually distinguish a part of the code snippet. The selection is specified
 using an individual [`code range`](#code-ranges) or an array of ranges:
 
-```tsx
+```tsx editor
+import {makeScene2D, Code, lines} from '@revideo/2d';
+import {createRef, DEFAULT, waitFor} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+      code={`\
+function hello() {
+  console.log('Hello');
+}`}
+    />,
   );
 
   // select all instances of "hello" (case-insensitive)
@@ -558,14 +680,24 @@ the local space of the `Code` node.
 The following example uses `getSelectionBBox` to draw a rectangle around the
 word `log`:
 
-```tsx
+```tsx editor
+import {Code, Rect, makeScene2D} from '@revideo/2d';
+import {createRef, createSignal} from '@revideo/core';
 
-
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const code = createRef<Code>();
 
   view.add(
-    ,
+    <Code
+      ref={code}
+      fontSize={28}
+      offsetX={-1}
+      x={-400}
+      code={`\
+function hello() {
+  console.log('Hello');
+}`}
+    />,
   );
 
   const range = createSignal(() => {
@@ -579,7 +711,14 @@ export default makeScene2D(function* (view) {
   });
 
   code().add(
-    ,
+    <Rect
+      offset={-1}
+      position={range().position}
+      size={range().size}
+      lineWidth={4}
+      stroke={'white'}
+      radius={8}
+    />,
   );
 });
 ```
@@ -617,18 +756,38 @@ You can configure highlighters on a per-node basis using the
 override the default highlighter set in the project configuration file:
 
 ```tsx
-
+import {Code, LezerHighlighter} from '@revideo/2d';
+import {parser} from '@lezer/rust';
 
 const RustHighlighter = new LezerHighlighter(parser);
 
 // ...
 
 view.add(
-  ,
+  <Code
+    // this node uses the default parser
+    offsetX={-1}
+    x={-400}
+    code={`
+function hello() {
+  console.log('Hello!');
+}
+`}
+  />,
 );
 
 view.add(
-  ,
+  <Code
+    // this node uses the Rust parser
+    highlighter={RustHighlighter}
+    offsetX={1}
+    x={400}
+    code={`
+fn hello() {
+  println!("Hello!");
+}
+`}
+  />,
 );
 ```
 
@@ -648,10 +807,17 @@ export const RustCode = withDefaults(Code, {
 ```
 
 ```tsx
+import {RustCode} from '../nodes/RustCode';
 
 // ...
 
 view.add(
-  ,
+  <RustCode
+    code={`
+fn hello() {
+  println!("Hello!");
+}
+`}
+  />,
 );
 ```

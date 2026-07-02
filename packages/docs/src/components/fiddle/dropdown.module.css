@@ -1,0 +1,51 @@
+.dropdown {
+  position: relative;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  color: var(--fiddle-text-color, inherit);
+}
+
+.toggle:hover {
+  background-color: var(--fiddle-selection-color, rgba(128, 128, 128, 0.2));
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.25rem);
+  z-index: 10;
+  min-width: 10rem;
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  border-radius: 0.5rem;
+  border: 1px solid var(--fiddle-border-color, rgba(128, 128, 128, 0.3));
+  background-color: var(--fiddle-surface-color, canvas);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  color: var(--fiddle-text-color, inherit);
+  white-space: nowrap;
+}
+
+.item:hover {
+  background-color: var(--fiddle-active-color, rgba(128, 128, 128, 0.15));
+}
+
+.itemActive {
+  background-color: var(--fiddle-selection-color, rgba(128, 128, 128, 0.25));
+}

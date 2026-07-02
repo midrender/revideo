@@ -32,7 +32,7 @@ export interface GridProps extends ShapeProps {
  * import {Grid, makeScene2D} from '@revideo/2d';
  * import {all, createRef} from '@revideo/core';
  *
- * export default makeScene2D(function* (view) {
+ * export default makeScene2D('scene', function* (view) {
  *   const grid = createRef<Grid>();
  *
  *   view.add(

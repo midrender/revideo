@@ -3,11 +3,11 @@
 A common use case for Revideo is adding subtitles to a video. Often, this gets
 handled like this:
 
-```tsx
+```tsx editor
 import {Txt, Video, makeScene2D} from '@revideo/2d';
 import {useScene, waitFor, createRef} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const words = [
     'Here',
     'are',
@@ -63,11 +63,11 @@ directly, but to a child container of `view` that is not a parent of our
 `` element. Now, we will not reload all children of `view` during every
 `` change:
 
-```tsx
+```tsx editor
 import {Txt, Video, Layout, makeScene2D} from '@revideo/2d';
 import {useScene, waitFor, createRef} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   const textContainer = createRef<Layout>();
   const words = [
     'Here',

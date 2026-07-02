@@ -7,7 +7,7 @@ You can use our `` component to integrate animations built with
 import {Rive, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <Rive
       src={'https://revideo-example-assets.s3.amazonaws.com/emoji.riv'}

@@ -34,7 +34,7 @@ export default makeProject({
 import {Txt, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <Txt text={'Hello 🚀'} fontFamily={"Lexend, 'Noto Color Emoji'"} />,
   );

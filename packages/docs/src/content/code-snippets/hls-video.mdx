@@ -8,11 +8,11 @@ using .mp4 files.
 To use HLS video, simply set `src` to a file with an `.m3u8` ending in a
 `` tag.
 
-```tsx
+```tsx editor
 import {Video, makeScene2D} from '@revideo/2d';
 import {waitFor} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   yield view.add(
     <>
       <Video

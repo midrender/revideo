@@ -148,11 +148,11 @@ Sometimes it can be useful to traverse the hierarchy and find some specific
 nodes. In this documentation, we'll be referring to this process as _querying_.
 Consider the following animation:
 
-```tsx
+```tsx editor
 import {makeScene2D, Layout, Txt, Circle, Rect, is} from '@revideo/2d';
 import {all} from '@revideo/core';
 
-export default makeScene2D(function* (view) {
+export default makeScene2D('scene', function* (view) {
   view.add(
     <Layout layout gap={20} alignItems={'center'}>
       <Txt fill={'white'}>Example</Txt>
