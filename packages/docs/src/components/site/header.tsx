@@ -1,17 +1,22 @@
 'use client';
 
-import Link from 'next/link';
 import {useState} from 'react';
 
 import {Buffer} from './buffer';
-import {GitHubIcon} from './github-icon';
 import {Logo} from './logo';
 import {SideBordered} from './side-bordered';
 import {Button, buttonVariants} from '@/components/ui/button';
 import {EnterIcon} from '@/components/ui/enter-icon';
 import {cn} from '@/lib/utils';
 
-const GITHUB_URL = 'https://github.com/redotvideo/revideo';
+// Mirrors the midrender.com marketing header. These pages live at the
+// midrender.com root, outside this deployment's `/revideo` basePath, so they use
+// plain root-relative anchors — Next's <Link> would incorrectly prepend the
+// basePath and point at `/revideo/pricing` etc.
+const navLinks = [
+	{label: 'Pricing', href: '/pricing'},
+	{label: 'Changelog', href: '/changelog'},
+];
 
 export function SiteHeader() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,34 +24,32 @@ export function SiteHeader() {
 	return (
 		<div>
 			<SideBordered borderTop className="flex justify-between items-center pl-4 pr-2 py-2">
-				<Link href="/" aria-label="Revideo home" className="inline-flex">
+				<a href="/" aria-label="Midrender home" className="inline-flex">
 					<Logo />
-				</Link>
+				</a>
 
 				{/* Desktop navigation */}
-				<div className="hidden md:flex items-center gap-2">
-					<Link
-						href={GITHUB_URL}
-						target="_blank"
-						rel="noreferrer"
-						aria-label="Revideo on GitHub"
-						className={cn(
-							buttonVariants({variant: 'ghost', size: 'icon-lg'}),
-							'text-muted-foreground hover:text-foreground',
-						)}
-					>
-						<GitHubIcon className="w-[18px] h-[18px]" />
-					</Link>
-					<Link href="/docs" className="justify-center">
-						<Button variant="outline" size="lg">
-							Docs
-						</Button>
-					</Link>
-					<Link href="https://app.midrender.com" className="justify-center">
+				<div className="hidden md:flex items-center">
+					<div className="flex items-center gap-0.5">
+						{navLinks.map((link) => (
+							<a
+								key={link.href}
+								href={link.href}
+								className={cn(
+									buttonVariants({variant: 'ghost', size: 'lg'}),
+									'text-muted-foreground hover:text-foreground',
+								)}
+							>
+								{link.label}
+							</a>
+						))}
+					</div>
+					<div className="mx-2 h-5 w-px bg-border-light" aria-hidden="true" />
+					<a href="https://app.midrender.com" className="justify-center">
 						<Button size="lg" shortcut={<EnterIcon />}>
-							Try Midrender
+							Get started
 						</Button>
-					</Link>
+					</a>
 				</div>
 
 				{/* Mobile menu button */}
@@ -63,34 +66,24 @@ export function SiteHeader() {
 			{mobileMenuOpen && (
 				<SideBordered borderTop className="md:hidden bg-background">
 					<div className="flex flex-col p-4 gap-3">
-						<div className="flex flex-col gap-1">
-							<Link
-								href={GITHUB_URL}
-								target="_blank"
-								rel="noreferrer"
+						{navLinks.map((link) => (
+							<a
+								key={link.href}
+								href={link.href}
 								onClick={() => setMobileMenuOpen(false)}
 								className={cn(
 									buttonVariants({variant: 'ghost', size: 'lg'}),
 									'w-full justify-start text-muted-foreground hover:text-foreground',
 								)}
 							>
-								GitHub
-							</Link>
-						</div>
-						<Link
-							href="/docs"
-							className="w-full"
-							onClick={() => setMobileMenuOpen(false)}
-						>
-							<Button variant="outline" size="lg" className="w-full">
-								Docs
-							</Button>
-						</Link>
-						<Link href="https://app.midrender.com" className="w-full">
+								{link.label}
+							</a>
+						))}
+						<a href="https://app.midrender.com" className="w-full">
 							<Button size="lg" shortcut={<EnterIcon />} className="w-full">
-								Try Midrender
+								Get started
 							</Button>
-						</Link>
+						</a>
 					</div>
 				</SideBordered>
 			)}

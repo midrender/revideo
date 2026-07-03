@@ -1,10 +1,8 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import Link from 'next/link';
 
 import {Buffer} from './buffer';
-import {GitHubIcon} from './github-icon';
 import {Logo} from './logo';
 import {SideBordered} from './side-bordered';
 
@@ -35,16 +33,25 @@ const SplashText = [
 	'Ultimate edition!',
 ];
 
-const docsLinks = [
-	{label: 'Installation', href: '/docs/guide/installation-and-setup'},
-	{label: 'Project structure', href: '/docs/guide/project-structure'},
-	{label: 'Rendering videos', href: '/docs/guide/rendering-videos'},
+// Mirrors the midrender.com marketing footer. Links are plain root-relative
+// anchors: the marketing pages (`/pricing`, `/privacy`, ...) live at the
+// midrender.com root and the Revideo pages under `/revideo`, all outside — or
+// spanning — this deployment's `/revideo` basePath, which Next's <Link> would
+// mangle. Plain <a> tags resolve against the domain root and stay correct.
+const editorLinks = [
+	{label: 'Get started', href: 'https://app.midrender.com'},
+	{label: 'Pricing', href: '/pricing'},
+	{label: 'Changelog', href: '/changelog'},
 ];
 
-const resourceLinks = [
-	{label: 'GitHub', href: 'https://github.com/redotvideo/revideo'},
-	{label: 'Discord', href: 'https://discord.gg/MVJsrqjy3j'},
-	{label: 'Midrender', href: 'https://midrender.com'},
+const revideoLinks = [
+	{label: 'About', href: '/revideo'},
+	{label: 'Docs', href: '/revideo/docs'},
+];
+
+const legalLinks = [
+	{label: 'Privacy Policy', href: '/privacy'},
+	{label: 'Terms of Use', href: '/terms'},
 ];
 
 export function SiteFooter() {
@@ -72,11 +79,11 @@ export function SiteFooter() {
 		<>
 			<Buffer />
 			<SideBordered borderBottom>
-			<div className="p-6 sm:p-10 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10">
+			<div className="p-6 sm:p-10 grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-10">
 				<div className="flex flex-col gap-3">
-					<Link href="/" aria-label="Revideo home" className="inline-flex">
+					<a href="/" aria-label="Midrender home" className="inline-flex">
 						<Logo />
-					</Link>
+					</a>
 					<div className="text-sm italic">
 						<span key={splashIndex} className="shimmer-text">
 							{SplashText[splashIndex]}
@@ -84,29 +91,19 @@ export function SiteFooter() {
 					</div>
 				</div>
 
-				<FooterLinkColumn title="Documentation" links={docsLinks} />
-				<FooterLinkColumn title="Resources" links={resourceLinks} />
+				<FooterLinkColumn title="Editor" links={editorLinks} />
+				<FooterLinkColumn title="Revideo" links={revideoLinks} />
+				<FooterLinkColumn title="Legal" links={legalLinks} />
 				<FooterColumn title="Contact">
-					<div className="flex gap-2">
-						<Link
-							href="https://github.com/redotvideo/revideo"
-							target="_blank"
-							rel="noreferrer"
-							aria-label="Revideo on GitHub"
-							className="inline-flex w-9 h-9 items-center justify-center border border-border-light text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
-						>
-							<GitHubIcon className="w-4 h-4" />
-						</Link>
-						<Link
-							href="https://x.com/hkonsti_"
-							target="_blank"
-							rel="noreferrer"
-							aria-label="Follow @hkonsti_ on X"
-							className="inline-flex w-9 h-9 items-center justify-center border border-border-light text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
-						>
-							<XLogo className="w-4 h-4" />
-						</Link>
-					</div>
+					<a
+						href="https://x.com/hkonsti_"
+						target="_blank"
+						rel="noreferrer"
+						aria-label="Follow @hkonsti_ on X"
+						className="inline-flex w-9 h-9 items-center justify-center border border-border-light text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+					>
+						<XLogo className="w-4 h-4" />
+					</a>
 				</FooterColumn>
 			</div>
 
@@ -147,12 +144,12 @@ function FooterLinkColumn({
 			<ul className="flex flex-col gap-1.5">
 				{links.map((link) => (
 					<li key={link.href}>
-						<Link
+						<a
 							href={link.href}
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors"
 						>
 							{link.label}
-						</Link>
+						</a>
 					</li>
 				))}
 			</ul>

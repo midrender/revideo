@@ -51,7 +51,10 @@ export const metadata: Metadata = {
 export default async function RootLayout({children}: {children: React.ReactNode}) {
 	const pageMap = await getPageMap();
 	return (
-		<html lang="en" dir="ltr" suppressHydrationWarning>
+		// Dark-only, mirroring midrender.com which hardcodes `class="dark"` on
+		// <html>. The class here renders dark server-side with zero flash;
+		// `forcedTheme: "dark"` below keeps next-themes from switching it.
+		<html lang="en" dir="ltr" className="dark" suppressHydrationWarning>
 			{/* Match the monochrome marketing palette: a grayscale "accent" (links,
 			    active items, selection) instead of Nextra's default blue, and a
 			    background that matches --background (#0a0a0a dark / #fff light). */}
@@ -84,7 +87,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
 							docsRepositoryBase="https://github.com/redotvideo/revideo/blob/main/packages/docs"
 							sidebar={{defaultMenuCollapseLevel: 1}}
 							pageMap={pageMap}
-							nextThemes={{defaultTheme: "dark"}}
+							nextThemes={{defaultTheme: "dark", forcedTheme: "dark"}}
 						>
 							{children}
 						</Layout>

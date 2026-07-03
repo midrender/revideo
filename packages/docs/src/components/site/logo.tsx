@@ -56,9 +56,6 @@ export function Logo() {
 					/>
 				</g>
 			</svg>
-			<span className="font-mono text-[10px] font-semibold uppercase tracking-wider border border-current px-1.5 py-0.5 text-muted-foreground">
-				revideo
-			</span>
 		</div>
 	);
 }
