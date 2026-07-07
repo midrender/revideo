@@ -1,0 +1,14 @@
+{
+  "name": "@revideo/docs-redirect",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Redirect service that forwards old docs.re.video URLs to the new docs under midrender.com/revideo/docs.",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build-map.mjs",
+    "start": "node src/server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
