@@ -5,8 +5,9 @@ requests served in a web app - you should therefore pay attention to which
 hardware and deployment setup you want to use to deploy a rendering service for
 your Revideo apps.
 
-You should expect a rendering job (a function call to `renderVideo()` or
-`renderPartialVideo()` ([API Reference](/api-reference/renderer/renderVideo))) to
+You should expect a rendering job (a function call to
+[`renderVideo()`](/api-reference/renderer/renderVideo) or
+[`renderPartialVideo()`](/api-reference/renderer/renderPartialVideo)) to
 **require at least 8-10GB of RAM** to run fast and without issues. When multiple
 rendering jobs run at the same time, they will get slower if more RAM is not
 available.
@@ -18,7 +19,7 @@ in production:
 
 To speed up rendering in production, it's useful to parallelize rendering with
 serverless functions using `renderPartialVideo()`
-([docs](https://docs.re.video/renderer/renderPartialVideo)). When rendering a 10
+([docs](/api-reference/renderer/renderPartialVideo)). When rendering a 10
 minute video, parallelizing across 10 workers would spin up 10 serverless
 functions that each render one minute of the video. We have created example
 guides for parallelized rendering on AWS Lambda and Google Cloud Functions.

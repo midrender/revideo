@@ -1,12 +1,12 @@
 # Decoders
 
-During playback, `` nodes are simply played as HTML Video Elements.
+During playback, `<Video/>` nodes are simply played as HTML Video Elements.
 During export, Revideo extracts video frames individually to precisely render
 the resulting video.
 
 Revideo provides different decoders (`web`, `ffmpeg`, `slow`) to extract frames,
 which you can select using the `decoder` prop (e.g
-``). Below, you'll find a description of the three
+`<Video decoder={"ffmpeg"}/>`). Below, you'll find a description of the three
 decoders and which you should choose.
 
 ## Webcodecs (`decoder={"web"}`)
@@ -47,7 +47,7 @@ There are a few exceptions to this:
 - You only create one-off videos and render on your laptop. In this case, you
   can choose the webcodecs decoder
 - If speed is super important for you, you only use mp4 videos in your
-  `` nodes, and you're okay with less reliability, you could use the
+  `<Video/>` nodes, and you're okay with less reliability, you could use the
   webcodecs decoder
-- Your `` is a transparent video. In this case, you should use
+- Your `<Video/>` is a transparent video. In this case, you should use
   `decoder={"slow"}`.

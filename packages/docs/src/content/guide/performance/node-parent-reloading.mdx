@@ -48,20 +48,20 @@ export default makeScene2D('scene', function* (view) {
 });
 ```
 
-## Speed up Rendering by not adding `` to `view`
+## Speed up Rendering by not adding `<Txt/>` to `view`
 
 The implementation shown above can be made **significantly faster**, especially
 when we have more words in our subtitles:
 
 The existing implementation repeatedly modifies the `view` node by always adding
-new `` elements to it. All of these operations will cause Revideo to
-reload the `view` node and therefore also reload the `` tag, which takes
+new `<Txt/>` elements to it. All of these operations will cause Revideo to
+reload the `view` node and therefore also reload the `<Video/>` tag, which takes
 up a lot of time.
 
-The solution to this is to not add `` elements to the `view` node
+The solution to this is to not add `<Txt/>` elements to the `view` node
 directly, but to a child container of `view` that is not a parent of our
-`` element. Now, we will not reload all children of `view` during every
-`` change:
+`<Video/>` element. Now, we will not reload all children of `view` during every
+`<Txt/>` change:
 
 ```tsx editor
 import {Txt, Video, Layout, makeScene2D} from '@revideo/2d';
@@ -110,5 +110,5 @@ export default makeScene2D('scene', function* (view) {
 });
 ```
 
-Of course, this does not just apply to `` nodes, but any node that you
+Of course, this does not just apply to `<Txt/>` nodes, but any node that you
 modify frequently.

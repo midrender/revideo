@@ -141,8 +141,8 @@ async function render() {
 	// This is the main function that renders the video
 	const file = await renderVideo({
 		projectFile: './src/project.ts',
-        variables: { video: "" }
-		settings: { logProgress: true }
+		variables: {video: ''},
+		settings: {logProgress: true},
 	});
 
 	console.log(`Rendered video to ${file}`);
@@ -151,7 +151,7 @@ async function render() {
 render();
 ```
 
-This code is not neccessary to start the editor or your project and is not tied
+This code is not necessary to start the editor or your project and is not tied
 to any other rendering functionality (like the renderer of the development
 server from `npx revideo serve`). You can safely remove it if you don't need it.
 

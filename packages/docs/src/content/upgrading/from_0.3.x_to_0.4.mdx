@@ -47,7 +47,7 @@ the `renderVideo()` [docs](/api-reference/renderer/renderVideo).
 
 In 0.3.x, when running `npx revideo serve`, you were previously able to obtain
 the player from `localhost:4000/player/project.js` in order to pass it to the
-``:
+`<Player/>`:
 
 ```tsx
 <Player src="http://localhost:4000/player/project.js" controls={true} />
@@ -62,4 +62,4 @@ Now, in 0.4.x, you should just pass `localhost:4000/player` instead:
 This change was made as we now start serving both the `project.js` file and the
 assets. If you have files in the `/public` folder of your Revideo project, you
 can now also use the assets from that project in another (NextJS) project that
-uses the ``.
+uses the `<Player/>`.

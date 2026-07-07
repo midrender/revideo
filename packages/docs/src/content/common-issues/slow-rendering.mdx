@@ -1,20 +1,20 @@
 # Slow Rendering
 
 The rendering speed of Revideo projects depends on the content of your video.
-Projects that contain no `` elements generally render much faster than
+Projects that contain no `<Video/>` elements generally render much faster than
 those that do, as processing videos is an expensive operation.
 
 Here you can find some strategies that can help speed up rendering:
 
-### Upgrade to >=v0.4.4
+### Upgrade to the latest version
 
 We regularly release new versions of Revideo that often come with performance
-improvements. To get the best rendering speeds possible, make sure to upgrade
-Revideo to >=v0.4.4.
+improvements. To get the best rendering speeds possible, make sure to keep
+Revideo updated to the latest version.
 
 ### Use MP4 decoder
 
-We use the Webcodecs API to extract frames from `` elements during
+We use the Webcodecs API to extract frames from `<Video/>` elements during
 rendering. This, however, is currently only supported for mp4 files, and Revideo
 will use Ffmpeg-based decoder or naively seek set the `.currentTime` attribute
 on the HTMLVideoElement if it detects another file type. If Revideo fails to
@@ -25,7 +25,7 @@ decoder. If your video file is no mp4 file, this will lead to an error - to fix
 this, reencode your video as an mp4 file (better performance) or specify a
 different decoder._
 
-If this occurs, you can set the decoder explicitly as a prop of your ``
+If this occurs, you can set the decoder explicitly as a prop of your `<Video/>`
 tag:
 
 ```tsx
@@ -47,23 +47,23 @@ with the default of 1.0.
 
 ### Use smaller assets
 
-When using media such as `` or `` elements, processing large files
+When using media such as `<Img/>` or `<Video/>` elements, processing large files
 takes Revideo longer than smaller ones. If you want to render a video with a
 resolution of 1920x1080, it would be overkill to insert a 4K video inside a
-`` tag, as the resolution will be scaled down anyway. In this case, you
+`<Video/>` tag, as the resolution will be scaled down anyway. In this case, you
 can speed up renders by using a smaller file.
 
 ### Parallelize Rendering
 
 You can parallelize your rendering workloads using the `workers`: argument in
-`renderVideo()` ([docs](https://docs.re.video/api/renderer/renderVideo/)). Note
+`renderVideo()` ([docs](/api-reference/renderer/renderVideo)). Note
 that this can get memory-intensive, as it spins up multiple ffmpeg workers in
 parallel - you might have to switch to more powerful hardware to support a lot
 of workers.
 
 Alternatively, you can also parallelize render workloads using
 `renderPartialVideo()`
-([docs](https://docs.re.video/renderer/renderPartialVideo/)) and serverless
+([docs](/api-reference/renderer/renderPartialVideo)) and serverless
 function services such as Google Cloud Run or AWS Lambda. We have released an
 [example project](https://github.com/redotvideo/examples/tree/main/google-cloud-run-parallelized)
 demostrating how you can set up parallel rendering with Google Cloud Functions,

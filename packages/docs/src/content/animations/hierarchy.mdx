@@ -42,10 +42,10 @@ graph TD;
 </div>
 
 Each node is an instance of a class extending the base [`Node`][node] class. To
-make the code more readable, Motion Canvas uses a custom
+make the code more readable, Revideo uses a custom
 [JSX](https://reactjs.org/docs/introducing-jsx.html) runtime. This way, instead
 of instantiating the nodes ourselves, we can write an XML-like markup. Note that
-Motion Canvas does **not** use React itself, only JSX. There's no virtual DOM or
+Revideo does **not** use React itself, only JSX. There's no virtual DOM or
 reconciliation and the JSX tags are mapped directly to Node instances. These two
 code snippets are equivalent:
 
@@ -214,7 +214,7 @@ Knowing this, we could try to find all nodes of type `Txt` as follows:
 const texts = view.findAll(node => node instanceof Txt);
 ```
 
-But Motion Canvas comes with a helpful utility function called
+But Revideo comes with a helpful utility function called
 [`is`](/api-reference/2d/utils/functions/is) that can create this predicate for us:
 
 ```ts
@@ -260,4 +260,4 @@ on your needs:
 
 <hr />
 
-[node]: /api/2d/components/Node
+[node]: /api-reference/2d/components/classes/Node
