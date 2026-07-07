@@ -30,9 +30,11 @@ const {audioFile, videoFile} = renderPartialVideo({
   numWorkers: 10,
   workerId: 3,
   settings: {
-    dimensions: [1080, 1792],
     logProgress: true,
-    fmpeg: {
+    projectSettings: {
+      size: {x: 1080, y: 1792},
+    },
+    ffmpeg: {
       ffmpegLogLevel: 'error',
       ffmpegPath: 'ffmpeg',
     },
@@ -51,7 +53,7 @@ An object of type `RenderPartialVideoProps` with the following attributes:
 
 _string_
 
-A string pointing towards your Vite config file. This will probably be
+A string pointing towards your project file. This will probably be
 `./src/project.ts`.
 
 ### workerId
@@ -92,19 +94,36 @@ _string_
 
 The output directory of the rendered video. `default="./output"`
 
-#### range?
+#### projectSettings?
+
+A `RenderVideoUserProjectSettings` object that overrides the settings defined in
+your project file. All properties are optional:
+
+##### range?
 
 _[number, number]_
 
 The start and end second of the video. Can be used to only render a part of the
 video.
 
-#### dimensions?
+##### size?
 
-_[number, number]_
+`{x: number, y: number}`
 
-Dimensions of the video to render as [x,y]. Uses the value specified in
-`project.meta` by default.
+Dimensions of the video to render. Uses the value specified in your project by
+default.
+
+##### background?
+
+_string | null_
+
+Background color of the video (e.g. `'#000000'`). Uses the value specified in
+your project by default.
+
+##### exporter?
+
+The exporter to use. Defaults to the WebAssembly exporter
+(`{name: '@revideo/core/wasm'}`).
 
 #### logProgress?
 

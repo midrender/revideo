@@ -5,7 +5,7 @@ One of the pain points of creating explanatory animations using code is
 to start right after some specific verbal cue. With a code-only solution, you're
 left with hard-coding how long (or until which frame) you want to wait.
 
-In Motion Canvas, it could look somewhat like this:
+In Revideo, it could look somewhat like this:
 
 ```ts
 yield * animationOne();
@@ -17,7 +17,7 @@ Evidently, this approach can get really tedious. Not only do you need to somehow
 find the exact timestamp to wait for, but also each time you modify the
 voiceover, you have to go through your code and adjust these hard-coded numbers.
 
-That's why Motion Canvas allows you to edit these delays not through code, but
+That's why Revideo allows you to edit these delays not through code, but
 through the editor. With the use of [`waitUntil`](/api-reference/core/flow) you
 can pause the animation without specifying the actual duration:
 

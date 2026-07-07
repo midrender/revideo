@@ -18,17 +18,19 @@ renderVideo({
   settings: {
     outFile: 'video.mp4',
     workers: 1,
-    range: [1, 3],
-    dimensions: [1080, 1792],
     logProgress: true,
+    projectSettings: {
+      range: [1, 3],
+      size: {x: 1080, y: 1792},
+    },
     ffmpeg: {
       ffmpegLogLevel: 'error',
       ffmpegPath: 'ffmpeg',
     },
     puppeteer: {
       args: ['--no-sandbox'],
-    }
-    progressCallback: logProgressToConsole
+    },
+    progressCallback: logProgressToConsole,
   }
 });
 ```
@@ -67,13 +69,6 @@ _string_
 
 The output directory of the rendered video. `default="./output"`
 
-#### range?
-
-_[number, number]_
-
-The start and end second of the video. Can be used to only render a part of the
-video.
-
 #### workers?
 
 _number_
@@ -83,12 +78,36 @@ Rendering a 100s long video with 10 workers means that 10 processes handle 10s
 of video each. Your laptop will probably render fastest with one worker, but VMs
 with a lot of computing power can benefit from using more than one
 
-#### dimensions?
+#### projectSettings?
+
+A `RenderVideoUserProjectSettings` object that overrides the settings defined in
+your project file. All properties are optional:
+
+##### range?
 
 _[number, number]_
 
-Dimensions of the video to render as [x,y]. Uses the value specified in
-`project.meta` by default.
+The start and end second of the video. Can be used to only render a part of the
+video.
+
+##### size?
+
+`{x: number, y: number}`
+
+Dimensions of the video to render. Uses the value specified in your project by
+default.
+
+##### background?
+
+_string | null_
+
+Background color of the video (e.g. `'#000000'`). Uses the value specified in
+your project by default.
+
+##### exporter?
+
+The exporter to use. Defaults to the WebAssembly exporter
+(`{name: '@revideo/core/wasm'}`).
 
 #### logProgress?
 

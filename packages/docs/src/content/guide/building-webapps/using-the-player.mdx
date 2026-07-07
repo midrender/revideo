@@ -7,62 +7,47 @@ to your variables in real-time without forcing you to export your project to mp4
 beforehand. A full example of this can be found in our
 [SaaS Template](https://github.com/redotvideo/examples/tree/main/saas-template).
 
-To display a project using the player, you first need to build your Revideo
-project, give your web app access to the built project file and reference it
-through the `src` prop of the ``. If you use custom css (e.g. to
-specify fonts) or local assets (through the `/public` folder in your Revideo
-project), you will also have to make these assets available to your web app
-(either through serving them or copying over files).
+## Passing your project to the Player
 
-Revideo provides a CLI command to serve your project that automatically serves
-your Revideo project and rebuilds it when you make changes, which you can use
-during development along with the Player.
-
-### Using the Player with the CLI (recommended)
-
-Inside your Revideo project, run:
-
-```bash
-npx revideo serve
-```
-
-This will start to serve the project located in `./src/project.ts` on port 4000
-(you can change these values using the `--port` and `--projectFile` flags). Now,
-inside your web app, you can use the player like this:
+The player renders your project in the browser, so you pass it the project
+object itself - the value created with
+[`makeProject()`](/api-reference/core/app/functions/makeProject) and exported from
+your project file (usually `./src/project.ts`):
 
 ```tsx
 import {Player} from '@revideo/player-react';
+import project from '../revideo/src/project';
 
-<Player src="http://localhost:4000/player/" />;
+export default function Preview() {
+  return <Player project={project} />;
+}
 ```
 
-The `serve` command in the CLI is the recommended and most convenient option for
-local development. It automatically builds your project and serves all the
-required assets (such as your project file, assets in `/public`, and css), so
-that you don't have to copy them over into your web app - what you see inside
-the player in your web app should be the same as what you see in the editor that
-you see when you run `npm start`. When you make changes to your Revideo project,
-you also won't have to rebuild your project, as the CLI watches for changes and
-will handle them automatically.
+Because you import the project directly, your web app bundles your Revideo
+project (and the scenes it imports) as part of its own build. There is no
+separate "serve" or "copy the build output" step anymore. What you see in the
+player is the same thing you see in the editor when you run `npm start`.
 
-### Using the Player manually
+> [!NOTE]
+>
+> Before version 0.10.0, the player instead took a `src` URL that pointed at a
+> bundle served by `npx revideo serve`. That workflow has been removed - `npx
+> revideo serve` is now a rendering endpoint (see
+> [Rendering over HTTP](/guide/building-webapps/rendering-endpoint)), and the player
+> takes the project object directly. See the
+> [migration guide](/upgrading/from_0.5.x_to_0.10) if you're upgrading an existing
+> app.
 
-If you don't want to use the CLI to serve your built project, you can build it
-manually by running:
+## Passing variables
 
-```bash
-npm run build
-```
-
-This will create a directory in your project root containing your built project,
-typically in `dist`. You can then copy all of these files to any public
-directory on your web app server and embed the player by specifying the path to
-the directory. Say you copied the files to `/public/outDir` inside your web app,
-and the folder is accessible via `https://example.com/outDir` - you can then
-embed the player like this:
+You can preview [parameterized videos](/guide/parameterized-video) by passing the
+`variables` prop. Changing it re-renders the preview in real-time, which makes
+the player useful for building editors where users tweak inputs before
+exporting:
 
 ```tsx
-import {Player} from '@revideo/player-react';
-
-<Player src="https://example.com/outDir/" />;
+<Player project={project} variables={{title: 'Hello world'}} />
 ```
+
+For the full list of props - controls, looping, volume, playback callbacks, and
+more - see the [Player API reference](/api-reference/player-react/player).

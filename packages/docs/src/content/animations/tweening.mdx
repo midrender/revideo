@@ -28,7 +28,7 @@ speed up and slow down. We can simulate this behavior with
 [timing functions](/api-reference/core/tweening).
 
 A timing function takes a number in the range `[0, 1]` and returns another
-number in the same range but with a modified rate of change. Motion Canvas
+number in the same range but with a modified rate of change. Revideo
 provides all [the most popular timing functions](https://easings.net/)
 (sometimes called easing functions) but since it's a normal JavaScript function
 you can create your own.
@@ -89,7 +89,7 @@ yield *
 
 > [!TIP]
 >
-> All [complex types](/api-reference/core/types) in Motion Canvas provide a static method
+> All [complex types](/api-reference/core/types) in Revideo provide a static method
 > called `lerp` that interpolates between two instances of said type.
 >
 
@@ -191,7 +191,7 @@ method can be used for more things than just position.
 ### Spring description
 
 The first argument of the [`spring`](/api-reference/core/tweening/functions/spring) function expects
-an object that describes the physical properties of our spring. Motion Canvas
+an object that describes the physical properties of our spring. Revideo
 ships with a few useful presets that you can use, such as `PlopSpring` and
 `SmoothSpring`. But it's possible to define your own spring:
 

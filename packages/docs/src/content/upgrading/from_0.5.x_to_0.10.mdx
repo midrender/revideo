@@ -1,0 +1,156 @@
+# From 0.5.x to 0.10.x
+
+Version 0.10 removes Revideo's dependency on Vite at runtime and simplifies how
+projects, scenes, and the player fit together. This comes with a number of
+breaking changes.
+
+### Scenes are imported like normal modules
+
+Previously, scenes were imported using a `?scene` query parameter, and
+`makeScene2D()` took only a generator function:
+
+```tsx
+// scenes/example.tsx (0.5.x)
+import {makeScene2D} from '@revideo/2d';
+
+export default makeScene2D(function* (view) {
+  // ...
+});
+```
+
+```tsx
+// project.ts (0.5.x)
+import example from './scenes/example?scene';
+```
+
+In 0.10.x, scenes are plain modules. Add the JSX pragma at the top of the file,
+give the scene a name as the first argument to `makeScene2D()`, and import it
+without the `?scene` query:
+
+```tsx
+// example.tsx (0.10.x)
+/** @jsxImportSource @revideo/2d/lib */
+import {makeScene2D} from '@revideo/2d';
+
+export default makeScene2D('example', function* (view) {
+  // ...
+});
+```
+
+```tsx
+// project.ts (0.10.x)
+import example from './example';
+```
+
+### Project settings moved into `makeProject()`
+
+Settings such as the resolution, frame rate, background, and exporter used to
+live in separate `.meta` files. In 0.10.x they are passed directly to
+`makeProject()` through the `settings` object:
+
+```tsx
+// project.ts (0.10.x)
+import {makeProject} from '@revideo/core';
+
+import example from './example';
+
+export const project = makeProject({
+  name: 'project',
+  scenes: [example],
+  settings: {
+    shared: {
+      background: '#0d0d12',
+      range: [0, Infinity],
+      size: {x: 1080, y: 1080},
+    },
+    preview: {
+      fps: 30,
+      resolutionScale: 1,
+    },
+    rendering: {
+      exporter: {
+        name: '@revideo/core/wasm',
+      },
+      fps: 30,
+      resolutionScale: 1,
+      colorSpace: 'srgb',
+    },
+  },
+});
+
+export default project;
+```
+
+You can delete your old `.meta` files once the settings have been moved.
+
+### `renderVideo()` render settings moved under `projectSettings`
+
+Settings that describe the output video itself - such as the range of the video
+to render and its dimensions - now live under a `projectSettings` object instead
+of at the top level of `settings`. Dimensions are also passed as a `size` object
+(`{x, y}`) rather than a `dimensions` array.
+
+In 0.5.x:
+
+```tsx
+await renderVideo({
+  projectFile: './src/project.ts',
+  settings: {
+    range: [1, 3],
+    dimensions: [1080, 1792],
+    logProgress: true,
+  },
+});
+```
+
+In 0.10.x:
+
+```tsx
+await renderVideo({
+  projectFile: './src/project.ts',
+  settings: {
+    logProgress: true,
+    projectSettings: {
+      range: [1, 3],
+      size: {x: 1080, y: 1792},
+    },
+  },
+});
+```
+
+The same change applies to
+[`renderPartialVideo()`](/api-reference/renderer/renderPartialVideo). See the
+[`renderVideo()` docs](/api-reference/renderer/renderVideo) for the full list of
+settings.
+
+### The player takes a `project` object instead of a `src` URL
+
+The React `<Player/>` component no longer accepts a `src` URL pointing at a
+served bundle. Instead, you import your project and pass the object directly:
+
+```tsx
+// 0.5.x
+import {Player} from '@revideo/player-react';
+
+<Player src="http://localhost:4000/player" />;
+```
+
+```tsx
+// 0.10.x
+import {Player} from '@revideo/player-react';
+import project from './project';
+
+<Player project={project} />;
+```
+
+Because you import the project directly, your web app bundles it as part of its
+own build - there is no separate serve-and-embed step. See the
+[player guide](/guide/building-webapps/using-the-player) for details.
+
+### `npx revideo serve` is now a rendering endpoint
+
+Since the player takes the project object directly, `npx revideo serve` no
+longer serves a player bundle. It now exposes an HTTP endpoint for rendering
+videos (`/render`) and downloading the results (`/download`). See
+[Local Development with the CLI](/guide/building-webapps/rendering-endpoint) for
+how to use it.

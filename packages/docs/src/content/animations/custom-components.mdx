@@ -49,7 +49,7 @@ export class Switch extends Node {
 ```
 
 To use the properties defined in the interface, your class _must_ contain a
-property with the same name. Motion Canvas provides type decorators to
+property with the same name. Revideo provides type decorators to
 facilitate this like `@initial()` and `@signal()`. Click [here](/animations/signals) for
 more information on signals.
 
@@ -77,7 +77,7 @@ export class Switch extends Node {
 
 Notice how colors are wrapped in `ColorSignal<>` while any other type (even
 user-defined ones) are wrapped in `SimpleSignal<>`. The type does not need to be
-passed to color signal as Motion Canvas knows that it must be of a
+passed to color signal as Revideo knows that it must be of a
 color-resolvable type. In both, the class is passed at the end of the wrapper to
 register the signal to the class. Properties must be initialised with the
 `public`, `declare` and `readonly` keywords.

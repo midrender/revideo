@@ -151,7 +151,7 @@ export default makeScene2D('scene', function* (view) {
 Generator functions can return multiple values - when they are called, they will
 execute until they first encounter a `yield` statement, and return the yielded
 value. Revideo renders animations by continually calling the generator function,
-which will yield frames that we can export. It is not neccessary to understand
+which will yield frames that we can export. It is not necessary to understand
 how this works exactly, but if you are interested, you can read about the
 animation flow in revideo [here](/animations/flow).
 
@@ -161,9 +161,9 @@ At the start of our generator function, we add [Video](/api-reference/2d/compone
 and [Audio](/api-reference/2d/components/classes/Audio) tags to our `view`, which will display
 them on the canvas. Other components you could add include
 [Txt](/api-reference/2d/components/classes/Txt) or [Img](/api-reference/2d/components/classes/Img) tags, or basic
-shapes like [Rect](api/2d/components/Rect) or
-[Circle](api/2d/components/Circle). You can find the API for all components
-[here](api/2d/components).
+shapes like [Rect](/api-reference/2d/components/classes/Rect) or
+[Circle](/api-reference/2d/components/classes/Circle). You can find the API for all components
+[here](/api-reference/2d/components).
 
 ```tsx
 yield view.add(
@@ -258,7 +258,7 @@ application. Press the play button to see the circle animate across the screen.
 
 ### Explanation
 
-Each video in Motion Canvas is represented by a project configuration object. In
+Each video in Revideo is represented by a project configuration object. In
 our example, this configuration is declared in `src/project.ts`:
 
 ```ts
@@ -293,7 +293,7 @@ scene.
 
 You can learn more about scenes, nodes, and this XML-like syntax in the
 [scene hierarchy](/animations/hierarchy) section. For now, what's important is that,
-in our example, we add an individual [``](/api-reference/2d/components/classes/Circle)
+in our example, we add an individual [`<Circle/>`](/api-reference/2d/components/classes/Circle)
 node to our scene. We make it red, set its width and height as `140` pixels and
 position it `300` pixels left from the center:
 
@@ -381,7 +381,7 @@ myCircle().fill('#e6a700', 1);
 This [creates a tween animation](/animations/tweening) that smoothly changes the fill
 color over one second.
 
-Animations in Motion Canvas don't play on their own, we need to explicitly tell
+Animations in Revideo don't play on their own, we need to explicitly tell
 them to. This is why scenes are declared using generator functions - they serve
 as a description of how the animation should play out. By yielding different
 instructions we can tell the scene animation to do different things.
@@ -522,4 +522,4 @@ For more information view the
 
 [generators]:
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
-[all]: /api/core/flow#all
+[all]: /api-reference/core/flow/functions/all
