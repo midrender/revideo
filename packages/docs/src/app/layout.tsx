@@ -87,6 +87,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
 							docsRepositoryBase="https://github.com/redotvideo/revideo/blob/main/packages/docs"
 							sidebar={{defaultMenuCollapseLevel: 1}}
 							pageMap={pageMap}
+							// The docs are dark-only (forcedTheme below), so hide the theme
+							// switch Nextra otherwise renders in the sidebar footer — a toggle
+							// that has no effect.
+							darkMode={false}
 							nextThemes={{defaultTheme: "dark", forcedTheme: "dark"}}
 						>
 							{children}
