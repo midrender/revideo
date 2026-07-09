@@ -6,7 +6,7 @@
   "types": "types/main.d.ts",
   "author": "revideo",
   "homepage": "https://re.video/",
-  "bugs": "https://github.com/havenhq/revideo/issues",
+  "bugs": "https://github.com/midrender/revideo/issues",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/havenhq/revideo.git"
+    "url": "https://github.com/midrender/revideo.git"
   },
   "files": [
     "dist",

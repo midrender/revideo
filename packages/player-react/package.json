@@ -12,6 +12,11 @@
   "keywords": [],
   "author": "revideo",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midrender/revideo.git",
+    "directory": "packages/player-react"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.2",
     "@types/react": "^19",

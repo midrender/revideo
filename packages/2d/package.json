@@ -4,7 +4,7 @@
   "description": "A 2D renderer for revideo",
   "author": "revideo",
   "homepage": "https://re.video/",
-  "bugs": "https://github.com/havenhq/revideo/issues",
+  "bugs": "https://github.com/midrender/revideo/issues",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
@@ -19,7 +19,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/havenhq/revideo.git"
+    "url": "git+https://github.com/midrender/revideo.git"
   },
   "files": [
     "lib",

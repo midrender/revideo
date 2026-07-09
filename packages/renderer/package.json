@@ -5,8 +5,13 @@
   "main": "lib/server/index.js",
   "author": "revideo",
   "homepage": "https://re.video/",
-  "bugs": "https://github.com/havenhq/revideo/issues",
+  "bugs": "https://github.com/midrender/revideo/issues",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midrender/revideo.git",
+    "directory": "packages/renderer"
+  },
   "scripts": {
     "build": "npm run client:build && npm run server:build",
     "postbuild": "ncp renderer.html lib/renderer.html",
