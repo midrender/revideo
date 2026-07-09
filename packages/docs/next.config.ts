@@ -32,4 +32,18 @@ export default withNextra({
 	// would externalize it and fail to `require()` it at runtime. Transpiling the
 	// package makes Next bundle it instead of externalizing.
 	transpilePackages: ["@theguild/remark-mermaid"],
+	// Because midrender.com proxies /revideo* to this deployment via its
+	// *.vercel.app URL, Vercel automatically injects `X-Robots-Tag: noindex` on the
+	// proxied response, which would keep the docs out of Google. Setting the header
+	// here — at the source, before the response leaves this deployment — replaces
+	// that value so the proxy forwards a single, clean `index, follow`. basePath is
+	// applied to `source`, so `/:path*` covers every route under /revideo.
+	async headers() {
+		return [
+			{
+				source: "/:path*",
+				headers: [{key: "X-Robots-Tag", value: "index, follow"}],
+			},
+		];
+	},
 });

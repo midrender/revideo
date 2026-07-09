@@ -9,6 +9,10 @@ export const metadata: Metadata = {
 	title: 'Revideo',
 	description:
 		'Revideo, the open-source framework for programmatic video creation, is now part of Midrender.',
+	// Absolute canonical: metadataBase doesn't include the "/revideo" basePath.
+	alternates: {
+		canonical: 'https://midrender.com/revideo',
+	},
 	openGraph: {
 		title: 'The next chapter of Revideo',
 		description:
