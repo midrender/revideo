@@ -59,7 +59,7 @@ export class Segment {
 
       const segmentDurationInSeconds =
         this.edit.segmentDuration /
-        this.file.getInfo().videoTracks[0].movie_timescale;
+        this.file.getInfo().videoTracks[0].timescale;
       const framesToFill = Math.ceil(segmentDurationInSeconds * this.edit.fps);
 
       const height = this.file.getInfo().videoTracks[0].track_height;
@@ -224,7 +224,7 @@ export class Segment {
     // Check if we are past the segment duration.
     const segmentDurationInSec =
       this.edit.segmentDuration /
-      this.file.getInfo().videoTracks[0].movie_timescale;
+      this.file.getInfo().videoTracks[0].timescale;
     const segmentEndTime = mediaTimeInSec + segmentDurationInSec;
     if (frameTimeInSec > segmentEndTime) {
       frame.close();

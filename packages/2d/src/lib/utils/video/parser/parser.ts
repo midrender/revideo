@@ -57,7 +57,7 @@ async function getFileInfo(uri: string) {
       const edits = editsWithoutFps.map(edit => {
         const trackDurationInSec = track.duration / track.timescale;
         const segmentDurationInSec =
-          edit.segmentDuration / track.movie_timescale;
+          edit.segmentDuration / track.timescale;
         const segmentFrames =
           track.nb_samples * (segmentDurationInSec / trackDurationInSec);
         const mediaRate =
@@ -209,7 +209,7 @@ export class Mp4Parser {
   private getSecondDurationOfSegment(edit: Edit) {
     const mediaRate = edit.mediaRateInteger + edit.mediaRateFraction / 0xffff;
     const duration =
-      edit.segmentDuration / this.file.getInfo().videoTracks[0].movie_timescale;
+      edit.segmentDuration / this.file.getInfo().videoTracks[0].timescale;
     return duration / mediaRate;
   }
 
