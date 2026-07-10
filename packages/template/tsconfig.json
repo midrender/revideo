@@ -5,7 +5,8 @@
     "noEmit": false,
     "outDir": "dist",
     "rootDir": "./src",
-    "module": "CommonJS",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "skipLibCheck": true
   },
   "include": ["src"]

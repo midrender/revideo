@@ -6,7 +6,7 @@ export function getVersions() {
     core: loadVersion('@revideo/core'),
     two: loadVersion('@revideo/2d'),
     ui: loadVersion('@revideo/ui'),
-    vitePlugin: loadVersion('..'),
+    vitePlugin: loadVersion('@revideo/vite-plugin'),
   };
 }
 
