@@ -84,7 +84,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
 							navbar={<SiteHeader key="navbar" />}
 							footer={<SiteFooter key="footer" />}
 							editLink="Edit this page on GitHub"
-							docsRepositoryBase="https://github.com/redotvideo/revideo/blob/main/packages/docs"
+							docsRepositoryBase="https://github.com/midrender/revideo/blob/main/packages/docs"
 							sidebar={{defaultMenuCollapseLevel: 1}}
 							pageMap={pageMap}
 							// The docs are dark-only (forcedTheme below), so hide the theme

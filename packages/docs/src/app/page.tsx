@@ -31,7 +31,7 @@ export default function IndexPage() {
 					<Link href="https://app.midrender.com">
 						<Button size="lg">Try Midrender</Button>
 					</Link>
-					<Link href="https://github.com/redotvideo/revideo">
+					<Link href="https://github.com/midrender/revideo">
 						<Button size="lg" variant="outline">
 							GitHub
 						</Button>
@@ -78,7 +78,7 @@ export default function IndexPage() {
 							yet been upstreamed to the open-source repository.
 						</p>
 						<p>
-							The <Anchor href="https://github.com/redotvideo/revideo">GitHub repository</Anchor> and{' '}
+							The <Anchor href="https://github.com/midrender/revideo">GitHub repository</Anchor> and{' '}
 							<Anchor href="/docs">documentation</Anchor> remain available.
 						</p>
 					</Section>
