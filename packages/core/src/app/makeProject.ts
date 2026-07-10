@@ -62,19 +62,10 @@ export function makeProject(project: UserProject): Project {
     settings: convertedSettings,
     plugins: [],
     logger: new Logger(),
-    versions: createVersionObject('0.10.4'),
-  };
-}
-
-export async function addEditorToProject(project: Project) {
-  const url = '/@id/@revideo/2d/editor';
-  const imported = await import(
-    /* webpackIgnore: true */ /* @vite-ignore */ url
-  );
-  const plugin = imported.default();
-
-  return {
-    ...project,
-    plugins: [...project.plugins, plugin],
+    // Placeholder only. The real, per-package versions are resolved from the
+    // installed `package.json` files and injected by the vite-plugin's editor
+    // entry (the sole consumer, the editor footer). They are never used during
+    // a headless render, so we don't try to resolve them here in core.
+    versions: createVersionObject('0.0.0'),
   };
 }

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import type {Plugin} from 'vite';
 import type {Projects} from '../utils';
+import {getVersions} from '../versions';
 
 interface EditorPluginConfig {
   editor: string;
@@ -19,6 +20,43 @@ export function editorPlugin({editor, projects}: EditorPluginConfig): Plugin {
 
   const resolvedEditorId = '\0virtual:editor';
 
+  /**
+   * Generate the editor entry module for a single project.
+   *
+   * Editor plugins are declared per-scene as module specifiers (e.g.
+   * `'@revideo/2d/editor'`). We load them here, in the dev-server-only entry,
+   * and inject them into the project before handing it to the editor. This
+   * keeps the dynamic import — and the Vite-internal `/@id/` prefix used to
+   * resolve it — out of `@revideo/core`, so it never leaks into a headless
+   * render bundle.
+   *
+   * The real package versions (resolved from the installed `package.json`
+   * files) are injected here too — they're only ever shown in the editor
+   * footer, so this is the one place that has both the project and access to
+   * the file system.
+   */
+  const editorEntry = (projectUrl: string) => {
+    const versions = JSON.stringify(getVersions());
+    /* language=typescript */
+    return `\
+import {editor} from '${editor}';
+import project from '/@fs/${path.resolve(projectUrl)}';
+const specifiers = [
+  ...new Set((project.scenes ?? []).flatMap(scene => scene.plugins ?? [])),
+];
+const plugins = await Promise.all(
+  specifiers.map(specifier =>
+    import(/* @vite-ignore */ '/@id/' + specifier).then(mod => mod.default()),
+  ),
+);
+editor({
+  ...project,
+  versions: ${versions},
+  plugins: [...project.plugins, ...plugins],
+});
+`;
+  };
+
   return {
     name: 'revideo:editor',
 
@@ -27,26 +65,14 @@ export function editorPlugin({editor, projects}: EditorPluginConfig): Plugin {
 
       if (id.startsWith(resolvedEditorId)) {
         if (projects.list.length === 1) {
-          /* language=typescript */
-          return `\
-import {editor} from '${editor}';
-import project from '/@fs/${path.resolve(projects.list[0].url)}';
-import {addEditorToProject} from '@revideo/core';
-editor(await addEditorToProject(project));
-`;
+          return editorEntry(projects.list[0].url);
         }
 
         if (query) {
           const params = new URLSearchParams(query);
           const name = params.get('project');
           if (name && projects.lookup.has(name)) {
-            /* language=typescript */
-            return `\
-import {editor} from '${editor}';
-import project from '/@fs/${path.resolve(projects.lookup.get(name)!.url)}';
-import {addEditorToProject} from '@revideo/core';
-editor(await addEditorToProject(project));
-`;
+            return editorEntry(projects.lookup.get(name)!.url);
           }
         }
 
