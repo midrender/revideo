@@ -33,6 +33,7 @@
     "@revideo/renderer": "0.10.4",
     "@revideo/telemetry": "0.10.4",
     "@revideo/vite-plugin": "0.10.4",
+    "axios": "^1.16.0",
     "commander": "^15.0.0",
     "cors": "^2.8.5",
     "express": "^5.2.1",

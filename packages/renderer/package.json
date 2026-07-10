@@ -27,6 +27,7 @@
   "dependencies": {
     "@revideo/ffmpeg": "0.10.4",
     "puppeteer": "^25.3.0",
+    "uuid": "^14.0.1",
     "vite": "^8.1.2"
   },
   "devDependencies": {
