@@ -1,6 +1,6 @@
 {
   "name": "@revideo/player",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "description": "A custom element for displaying animations made with revideo",
   "main": "dist/main.js",
   "types": "types/main.d.ts",
@@ -22,7 +22,7 @@
     "types"
   ],
   "devDependencies": {
-    "@revideo/core": "0.10.4",
+    "@revideo/core": "0.11.0",
     "sass": "^1.58.0",
     "terser": "^5.16.1"
   }
