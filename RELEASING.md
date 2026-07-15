@@ -64,6 +64,7 @@ branch instead and merge back via PR.
    the next step.
 
 2. **Prep commit** — branch `release-X.Y.Z` off `main`, one commit:
+
    - submodule pointer `packages/create/examples` → the new examples commit
    - `packages/cli/src/index.ts` → `const VERSION = 'X.Y.Z'`
 
@@ -101,10 +102,11 @@ npm run render                     # → output/video.mp4 (non-empty, a few seco
 npm start                          # editor dev server boots
 ```
 
-- **Install** — `npm ls @revideo/core` reports the expected version, no peer/resolution errors.
-- **Render** — `npm run render` exits 0 and writes a playable `output/video.mp4`.
-  This is the headless path (Puppeteer + Vite + ffmpeg); a hang here means
-  editor-only code leaked into the render bundle.
+- **Install** — `npm ls @revideo/core` reports the expected version, no
+  peer/resolution errors.
+- **Render** — `npm run render` exits 0 and writes a playable
+  `output/video.mp4`. This is the headless path (Puppeteer + Vite + ffmpeg); a
+  hang here means editor-only code leaked into the render bundle.
 - **Editor** — `npm start` serves the editor (`http://localhost:9000`, HTTP 200)
   and the per-scene plugins resolve (`/@id/@revideo/2d/editor` → HTTP 200). The
   footer should show the version under test.
